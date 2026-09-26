@@ -1,350 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>HR — Packaging that protects. Packaging that performs.</title>
-<style>
-:root{
-  --blue:#1E6FD9; --pink:#E5197D; --green:#4CAF50; --yellow:#F5D800;
-  --bg:#050505; --bg2:#0c0c0c; --line:rgba(255,255,255,.08); --ink:#f2f2f2; --mut:#9a9a9a;
-  box-sizing:border-box;
-}
-*{box-sizing:inherit;margin:0;padding:0}
-html,body{background:var(--bg);color:var(--ink);font-family:"Inter",-apple-system,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
-body{padding-top:env(safe-area-inset-top,0px)}
-img,svg{max-width:100%}
-a{color:inherit;text-decoration:none}
-.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
-.grad-text{background:linear-gradient(90deg,var(--blue),var(--pink),var(--yellow));-webkit-background-clip:text;background-clip:text;color:transparent}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:999px;font-weight:600;font-size:14.5px;transition:transform .2s}
-.btn:hover{transform:translateY(-2px)}
-.btn-primary{background:linear-gradient(90deg,var(--pink),var(--blue));color:#fff}
-.btn-outline{border:1px solid var(--line);background:rgba(255,255,255,.02)}
-.section{padding:96px 0;border-top:1px solid var(--line)}
-.eyebrow{font-size:13px;color:var(--mut);letter-spacing:.02em;margin-bottom:14px}
-h1,h2,h3{font-weight:700;line-height:1.1;letter-spacing:-.02em}
-h2{font-size:36px;margin-bottom:14px}
-p.lead{color:var(--mut);font-size:16px;max-width:520px;line-height:1.6}
-.pill{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none}
-
-/* nav */
-header{position:sticky;top:0;z-index:50;background:rgba(5,5,5,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-nav.wrap{display:flex;align-items:center;justify-content:space-between;height:84px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px}
-.navlinks{display:flex;gap:34px;font-size:14.5px;color:#d8d8d8}
-.navlinks a{position:relative;padding-bottom:4px}
-.navlinks a.active{color:#fff}
-.navlinks a.active::after{content:"";position:absolute;left:0;bottom:-2px;width:100%;height:2px;background:var(--pink)}
-.navright{display:flex;align-items:center;gap:22px;font-size:13px;color:var(--mut)}
-@media(max-width:900px){.navlinks{display:none}}
-
-/* hero */
-.hero{padding:80px 0 70px;border-top:none}
-.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:50px;align-items:center}
-.hero h1{font-size:56px}
-.hero p.lead{margin:22px 0 32px}
-.hero-art{position:relative;aspect-ratio:1/.85;border-radius:24px;overflow:hidden;
-  background:
-    radial-gradient(circle at 30% 25%,rgba(30,111,217,.35),transparent 45%),
-    radial-gradient(circle at 75% 20%,rgba(76,175,80,.3),transparent 45%),
-    radial-gradient(circle at 55% 75%,rgba(229,25,125,.3),transparent 50%),
-    linear-gradient(160deg,#111,#050505 70%);
-  border:1px solid var(--line);display:flex;align-items:center;justify-content:center}
-.box-stack{width:60%;position:relative}
-.box{position:absolute;background:linear-gradient(155deg,#c8935a,#a5713a);border-radius:6px;box-shadow:0 30px 60px rgba(0,0,0,.5)}
-.box.b1{width:52%;height:46%;left:6%;bottom:0}
-.box.b2{width:40%;height:34%;left:0;bottom:8%}
-.box.b3{width:34%;height:40%;right:4%;bottom:2%}
-.box.b4{width:26%;height:20%;right:0;bottom:0;background:linear-gradient(155deg,#d6a56c,#b47f47)}
-.side-stats{display:flex;flex-direction:column;gap:18px;margin-top:36px}
-.side-stats .row{display:flex;gap:12px;align-items:center;color:#e6e6e6;font-size:14.5px}
-
-/* stats */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:40px}
-.stat{text-align:left}
-.stat .num{font-size:34px;font-weight:700}
-.stat .lbl{color:var(--mut);font-size:13.5px;margin-top:4px}
-.about-grid{display:grid;grid-template-columns:.9fr 1.3fr;gap:60px;align-items:start}
-
-/* products */
-.prod-head{display:flex;justify-content:space-between;align-items:baseline}
-.prod-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:36px}
-.prod-card{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:22px 16px;text-align:center}
-.prod-thumb{height:70px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
-.prod-card .name{font-size:13.5px;color:#ddd}
-@media(max-width:900px){.prod-grid{grid-template-columns:repeat(3,1fr)}}
-
-/* configurator */
-.config-steps{display:flex;gap:10px;margin:30px 0 26px;flex-wrap:wrap}
-.step{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;color:var(--mut);flex:1;min-width:80px}
-.step .pill{border:1px solid var(--line);color:#fff;font-weight:600}
-.step:nth-child(1) .pill{border-color:var(--blue);color:var(--blue)}
-.step:nth-child(2) .pill{border-color:var(--green);color:var(--green)}
-.step:nth-child(3) .pill{border-color:var(--pink);color:var(--pink)}
-.step:nth-child(4) .pill{border-color:var(--yellow);color:var(--yellow)}
-.step:nth-child(5) .pill{border-color:#fff;color:#fff}
-.bar{height:3px;background:linear-gradient(90deg,var(--blue),var(--green),var(--pink),var(--yellow));border-radius:3px;margin-top:-14px}
-.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
-.render-box{aspect-ratio:1/.8;border-radius:20px;border:1px solid var(--line);background:linear-gradient(160deg,#111,#060606);display:flex;align-items:center;justify-content:center}
-
-/* manufacturing */
-.mfg-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
-.mfg-photo{border-radius:20px;border:1px solid var(--line);min-height:340px;background:
-  linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.7)),
-  repeating-linear-gradient(100deg,#1a1a1a 0 40px,#151515 40px 80px);
-  padding:28px;display:flex;flex-direction:column;justify-content:flex-end}
-.qc-list{display:flex;flex-direction:column;gap:14px;margin-top:10px}
-.qc-list .row{display:flex;gap:10px;align-items:center;font-size:14.5px;color:#ddd}
-.dot{width:8px;height:8px;border-radius:50%;flex:none}
-
-/* sustainability */
-.sus{background:radial-gradient(ellipse at 80% 30%,rgba(76,175,80,.14),transparent 60%),var(--bg)}
-.sus-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
-.leaf-art{aspect-ratio:1/.7;border-radius:20px;border:1px solid var(--line);background:linear-gradient(150deg,#0c1b0d,#050505)}
-
-/* industries */
-.ind-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:14px;margin-top:36px}
-.ind-card{border:1px solid var(--line);border-radius:14px;padding:22px 10px;text-align:center;background:var(--bg2)}
-.ind-card .pill{margin:0 auto 12px}
-.ind-card .name{font-size:12.5px;color:#ccc}
-@media(max-width:900px){.ind-grid{grid-template-columns:repeat(3,1fr)}}
-
-/* projects */
-.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px}
-.proj-card{border-radius:16px;overflow:hidden;border:1px solid var(--line)}
-.proj-img{height:170px;background:linear-gradient(160deg,#1a1a1a,#0a0a0a)}
-.proj-body{padding:16px 18px;display:flex;justify-content:space-between;align-items:center;font-size:14.5px}
-
-/* final cta */
-.final{border-radius:28px;margin:0 32px;padding:64px 56px;background:
-  linear-gradient(115deg,rgba(30,111,217,.25),rgba(229,25,125,.25) 40%,rgba(76,175,80,.2) 70%,rgba(245,216,0,.2));
-  border:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
-.final h2{font-size:34px;margin:0}
-
-footer{border-top:1px solid var(--line);padding:60px 0 30px;color:var(--mut);font-size:13.5px}
-.foot-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:30px;padding-bottom:36px}
-.foot-grid h4{color:#eee;font-size:14px;margin-bottom:14px}
-.foot-grid a{display:block;color:var(--mut);margin-bottom:8px}
-.foot-bottom{display:flex;justify-content:space-between;padding-top:26px;border-top:1px solid var(--line);flex-wrap:wrap;gap:12px}
-.social{display:flex;gap:14px}
-.social span{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px}
-
-@media(max-width:880px){
-  .hero-grid,.about-grid,.config-grid,.mfg-grid,.sus-grid{grid-template-columns:1fr}
-  .stats-row{grid-template-columns:repeat(2,1fr)}
-  .proj-grid{grid-template-columns:1fr}
-  .foot-grid{grid-template-columns:1fr 1fr}
-  .hero h1{font-size:38px}
-}
-</style>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HR Géant Emballage | Corrugated Packaging Manufacturer</title>
+  <meta name="description" content="Explore corrugated boxes, custom industrial packaging and packaging engineering with HR Géant Emballage in Algeria. Plan your next packaging project.">
+  <link rel="canonical" href="https://hrgeantemballage.com/">
+  <meta property="og:type" content="website"><meta property="og:title" content="HR Géant Emballage | Corrugated Packaging Manufacturer"><meta property="og:description" content="Engineered to protect. Designed to perform. Explore corrugated packaging solutions in Algeria."><meta property="og:url" content="https://hrgeantemballage.com/"><meta property="og:image" content="https://hrgeantemballage.com/assets/images/hero-factory.webp">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="HR Géant Emballage"><meta name="twitter:description" content="Corrugated packaging engineered around your product."><meta name="twitter:image" content="https://hrgeantemballage.com/assets/images/hero-factory.webp">
+  <meta name="theme-color" content="#080a0c"><link rel="icon" href="assets/logo.png" type="image/png"><link rel="preload" as="image" href="assets/images/hero-factory.webp"><link rel="stylesheet" href="assets/css/style.css"><script defer src="assets/js/main.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"HR Géant Emballage","url":"https://hrgeantemballage.com/","logo":"https://hrgeantemballage.com/assets/logo.png","description":"Corrugated cardboard and carton packaging manufacturer in Algeria.","address":{"@type":"PostalAddress","addressCountry":"DZ"}}</script>
 </head>
 <body>
-
-<header>
-  <nav class="wrap">
-    <div class="logo">
-      <svg width="34" height="34" viewBox="0 0 100 100"><polygon points="50,4 90,26 90,74 50,96 10,74 10,26" fill="none" stroke-width="7" stroke="var(--blue)" stroke-dasharray="150 300" stroke-linecap="round" transform="rotate(0 50 50)"/><polygon points="50,4 90,26 90,74 50,96 10,74 10,26" fill="none" stroke-width="7" stroke="var(--green)" stroke-dasharray="90 300" stroke-dashoffset="-150" stroke-linecap="round"/><polygon points="50,4 90,26 90,74 50,96 10,74 10,26" fill="none" stroke-width="7" stroke="var(--yellow)" stroke-dasharray="90 300" stroke-dashoffset="-260" stroke-linecap="round"/><text x="50" y="62" text-anchor="middle" font-size="36" font-weight="800" fill="var(--pink)" font-family="Inter,sans-serif">HR</text></svg>
-      HR
-    </div>
-    <div class="navlinks">
-      <a class="active" href="#">Home</a><a href="#about">About Us</a><a href="#products">Products</a>
-      <a href="#manufacturing">Manufacturing</a><a href="#quality">Quality</a><a href="#sustainability">Sustainability</a>
-      <a href="#industries">Industries</a><a href="#projects">Case Studies</a><a href="#contact">Contact</a>
-    </div>
-    <div class="navright">
-      <span>FR</span><span>EN</span><span>العربية</span>
-      <a class="btn btn-primary" href="#contact">Request a Quote</a>
-    </div>
-  </nav>
-</header>
-
-<section class="hero wrap">
-  <div class="hero-grid">
-    <div>
-      <div class="eyebrow">Corrugated cardboard &amp; carton packaging manufacturer</div>
-      <h1>Packaging that <span style="color:var(--blue)">protects</span>.<br>Packaging that <span style="color:var(--pink)">performs</span>.</h1>
-      <p class="lead">Custom packaging solutions engineered for strength, precision and a more sustainable tomorrow — built to your product, ready for the world.</p>
-      <div style="display:flex;gap:16px;flex-wrap:wrap">
-        <a class="btn btn-primary" href="#products">Discover our packaging →</a>
-        <a class="btn btn-outline" href="#contact">Request a quote →</a>
-      </div>
-    </div>
-    <div class="hero-art">
-      <div class="box-stack">
-        <div class="box b2"></div><div class="box b1"></div><div class="box b3"></div><div class="box b4"></div>
-      </div>
-    </div>
-  </div>
-  <div class="side-stats" style="flex-direction:row;justify-content:space-between;margin-top:56px;flex-wrap:wrap;gap:20px">
-    <div class="row"><span class="pill" style="background:rgba(30,111,217,.15)">📐</span>Custom sizes &amp; formats</div>
-    <div class="row"><span class="pill" style="background:rgba(76,175,80,.15)">🌿</span>High-quality materials</div>
-    <div class="row"><span class="pill" style="background:rgba(229,25,125,.15)">🖨️</span>Advanced printing</div>
-    <div class="row"><span class="pill" style="background:rgba(245,216,0,.15)">🚚</span>Fast &amp; reliable delivery</div>
-  </div>
-</section>
-
-<section class="section" id="about">
-  <div class="wrap about-grid">
-    <div>
-      <h2>Built for industry.<br><span class="grad-text">Designed for impact.</span></h2>
-      <p class="lead">With state-of-the-art technology and a commitment to quality, we deliver packaging solutions that meet the highest international standards.</p>
-      <a class="btn btn-outline" style="margin-top:20px" href="#">About us →</a>
-    </div>
-    <div class="stats-row">
-      <div class="stat"><div class="num" style="color:var(--blue)">150M+</div><div class="lbl">Boxes per year</div></div>
-      <div class="stat"><div class="num" style="color:var(--pink)">50+</div><div class="lbl">Custom formats</div></div>
-      <div class="stat"><div class="num" style="color:var(--green)">5</div><div class="lbl">Printing technologies</div></div>
-      <div class="stat"><div class="num" style="color:var(--yellow)">30+</div><div class="lbl">Countries served</div></div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="products">
-  <div class="wrap">
-    <div class="prod-head">
-      <h2>Our <span class="grad-text">Products</span></h2>
-      <a href="#" style="font-size:14px;color:var(--mut)">View all products →</a>
-    </div>
-    <div class="prod-grid">
-      <div class="prod-card"><div class="prod-thumb"><div class="box" style="position:static;width:54px;height:38px;background:linear-gradient(155deg,var(--blue),#0d3f80)"></div></div><div class="name">Corrugated Boxes</div></div>
-      <div class="prod-card"><div class="prod-thumb"><div class="box" style="position:static;width:54px;height:38px;background:linear-gradient(155deg,var(--pink),#8c0f4d)"></div></div><div class="name">Custom Packaging</div></div>
-      <div class="prod-card"><div class="prod-thumb"><div class="box" style="position:static;width:54px;height:38px;background:linear-gradient(155deg,var(--green),#245c26)"></div></div><div class="name">Printed Packaging</div></div>
-      <div class="prod-card"><div class="prod-thumb"><div class="box" style="position:static;width:54px;height:38px;background:linear-gradient(155deg,var(--yellow),#8a7a00)"></div></div><div class="name">Industrial Packaging</div></div>
-      <div class="prod-card"><div class="prod-thumb"><div class="box" style="position:static;width:54px;height:38px;background:linear-gradient(155deg,#c8935a,#a5713a)"></div></div><div class="name">E-commerce Packaging</div></div>
-      <div class="prod-card"><div class="prod-thumb"><div class="box" style="position:static;width:54px;height:38px;background:linear-gradient(155deg,#777,#333)"></div></div><div class="name">Protective Solutions</div></div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    <h2>Create your <span class="grad-text">custom</span> packaging</h2>
-    <p class="lead">Tailored to your product. Built for your industry.</p>
-    <div class="config-steps">
-      <div class="step"><span class="pill">1</span>Size</div>
-      <div class="step"><span class="pill">2</span>Material</div>
-      <div class="step"><span class="pill">3</span>Flute</div>
-      <div class="step"><span class="pill">4</span>Printing</div>
-      <div class="step"><span class="pill">5</span>Finishing</div>
-    </div>
-    <div class="bar"></div>
-    <div class="config-grid" style="margin-top:40px">
-      <div>
-        <p class="lead">Configure every parameter of your box — from footprint and board grade to flute profile, print technology and finish — and get a production-ready spec in minutes.</p>
-        <a class="btn btn-primary" style="margin-top:20px" href="#contact">Start your project →</a>
-      </div>
-      <div class="render-box">
-        <div class="box" style="position:static;width:38%;aspect-ratio:1/.8;background:linear-gradient(155deg,#c8935a,#a5713a)"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="manufacturing">
-  <div class="wrap mfg-grid">
-    <div class="mfg-photo">
-      <h3>From raw paper to<br>finished packaging.</h3>
-      <p class="lead" style="margin-top:10px">A fully integrated production process for consistent quality and performance.</p>
-      <a class="btn btn-outline" style="margin-top:18px;width:fit-content" href="#">Our manufacturing →</a>
-    </div>
-    <div>
-      <div class="qc-list">
-        <div class="row"><span class="dot" style="background:var(--blue)"></span>Paper roll (raw material)</div>
-        <div class="row"><span class="dot" style="background:var(--green)"></span>Corrugation</div>
-        <div class="row"><span class="dot" style="background:var(--pink)"></span>Printing</div>
-        <div class="row"><span class="dot" style="background:var(--yellow)"></span>Cutting &amp; shaping</div>
-        <div class="row"><span class="dot" style="background:#fff"></span>Quality control</div>
-        <div class="row"><span class="dot" style="background:#888"></span>Finished products</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="quality">
-  <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:50px">
-    <div>
-      <h2>Quality <span class="grad-text">in every detail.</span></h2>
-      <p class="lead">We control every step to ensure maximum strength, precision and reliability.</p>
-    </div>
-    <div class="qc-list">
-      <div class="row"><span class="dot" style="background:var(--green)"></span>Compression strength</div>
-      <div class="row"><span class="dot" style="background:var(--green)"></span>Material quality</div>
-      <div class="row"><span class="dot" style="background:var(--green)"></span>Printing precision</div>
-      <div class="row"><span class="dot" style="background:var(--green)"></span>Dimensional accuracy</div>
-      <div class="row"><span class="dot" style="background:var(--green)"></span>Quality control</div>
-    </div>
-  </div>
-</section>
-
-<section class="section sus" id="sustainability">
-  <div class="wrap sus-grid">
-    <div class="leaf-art"></div>
-    <div>
-      <div class="eyebrow" style="color:var(--green)">🌿 Sustainability</div>
-      <h2>Packaging designed for a more <span style="color:var(--green)">responsible future.</span></h2>
-      <p class="lead">Recycled materials. Reduced impact. A cleaner planet.</p>
-      <a class="btn btn-outline" style="margin-top:20px;border-color:var(--green);color:var(--green)" href="#">Our sustainability →</a>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="industries">
-  <div class="wrap">
-    <h2>Industries We <span class="grad-text">Serve</span></h2>
-    <p class="lead">One packaging solution. Many industries.</p>
-    <div class="ind-grid">
-      <div class="ind-card"><div class="pill" style="background:rgba(30,111,217,.15)">🚗</div><div class="name">Automotive</div></div>
-      <div class="ind-card"><div class="pill" style="background:rgba(76,175,80,.15)">🌾</div><div class="name">Agri &amp; Beverage</div></div>
-      <div class="ind-card"><div class="pill" style="background:rgba(245,216,0,.15)">🏬</div><div class="name">Retail</div></div>
-      <div class="ind-card"><div class="pill" style="background:rgba(229,25,125,.15)">🛒</div><div class="name">E-commerce</div></div>
-      <div class="ind-card"><div class="pill" style="background:rgba(30,111,217,.15)">🔌</div><div class="name">Electronics</div></div>
-      <div class="ind-card"><div class="pill" style="background:rgba(76,175,80,.15)">🏭</div><div class="name">Industrial</div></div>
-      <div class="ind-card"><div class="pill" style="background:rgba(245,216,0,.15)">📦</div><div class="name">Retail Pack</div></div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="projects">
-  <div class="wrap">
-    <div class="prod-head">
-      <div><h2>Our Featured <span class="grad-text">Projects</span></h2><p class="lead" style="margin:0">Real solutions. Real results.</p></div>
-      <a href="#" style="font-size:14px;color:var(--mut)">View all projects →</a>
-    </div>
-    <div class="proj-grid">
-      <div class="proj-card"><div class="proj-img"></div><div class="proj-body">Food Industry <span>→</span></div></div>
-      <div class="proj-card"><div class="proj-img" style="background:linear-gradient(120deg,var(--pink),var(--yellow))"></div><div class="proj-body">E-commerce <span>→</span></div></div>
-      <div class="proj-card"><div class="proj-img"></div><div class="proj-body">Industrial <span>→</span></div></div>
-    </div>
-  </div>
-</section>
-
-<section class="section" style="border-top:none;padding-bottom:80px">
-  <div class="final">
-    <h2>Let's build <span class="grad-text">your packaging.</span></h2>
-    <p class="lead" style="margin:0">Get a custom quote and discover how we can bring your project to life.</p>
-    <a class="btn" style="background:var(--yellow);color:#111" href="#contact">Request a quotation →</a>
-  </div>
-</section>
-
-<footer id="contact">
-  <div class="wrap">
-    <div class="foot-grid">
-      <div>
-        <div class="logo" style="margin-bottom:12px">HR</div>
-        <div>Carton Packaging Manufacturer</div>
-      </div>
-      <div><h4>Company</h4><a href="#">Home</a><a href="#">About Us</a><a href="#">Products</a></div>
-      <div><h4>Solutions</h4><a href="#">Manufacturing</a><a href="#">Quality</a><a href="#">Sustainability</a></div>
-      <div><h4>Connect</h4><a href="#">Industries</a><a href="#">Case Studies</a><a href="#">Contact</a></div>
-    </div>
-    <div class="foot-bottom">
-      <div>© 2026 HR Packaging. All rights reserved.</div>
-      <div class="social"><span>in</span><span>▶</span><span>◎</span></div>
-      <div class="grad-text" style="font-weight:600">Better Packaging. A Brighter Future.</div>
-    </div>
-  </div>
-</footer>
-
-</body>
-</html>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"><div class="header-inner">
+    <a class="brand" href="#home" aria-label="HR Géant Emballage, home"><img src="assets/logo.png" width="58" height="58" alt="HR Géant Emballage emblem"><span>HR GÉANT<br><small>EMBALLAGE</small></span></a>
+    <nav class="nav" id="site-nav" aria-label="Primary navigation"><a href="#home">Home</a><a href="#company">Company</a><a href="#products">Products</a><a href="#manufacturing">Manufacturing</a><a href="#quality">Quality</a><a href="#sustainability">Sustainability</a><a href="#industries">Industries</a><a href="#projects">Projects</a><a href="#contact">Contact</a></nav>
+    <div class="header-actions"><div class="language" aria-label="Language"><button type="button" class="lang active" data-lang="en" aria-pressed="true">EN</button><button type="button" class="lang" data-lang="fr" aria-pressed="false">FR</button><button type="button" class="lang" data-lang="ar" aria-pressed="false" lang="ar">العربية</button></div><a class="header-quote" href="#contact">REQUEST A QUOTE <span aria-hidden="true">↗</span></a></div>
+    <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav"><span></span><span></span></button>
+  </div></header>
+  <main id="main">
+    <section class="hero" id="home" aria-labelledby="hero-title"><div class="hero-photo" role="img" aria-label="Modern corrugated cardboard production environment"></div><div class="hero-grid"></div><div class="container hero-content"><p class="eyebrow light"><span class="pulse"></span> HR GÉANT EMBALLAGE / ALGERIA</p><h1 id="hero-title">ENGINEERED TO<br><em>PROTECT.</em><br>DESIGNED TO<br><em>PERFORM.</em></h1><p class="hero-copy">High-performance corrugated packaging engineered around your product, your supply chain and your brand.</p><div class="actions"><a class="button primary" href="#products">EXPLORE OUR SOLUTIONS <span>↗</span></a><a class="button quiet" href="#contact">START YOUR PROJECT <span>↗</span></a></div></div><div class="hero-bottom container"><a href="#capabilities">SCROLL TO DISCOVER <span aria-hidden="true">↓</span></a><span>PACKAGING / ENGINEERING / PRODUCTION</span></div><div class="hero-object" aria-hidden="true"><div class="box-scene"><div class="box-cube"><div class="face front"><span class="box-imprint">HR</span></div><div class="face back"></div><div class="face right"></div><div class="face left"></div><div class="face top"></div><div class="face bottom"></div></div></div></div></section>
+    <div class="capabilities" id="capabilities" aria-label="Capabilities"><div class="marquee-track"><span>✦ CUSTOM ENGINEERING</span><span>✦ CORRUGATED BOARD</span><span>✦ HIGH-QUALITY PRINTING</span><span>✦ PRECISION DIE CUTTING</span><span>✦ QUALITY CONTROL</span><span>✦ INDUSTRIAL PRODUCTION</span><span>✦ RELIABLE DELIVERY</span></div></div>
+    <section class="section company" id="company"><div class="container company-grid"><div class="company-intro reveal"><p class="eyebrow">01 / THE COMPANY</p><h2>WE DON'T JUST<br>MAKE BOXES.<br><span>WE ENGINEER<br>PACKAGING.</span></h2></div><div class="company-side reveal"><p class="large-copy">Built around the product. Considered across the journey.</p><p>HR Géant Emballage develops corrugated packaging concepts for different products, handling requirements and brand needs. From dimensions and board structure to print and finishing, each decision starts with the application.</p><a class="text-link" href="#contact">DISCUSS YOUR REQUIREMENTS <span>↗</span></a><div class="company-image"><img src="assets/images/factory-production.webp" loading="lazy" width="1400" height="900" alt="Corrugated cardboard moving through packaging production machinery"></div></div></div></section>
+    <section class="section transformation" id="engineering"><div class="container"><div class="section-heading reveal"><p class="eyebrow">02 / FROM CONCEPT TO FORM</p><h2>AN IDEA TAKES<br><i>SHAPE.</i></h2><p>From an initial dieline to packaging ready to be discussed for production.</p></div><div class="transform-stage reveal"><div class="blueprint" aria-hidden="true"><div class="dieline"><span></span><span></span><span></span><span></span><span></span></div></div><div class="transform-arrow" aria-hidden="true">→</div><div class="sketch-box" aria-hidden="true"><span>HR</span></div></div><ol class="phase-list"><li><b>01</b> IDEA</li><li><b>02</b> ENGINEERING</li><li><b>03</b> PRODUCTION</li><li><b>04</b> PACKAGING</li></ol></div></section>
+    <section class="section products" id="products"><div class="container"><div class="section-heading reveal"><p class="eyebrow">03 / PACKAGING SOLUTIONS</p><h2>FORM FOLLOWS<br><i>FUNCTION.</i></h2><p>Six starting points for packaging developed around the product and the journey ahead.</p></div><div class="product-grid" id="product-grid"></div></div></section>
+    <section class="section configurator" id="configurator"><div class="container"><div class="section-heading reveal"><p class="eyebrow">04 / INTERACTIVE CONCEPT</p><h2>BUILD YOUR<br><i>PACKAGING.</i></h2><p>Explore an indicative visual concept. Final dimensions, material and manufacturing details are agreed during quotation.</p></div><div class="config-layout"><form class="config-controls" id="config-form"><div class="config-label">01 — DIMENSIONS <small>Indicative exterior size in millimetres</small></div><div class="dimension-fields"><label>Length<input type="number" id="length" min="100" max="1200" value="400" inputmode="numeric"></label><label>Width<input type="number" id="width" min="100" max="1200" value="300" inputmode="numeric"></label><label>Height<input type="number" id="height" min="100" max="1200" value="250" inputmode="numeric"></label></div><label class="config-label" for="board">02 — BOARD</label><select id="board"><option value="kraft">Natural kraft</option><option value="white">White surface</option></select><label class="config-label" for="flute">03 — FLUTE</label><select id="flute"><option value="unspecified">Discuss recommended profile</option><option value="single">Single wall — visual concept</option><option value="double">Double wall — visual concept</option></select><p class="field-note">Available flute profiles must be confirmed with HR Géant Emballage.</p><label class="config-label" for="printing">04 — PRINTING</label><select id="printing"><option value="none">Unprinted</option><option value="mark">Concept brand mark</option><option value="graphic">Concept graphic</option></select><label class="config-label" for="finishing">05 — FINISHING</label><select id="finishing"><option value="natural">Natural</option><option value="matte">Matte appearance</option><option value="smooth">Smooth appearance</option></select><a class="button primary config-cta" id="config-cta" href="#contact">START MY PROJECT <span>↗</span></a></form><div class="config-preview" aria-label="Interactive conceptual box preview"><div class="preview-grid"></div><p class="preview-caption">LIVE CONCEPT PREVIEW <span>DRAG TO ROTATE</span></p><div class="preview-box" id="preview-box"><div class="preview-top"></div><div class="preview-front"><span class="preview-print">HR</span></div><div class="preview-side"></div></div><p class="preview-disclaimer">Visual demonstration only · Not a production specification</p></div></div></div></section>
+    <section class="section manufacturing" id="manufacturing"><div class="factory-image"><img src="assets/images/factory-production.webp" loading="lazy" width="1400" height="900" alt="Industrial packaging machinery processing corrugated cardboard"></div><div class="container manufacturing-content"><div class="section-heading reveal"><p class="eyebrow light">05 / MANUFACTURING JOURNEY</p><h2>FROM PAPER<br>TO <i>PERFORMANCE.</i></h2><p>A view of the typical stages behind corrugated packaging. Confirm plant-specific processes with our team.</p></div><ol class="timeline" id="timeline"><li><b>01</b><span>RAW PAPER</span></li><li><b>02</b><span>CORRUGATION</span></li><li><b>03</b><span>PRINTING</span></li><li><b>04</b><span>DIE CUTTING</span></li><li><b>05</b><span>FOLDING &amp; GLUING</span></li><li><b>06</b><span>QUALITY CONTROL</span></li><li><b>07</b><span>FINISHED PACKAGING</span></li></ol></div></section>
+    <section class="section quality" id="quality"><div class="container quality-grid"><div class="section-heading reveal"><p class="eyebrow">06 / QUALITY CONSIDERATIONS</p><h2>PRECISION<br>AT EVERY <i>STAGE.</i></h2><p>Discuss the tests and acceptance criteria that matter to your product and supply chain.</p></div><div class="quality-list"><div><span>01</span> COMPRESSION STRENGTH <i>↗</i></div><div><span>02</span> BOARD QUALITY <i>↗</i></div><div><span>03</span> PRINT ACCURACY <i>↗</i></div><div><span>04</span> DIMENSIONAL PRECISION <i>↗</i></div><div><span>05</span> PRODUCTION CONSISTENCY <i>↗</i></div><div><span>06</span> FINAL INSPECTION <i>↗</i></div></div></div></section>
+    <section class="section technology" id="technology"><div class="container technology-grid"><div class="section-heading reveal"><p class="eyebrow">07 / CORRUGATED TECHNOLOGY</p><h2>STRENGTH<br>IN THE <i>LAYERS.</i></h2><p>Corrugated board combines flat liners with a shaped fluting layer. The board specification should follow the load, handling and print requirements.</p><p class="field-note">Profile reference only: E · B · C · EB · BC. [ADD REAL DATA: confirm profiles available from HR Géant Emballage.]</p></div><div class="board-diagram" role="img" aria-label="Illustration of corrugated board with top liner, fluting and bottom liner"><div class="board-liner"></div><div class="board-flute"></div><div class="board-liner"></div><div class="board-labels"><span>LINER</span><span>FLUTING</span><span>LINER</span></div></div></div></section>
+    <section class="section printing" id="printing-section"><div class="container printing-grid"><div class="printing-image"><img src="assets/images/corrugated-boxes.webp" loading="lazy" width="1400" height="900" alt="Kraft packaging and corrugated board in a dark product studio"></div><div class="section-heading reveal"><p class="eyebrow">08 / PRINT &amp; BRAND</p><h2>YOUR BRAND.<br>PRINTED WITH<br><i>PRECISION.</i></h2><p>Packaging can become a strong physical expression of your brand. Share your artwork and application so the appropriate print route can be assessed.</p><div class="placeholder-list"><span>PRINT TECHNOLOGY 01 · [ADD REAL DATA]</span><span>PRINT TECHNOLOGY 02 · [ADD REAL DATA]</span><span>PRINT TECHNOLOGY 03 · [ADD REAL DATA]</span></div></div></div></section>
+    <section class="section sustainability" id="sustainability"><div class="container"><div class="section-heading reveal"><p class="eyebrow">09 / RESPONSIBLE DESIGN</p><h2>BETTER PACKAGING.<br>A MORE <i>RESPONSIBLE</i><br>FUTURE.</h2><p>Thoughtful design can use material more efficiently and consider the full packaging journey. Ask our team about material options and end-of-life guidance for your application.</p></div><div class="principle-grid"><article><b>01</b><h3>RECYCLABILITY</h3><p>Consider recovery and disposal needs when specifying packaging.</p></article><article><b>02</b><h3>MATERIAL OPTIMIZATION</h3><p>Match board and structure to the product and its handling requirements.</p></article><article><b>03</b><h3>WASTE REDUCTION</h3><p>Examine fit and protective design to reduce unnecessary material.</p></article><article><b>04</b><h3>EFFICIENT DESIGN</h3><p>Consider packing, storage and transport from the beginning.</p></article></div></div></section>
+    <section class="section industries" id="industries"><div class="container"><div class="section-heading reveal"><p class="eyebrow">10 / APPLICATIONS</p><h2>BUILT FOR<br><i>YOUR WORLD.</i></h2></div><div class="industry-layout"><div class="industry-list" id="industry-list"><button type="button" class="selected" data-detail="Secondary packs and protective transit formats for food and beverage products.">Food &amp; Beverage <span>↗</span></button><button type="button" data-detail="Packaging concepts for agricultural produce and handling needs.">Agriculture <span>↗</span></button><button type="button" data-detail="Component protection and organized transport formats.">Automotive <span>↗</span></button><button type="button" data-detail="Right-sized shipping boxes and unboxing experiences.">E-commerce <span>↗</span></button><button type="button" data-detail="Protective packaging for sensitive electronic products.">Electronics <span>↗</span></button><button type="button" data-detail="Shelf-ready displays and branded shipping formats.">Retail <span>↗</span></button><button type="button" data-detail="Industrial transit packs built around product dimensions.">Industrial Manufacturing <span>↗</span></button></div><div class="industry-visual"><img src="assets/images/corrugated-boxes.webp" loading="lazy" width="1400" height="900" alt="Various corrugated packaging applications"><div><small>APPLICATION EXAMPLE / CONCEPT</small><p id="industry-detail">Secondary packs and protective transit formats for food and beverage products.</p></div></div></div></div></section>
+    <section class="section projects" id="projects"><div class="container"><div class="section-heading reveal"><p class="eyebrow">11 / PROJECTS</p><h2>PACKAGING<br>IN <i>ACTION.</i></h2><p>Project stories will appear here when approved case studies, photography and results are provided.</p></div><div class="project-grid"><article><img src="assets/images/corrugated-boxes.webp" loading="lazy" width="1400" height="900" alt="Concept photograph of custom corrugated packaging"><div><small>PROJECT 01 / [ADD REAL DATA]</small><h3>Product protection</h3><p>Industry · Challenge · Solution · Result: [ADD REAL DATA]</p></div></article><article><img src="assets/images/factory-production.webp" loading="lazy" width="1400" height="900" alt="Concept photograph of packaging manufacturing"><div><small>PROJECT 02 / [ADD REAL DATA]</small><h3>Industrial application</h3><p>Industry · Challenge · Solution · Result: [ADD REAL DATA]</p></div></article></div></div></section>
+    <section class="section location" id="location"><div class="container location-grid"><div class="section-heading reveal"><p class="eyebrow">12 / WHERE WE ARE</p><h2>ROOTED IN<br><i>ALGERIA.</i></h2><p>Talk to us about your packaging needs and delivery requirements.</p></div><div class="map-panel" role="img" aria-label="Stylized world grid with Algeria labeled; no export markets indicated"><div class="world-grid"></div><span class="map-point">● ALGERIA</span><small>FUTURE MARKET MAP / [ADD REAL DATA]</small></div></div></section>
+    <section class="section contact" id="contact"><div class="container contact-grid"><div class="section-heading reveal"><p class="eyebrow">13 / REQUEST A QUOTE</p><h2>LET'S BUILD<br>YOUR <i>PACKAGING.</i></h2><p>Tell us what you need. The form is prepared for a verified submission endpoint before it can accept requests.</p><p class="contact-status" id="form-status" role="status"></p></div><form class="quote-form" id="quote-form" enctype="multipart/form-data"><div class="form-pair"><label>Full Name <input required name="full_name" autocomplete="name" placeholder="Your name"></label><label>Company <input required name="company" autocomplete="organization" placeholder="Company name"></label></div><div class="form-pair"><label>Country <input required name="country" autocomplete="country-name" placeholder="Country"></label><label>Email <input required name="email" type="email" autocomplete="email" placeholder="name@company.com"></label></div><div class="form-pair"><label>Phone <input name="phone" type="tel" autocomplete="tel" placeholder="Include country code"></label><label>WhatsApp <input name="whatsapp" type="tel" placeholder="Include country code"></label></div><div class="form-pair"><label>Packaging Type <select name="packaging_type"><option value="">Select a type</option><option>Corrugated boxes</option><option>Custom packaging</option><option>Printed packaging</option><option>Industrial packaging</option><option>E-commerce packaging</option><option>Protective solutions</option></select></label><label>Quantity <input name="quantity" type="number" min="1" placeholder="Estimated units"></label></div><div class="form-pair"><label>Box Dimensions <input name="dimensions" id="quote-dimensions" placeholder="L × W × H in mm"></label><label>Printing Requirements <input name="printing_requirements" id="quote-printing" placeholder="Print area, colours, artwork"></label></div><label>Project Description <textarea required name="project_description" rows="5" placeholder="Product, handling, timing and other requirements"></textarea></label><label class="upload">Artwork / Technical Drawing <input name="artwork" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.ai,.eps,.svg" aria-describedby="upload-hint"><small id="upload-hint">PDF or image; accepted file types depend on your future form provider.</small></label><button class="button primary" type="submit">REQUEST MY QUOTATION <span>↗</span></button><p class="form-note">Submission opens after a verified form endpoint is configured. No data is sent by this preview.</p></form></div></section>
+    <section class="final-cta"><div class="container"><p class="eyebrow">THE NEXT MOVE IS YOURS</p><h2>YOUR PRODUCT DESERVES<br><i>BETTER PACKAGING.</i></h2><p>Let's engineer it together.</p><div class="actions"><a class="button primary" href="#contact">START YOUR PROJECT <span>↗</span></a><a class="button quiet" href="#contact">CONTACT HR GÉANT EMBALLAGE <span>↗</span></a></div></div></section>
+  </main>
+  <footer class="footer"><div class="container"><div class="footer-top"><div class="footer-brand"><img src="assets/logo.png" width="72" height="72" alt="HR Géant Emballage emblem"><h2>HR GÉANT<br>EMBALLAGE</h2><p>Corrugated Packaging Manufacturer<br>Algeria</p></div><div class="footer-links"><div><h3>COMPANY</h3><a href="#company">About</a><a href="#manufacturing">Manufacturing</a><a href="#quality">Quality</a><a href="#sustainability">Sustainability</a></div><div><h3>PRODUCTS</h3><a href="#products">Solutions</a><a href="#configurator">Configurator</a><a href="#technology">Technology</a><a href="#printing-section">Printing</a></div><div><h3>INDUSTRIES</h3><a href="#industries">Applications</a><a href="#projects">Projects</a><a href="#location">Location</a></div><div><h3>RESOURCES</h3><a href="#contact">Request a quote</a><span>[ADD REAL DATA: resources]</span></div><div><h3>CONTACT</h3><a href="#contact">Contact form</a><span>Address: [ADD REAL DATA]</span><span>Telephone: [ADD REAL DATA]</span><span>Email: [ADD REAL DATA]</span><span>WhatsApp: [ADD REAL DATA]</span><span>LinkedIn · Facebook · Instagram: [ADD REAL DATA]</span></div></div></div><div class="footer-bottom"><span>© 2026 HR Géant Emballage. All rights reserved.</span><a href="#home">BACK TO TOP ↑</a></div></div></footer>
+  <a class="whatsapp" id="whatsapp-link" hidden target="_blank" rel="noopener noreferrer" aria-label="Contact HR Géant Emballage on WhatsApp"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 .9A14.8 14.8 0 0 0 3.2 23.2L1 31l8-2.1A14.9 14.9 0 1 0 16 .9zm0 27A12 12 0 0 1 9.9 26l-.4-.2-4.7 1.2 1.2-4.6-.3-.5A12 12 0 1 1 16 27.9zm6.6-9c-.4-.2-2.2-1.1-2.6-1.2-.3-.1-.6-.2-.8.2-.3.4-1 1.2-1.2 1.4-.2.2-.4.3-.8.1-.4-.2-1.6-.6-3-1.9-1.1-1-1.9-2.3-2.1-2.7-.2-.4 0-.6.2-.8l.6-.7c.2-.2.3-.4.4-.7.1-.3 0-.5 0-.7l-1.2-2.8c-.3-.7-.6-.6-.8-.6h-.7c-.3 0-.7.1-1 .5s-1.3 1.3-1.3 3.1 1.3 3.5c.2 2 1.4 3.8 2.7 5.1 1.9 2.1 4.2 3 6.1 3.6 1.5.5 2.1.4 2.8.4.9-.1 2.2-1 2.5-2 .3-1 .3-1.9.2-2.1-.1-.2-.3-.3-.7-.5z"/></svg></a>
+</body></html>
