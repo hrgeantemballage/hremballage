@@ -7,30 +7,23 @@
   const toggle = $('.menu-toggle');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
-  // Translation architecture: supply professionally translated content before enabling FR/AR.
-  const languages = { en: { enabled: true, dir: 'ltr' }, fr: { enabled: false, dir: 'ltr' }, ar: { enabled: false, dir: 'rtl' } };
-  document.querySelectorAll('[data-lang]').forEach((button) => {
-    const code = button.dataset.lang;
-    if (!languages[code].enabled) {
-      button.title = 'Professional translation pending';
-      button.setAttribute('aria-label', `${code.toUpperCase()} translation pending`);
-      button.setAttribute('aria-disabled', 'true');
-      button.addEventListener('click', () => {
-        $('#form-status').textContent = 'FR and Arabic versions will be available after professional translation.';
-        $('#form-status').scrollIntoView({ block: 'center', behavior: reducedMotion.matches ? 'instant' : 'smooth' });
-      });
-    }
-  });
+  const locale = document.documentElement.lang || 'en';
+  const copy = {
+    en: { solution: 'SOLUTION', explore: 'EXPLORE', detail: 'Visual demonstration only', dimensions: 'indicative', pending: 'Quotation submissions are being configured. Please contact HR Géant Emballage through its verified contact channels once published.', sending: 'Sending your request…', success: 'Thank you. Your request has been sent.', failure: 'Your request could not be sent. Please try again later or use a verified contact channel.', tooLarge: 'The file is too large. Please choose one under 10 MB.', opening: 'Open menu', closing: 'Close menu' },
+    fr: { solution: 'SOLUTION', explore: 'DÉCOUVRIR', detail: 'Simulation visuelle uniquement', dimensions: 'indicatif', pending: 'L’envoi des demandes de devis est en cours de configuration. Contactez HR Géant Emballage via ses coordonnées vérifiées une fois publiées.', sending: 'Envoi de votre demande…', success: 'Merci. Votre demande a été envoyée.', failure: 'Votre demande n’a pas pu être envoyée. Réessayez plus tard ou utilisez un moyen de contact vérifié.', tooLarge: 'Le fichier est trop volumineux. Choisissez un fichier de moins de 10 Mo.', opening: 'Ouvrir le menu', closing: 'Fermer le menu' },
+    ar: { solution: 'حل', explore: 'اكتشف', detail: 'عرض بصري فقط', dimensions: 'تقريبي', pending: 'يجري إعداد خدمة إرسال طلبات عروض الأسعار. يرجى التواصل مع HR Géant Emballage عبر بيانات اتصال مؤكدة بعد نشرها.', sending: 'جارٍ إرسال طلبك…', success: 'شكراً لك. تم إرسال طلبك.', failure: 'تعذر إرسال طلبك. حاول لاحقاً أو استخدم وسيلة اتصال مؤكدة.', tooLarge: 'حجم الملف كبير جداً. اختر ملفاً أصغر من 10 ميغابايت.', opening: 'فتح القائمة', closing: 'إغلاق القائمة' }
+  }[locale] || null;
+
   const setScrolled = () => header.classList.toggle('scrolled', scrollY > 25);
   addEventListener('scroll', setScrolled, { passive: true }); setScrolled();
   toggle.addEventListener('click', () => {
     const open = toggle.getAttribute('aria-expanded') !== 'true';
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    toggle.setAttribute('aria-label', open ? copy.closing : copy.opening);
     nav.classList.toggle('open', open);
   });
   nav.addEventListener('click', (event) => {
-    if (event.target.closest('a')) { nav.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); toggle.setAttribute('aria-label', 'Open menu'); }
+    if (event.target.closest('a')) { nav.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); toggle.setAttribute('aria-label', copy.opening); }
   });
   addEventListener('keydown', (event) => { if (event.key === 'Escape') { nav.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); toggle.focus(); } });
   const sections = document.querySelectorAll('main section[id]');
@@ -43,15 +36,35 @@
     document.querySelectorAll('.timeline li').forEach(el => timeline.observe(el));
   } else document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
 
-  const productData = [
-    ['01', 'Corrugated Boxes', 'Structural packaging for transport, handling and storage.', 'Board structure / Format / Load needs', 'corrugated-boxes.webp'],
-    ['02', 'Custom Packaging', 'Made-to-fit concepts developed around the product.', 'Dimensions / Die-cut design / Fit', 'corrugated-boxes.webp'],
-    ['03', 'Printed Packaging', 'Brand presence on a practical protective format.', 'Artwork / Coverage / Finish', 'corrugated-boxes.webp'],
-    ['04', 'Industrial Packaging', 'Packaging concepts for demanding industrial movement.', 'Protection / Handling / Stacking', 'factory-production.webp'],
-    ['05', 'E-commerce Packaging', 'Shipping formats with protection and presentation in mind.', 'Packing / Transit / Opening', 'corrugated-boxes.webp'],
-    ['06', 'Protective Solutions', 'Internal corrugated elements designed around vulnerable parts.', 'Inserts / Separation / Cushioning', 'corrugated-boxes.webp']
-  ];
-  $('#product-grid').innerHTML = productData.map(([number, name, description, details, image]) => `<article class="product-card"><img src="assets/images/${image}" loading="lazy" width="1400" height="900" alt="${name} concept photograph"><div class="product-content"><small>${number} / SOLUTION</small><h3>${name}</h3><p>${description}</p><p class="details">${details}</p><a href="#contact" aria-label="Explore ${name} by requesting a quote">EXPLORE ↗</a></div></article>`).join('');
+  const productData = {
+    en: [
+      ['Corrugated Boxes','Structural packaging for transport, handling and storage.','Board structure / Format / Load needs','corrugated-boxes.webp'],
+      ['Custom Packaging','Made-to-fit concepts developed around the product.','Dimensions / Die-cut design / Fit','corrugated-boxes.webp'],
+      ['Printed Packaging','Brand presence on a practical protective format.','Artwork / Coverage / Finish','corrugated-boxes.webp'],
+      ['Industrial Packaging','Packaging concepts for demanding industrial movement.','Protection / Handling / Stacking','factory-production.webp'],
+      ['E-commerce Packaging','Shipping formats with protection and presentation in mind.','Packing / Transit / Opening','corrugated-boxes.webp'],
+      ['Protective Solutions','Internal corrugated elements designed around vulnerable parts.','Inserts / Separation / Cushioning','corrugated-boxes.webp']
+    ],
+    fr: [
+      ['Caisses en carton ondulé','Emballages structurels pour le transport, la manutention et le stockage.','Structure / Format / Charge','corrugated-boxes.webp'],
+      ['Emballage sur mesure','Des concepts adaptés à la forme et aux besoins de votre produit.','Dimensions / Découpe / Ajustement','corrugated-boxes.webp'],
+      ['Emballage imprimé','Une expression de votre marque sur une protection fonctionnelle.','Fichiers / Couverture / Finition','corrugated-boxes.webp'],
+      ['Emballage industriel','Des concepts pour les exigences du transport industriel.','Protection / Manutention / Gerbage','factory-production.webp'],
+      ['Emballage e-commerce','Des formats d’expédition pensés pour protéger et présenter.','Conditionnement / Transport / Ouverture','corrugated-boxes.webp'],
+      ['Solutions de protection','Des éléments intérieurs adaptés aux parties sensibles du produit.','Calages / Séparation / Protection','corrugated-boxes.webp']
+    ],
+    ar: [
+      ['صناديق كرتون مموج','عبوات متينة للنقل والمناولة والتخزين.','البنية / الشكل / الحمولة','corrugated-boxes.webp'],
+      ['تغليف مخصص','تصورات مصممة وفق شكل منتجك واحتياجاته.','الأبعاد / القص / الملاءمة','corrugated-boxes.webp'],
+      ['تغليف مطبوع','حضور لعلامتك التجارية على عبوة توفر الحماية.','ملفات التصميم / مساحة الطباعة / التشطيب','corrugated-boxes.webp'],
+      ['تغليف صناعي','تصورات تلائم متطلبات الحركة والنقل الصناعي.','الحماية / المناولة / التكديس','factory-production.webp'],
+      ['تغليف التجارة الإلكترونية','عبوات شحن تراعي الحماية والعرض عند الفتح.','التعبئة / النقل / الفتح','corrugated-boxes.webp'],
+      ['حلول الحماية','عناصر داخلية مموجة تحمي الأجزاء الحساسة.','فواصل / تثبيت / حماية','corrugated-boxes.webp']
+    ]
+  }[locale] || [];
+  const assetRoot = locale === 'en' ? 'assets/' : '../assets/';
+  const photoLabel = { en: 'concept photograph', fr: 'photographie de concept', ar: 'صورة توضيحية' }[locale];
+  $('#product-grid').innerHTML = productData.map(([name, description, details, image], index) => `<article class="product-card"><img src="${assetRoot}images/${image}" loading="lazy" width="1400" height="900" alt="${name} — ${photoLabel}"><div class="product-content"><small>${String(index + 1).padStart(2, '0')} / ${copy.solution}</small><h3>${name}</h3><p>${description}</p><p class="details">${details}</p><a href="#contact" aria-label="${copy.explore} ${name}">${copy.explore} ↗</a></div></article>`).join('');
 
   const controls = $('#config-form');
   const preview = $('#preview-box');
@@ -64,7 +77,7 @@
     preview.style.setProperty('--side', `${Math.round(50 + 55 * width / 1200)}px`);
     preview.style.setProperty('--board', $('#board').value === 'white' ? '#dedbd2' : '#b58a58');
     preview.className = `preview-box ${$('#printing').value} ${$('#finishing').value}`;
-    $('#quote-dimensions').value = `${length} × ${width} × ${height} mm (indicative)`;
+    $('#quote-dimensions').value = `${length} × ${width} × ${height} mm (${copy.dimensions})`;
     $('#quote-printing').value = $('#printing').selectedOptions[0].textContent;
   };
   controls.addEventListener('input', updatePreview); controls.addEventListener('change', updatePreview); updatePreview();
@@ -82,18 +95,30 @@
   // Static GitHub Pages has no form processing. Add a verified HTTPS endpoint, then enable this block.
   const FORM_ENDPOINT = ''; // e.g. your verified Formspree or custom API endpoint
   const WHATSAPP_NUMBER = ''; // E.164 digits, without + or spaces
+  const MAX_ARTWORK_BYTES = 10 * 1024 * 1024;
   const whatsapp = $('#whatsapp-link');
   if (/^\d{8,15}$/.test(WHATSAPP_NUMBER)) { whatsapp.href = `https://wa.me/${WHATSAPP_NUMBER}`; whatsapp.hidden = false; }
+  const artwork = $('#quote-form input[name="artwork"]');
+  artwork.addEventListener('change', () => {
+    const status = $('#form-status');
+    if (artwork.files[0]?.size > MAX_ARTWORK_BYTES) { artwork.value = ''; status.textContent = copy.tooLarge; }
+    else if (status.textContent === copy.tooLarge) status.textContent = '';
+  });
   $('#quote-form').addEventListener('submit', async (event) => {
     event.preventDefault();
     const status = $('#form-status');
-    if (!FORM_ENDPOINT || !/^https:\/\//.test(FORM_ENDPOINT)) { status.textContent = 'Quotation submissions are being configured. Please contact HR Géant Emballage through its verified contact channels once published.'; status.scrollIntoView({ block: 'center' }); return; }
-    const button = $('#quote-form button[type=submit]'); button.disabled = true; status.textContent = 'Sending your request…';
+    // Save the form before await: currentTarget is cleared once event dispatch ends.
+    const form = event.currentTarget;
+    // Client checks improve the experience; the eventual endpoint must repeat both checks.
+    if (form.elements['_gotcha'].value.trim()) return;
+    if (artwork.files[0]?.size > MAX_ARTWORK_BYTES) { status.textContent = copy.tooLarge; status.scrollIntoView({ block: 'center' }); return; }
+    if (!FORM_ENDPOINT || !/^https:\/\//.test(FORM_ENDPOINT)) { status.textContent = copy.pending; status.scrollIntoView({ block: 'center' }); return; }
+    const button = $('#quote-form button[type=submit]'); button.disabled = true; status.textContent = copy.sending;
     try {
-      const response = await fetch(FORM_ENDPOINT, { method: 'POST', body: new FormData(event.currentTarget), headers: { Accept: 'application/json' } });
+      const response = await fetch(FORM_ENDPOINT, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      status.textContent = 'Thank you. Your request has been sent.'; event.currentTarget.reset();
-    } catch (error) { status.textContent = 'Your request could not be sent. Please try again later or use a verified contact channel.'; }
+      status.textContent = copy.success; form.reset();
+    } catch (error) { status.textContent = copy.failure; }
     finally { button.disabled = false; status.scrollIntoView({ block: 'center' }); }
   });
 })();
