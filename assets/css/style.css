@@ -111,3 +111,6 @@
 .contact-phone{margin-top:10px;max-width:max-content}.footer-links a[href^="mailto:"],.footer-links a[href^="tel:"]{overflow-wrap:anywhere}
 
 .config-spec dd[dir="ltr"]{text-align:start;unicode-bidi:isolate}[dir="rtl"] .config-spec dd[dir="ltr"]{text-align:right}.box3__dim{direction:ltr;unicode-bidi:isolate}.config-copy-status{margin:0;font-size:.8rem;color:var(--muted)}
+
+/* Satellite map: preserve the interactive controls and Google attribution. */
+.location-grid>.map-panel-live{min-width:0}.map-panel-live iframe{display:block;width:100%;height:100%;border:0}.map-open{grid-column:2;justify-self:start;font-size:.72rem;letter-spacing:.1em;font-weight:700;color:var(--white);border-bottom:1px solid var(--blue);padding-bottom:.5rem}@media(max-width:850px){.map-open{grid-column:1}}
