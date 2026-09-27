@@ -155,3 +155,120 @@
 
 
 @media(max-width:850px){.config-state{grid-column:1}}
+
+/* ==========================================================================
+   04 — Configurator: sticky preview column, 16 box kinds, flat blank
+   ========================================================================== */
+.config-preview-col{min-width:0;display:flex;flex-direction:column}
+.config-preview-col .config-state{grid-column:auto}
+.config-view-note{display:none}
+@media (min-width:851px){
+  .config-preview-col{position:sticky;top:96px;align-self:start}
+  .config-preview.is-live{min-height:0;height:min(620px,calc(100vh - 170px))}
+}
+@media (max-width:850px){.config-preview.is-live{min-height:0;height:430px}}
+
+/* Box kinds: only the RSC shows a centre seam and tape */
+.box3:not([data-kind="rsc"]) .box3__tape{display:none}
+.box3:not([data-kind="rsc"]):not([data-style="pizza"]) .box3__seam{display:none}
+.box3__win,.box3__hole,.box3__vent,.box3__split,.box3__tuckline{display:none;position:absolute;pointer-events:none}
+
+/* Windows (dates, cake: lid · sandwich: front) */
+.box3[data-window="top"] .box3__top .box3__win,.box3[data-window="front"] .box3__front .box3__win{display:block;z-index:2;inset:24% 22%;border-radius:6px;
+  background:linear-gradient(135deg,rgba(210,232,245,.45),rgba(24,34,42,.62) 55%,rgba(210,232,245,.25));border:2px solid rgba(70,45,22,.4)}
+.box3[data-window="front"] .box3__front .box3__win{inset:22% 18% 30%}
+
+/* Open tray (fruit & vegetables): no lid, hand holes and vents */
+.box3[data-kind="tray"] .box3__top{display:none}
+.box3[data-kind="tray"] .box3__hole{display:block;z-index:2;left:50%;top:18%;width:34%;height:14%;transform:translateX(-50%);border-radius:999px;background:#1a1410;box-shadow:inset 0 2px 4px rgba(0,0,0,.6)}
+.box3[data-kind="tray"] .box3__vent{display:block;z-index:2;left:22%;right:22%;top:48%;height:8%;border-radius:999px;background:#1a1410;box-shadow:inset 0 2px 3px rgba(0,0,0,.6)}
+.box3[data-kind="tray"] .box3__print{display:none}
+
+/* Clamshell (cake, burger, takeaway): hinge line between base and lid */
+.box3[data-kind="clam"] .box3__split{display:block;z-index:2;left:0;right:0;top:calc(var(--lidfrac) * 100%);height:2px;background:rgba(55,33,15,.55);box-shadow:0 1px 0 rgba(255,255,255,.18)}
+
+/* Telescope gift box: lid band over the base */
+.box3[data-kind="tele"] .box3__split{display:block;z-index:2;left:0;right:0;top:0;height:calc(var(--lidfrac) * 100%);border-bottom:2px solid rgba(40,24,10,.6);background:linear-gradient(rgba(255,255,255,.06),rgba(0,0,0,.08));box-shadow:0 3px 5px rgba(0,0,0,.25)}
+
+/* Tuck-end cartons (sandwich, cosmetics, pharma): tuck crease on the top */
+.box3[data-kind="tuck"] .box3__tuckline{display:block;left:6%;right:6%;top:14%;height:0;border-top:2px solid rgba(60,38,18,.45)}
+
+/* Mailers (dates, e-commerce, custom): lid front edge */
+.box3[data-kind="mailer"]:not([data-style="pizza"]):not([data-style="tacos"]) .box3__front{box-shadow:inset 0 6px rgba(79,47,19,.3),inset 0 -4px rgba(255,255,255,.12)}
+.box3:is([data-kind="mailer"],[data-kind="clam"],[data-kind="tele"])[data-print="mark"] .box3__top .box3__print{opacity:.84}
+
+/* Flat blank extras */
+.fb-hole{fill:#0f1417;stroke:#5aa7ff;stroke-width:1.6;vector-effect:non-scaling-stroke}
+.fb-zone{fill:none;stroke:#F5D800;stroke-width:1.2;stroke-dasharray:4 3;vector-effect:non-scaling-stroke}
+.fb-bold{font-weight:700}
+/* Fit tall blanks inside the preview instead of letting the SVG grow past it */
+.flat-blank svg{position:absolute;inset:0;width:100%;height:100%}
+
+/* Options must read clearly on the 3D box */
+.box3[data-finish="matte"] .box3__face{filter:saturate(.7) brightness(.93) contrast(.9)}
+.box3[data-finish="matte"] .box3__face::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.06);pointer-events:none}
+.box3[data-finish="smooth"] .box3__face{filter:saturate(1.12) contrast(1.06)}
+.box3[data-finish="smooth"] .box3__sheen{background:linear-gradient(115deg,transparent calc(var(--sheen-x,50%) - 26%),rgba(255,255,255,.5) var(--sheen-x,50%),transparent calc(var(--sheen-x,50%) + 26%))}
+.box3[data-flute="double"] .box3__face{box-shadow:inset 0 0 0 2px rgba(60,36,14,.35)}
+.box-stage.is-updated .box3{animation:box-pulse .45s ease-out}
+@keyframes box-pulse{40%{filter:brightness(1.18)}}
+
+/* Flute cross-section inset */
+.flute-inset{position:absolute;z-index:3;inset-inline-end:20px;bottom:54px;width:132px;margin:0;padding:8px 8px 6px;background:rgba(9,12,14,.78);border:1px solid rgba(255,255,255,.14)}
+.flute-inset[hidden]{display:none}
+.flute-inset svg{display:block;width:100%;height:auto}
+.flute-inset figcaption{margin-top:5px;font-size:.58rem;line-height:1.3;color:#c9cfd0}
+.fi-liner{fill:#c89a64}
+.fi-flute{fill:none;stroke:#a87544;stroke-width:1.6}
+.fi-unknown{stroke-dasharray:3 2;opacity:.7}
+
+/* Phones: keep the preview on screen while choosing options */
+@media (max-width:850px){
+  .config-preview-col{order:-1;position:sticky;top:74px;z-index:6}
+  .config-preview.is-live{height:300px}
+  .config-preview-col .config-state{display:none}
+  .config-views{top:44px}
+  .box-stage,.flat-blank{inset:86px 8px 34px}
+  .flute-inset{width:84px;bottom:34px;inset-inline-end:8px;padding:4px}
+  .preview-disclaimer{bottom:10px;font-size:.62rem}
+}
+@media (prefers-reduced-motion:reduce){.box-stage.is-updated .box3{animation:none}}
+
+/* ==========================================================================
+   04 — Printed versions scale with the box
+   Each face is a size container: logo, colour band and dimension labels are
+   sized in cq units (percent of the face), so they stay in proportion on a
+   pharma carton as well as on an industrial case.
+   ========================================================================== */
+.box3__face{container-type:size}
+.box3__print img{width:min(44cqw,60cqh);max-width:none;height:auto}
+.box3__top .box3__print img{width:min(40cqw,52cqh)}
+.box3__dim{font-size:clamp(6px,4.4cqmin,15px);letter-spacing:.04em}
+
+/* Brand colours: the same four-colour band on every printed face, scaled to the face height */
+.box3[data-print="graphic"] :is(.box3__front,.box3__back,.box3__left,.box3__right) .box3__print{opacity:1!important;
+  background:linear-gradient(90deg,#1E6FD9 0 25%,#4CAF50 25% 50%,#F5D800 50% 75%,#E5197D 75%) bottom/100% max(3px,9cqh) no-repeat!important}
+.box3[data-print="graphic"]:is([data-kind="mailer"],[data-kind="clam"],[data-kind="tele"]) .box3__top .box3__print{opacity:1!important;
+  background:linear-gradient(90deg,#1E6FD9 0 25%,#4CAF50 25% 50%,#F5D800 50% 75%,#E5197D 75%) bottom/100% max(3px,6cqh) no-repeat!important}
+.box3[data-print="graphic"] .box3__print img{filter:none;mix-blend-mode:normal}
+.box3[data-print="mark"] .box3__print img{filter:grayscale(1) brightness(.3) contrast(1.4);mix-blend-mode:multiply}
+
+/* Keep dimension labels above the colour band */
+.box3[data-print="graphic"] .box3__dim.is-bottom{bottom:calc(max(3px,9cqh) + 3px)}
+
+/* No print under the tape (shipping cartons) or under a lid window */
+.box3[data-kind="rsc"] .box3__top .box3__print,
+.box3[data-window="top"] .box3__top .box3__print,
+.box3[data-kind="tray"] .box3__print{opacity:0!important}
+
+/* Very small faces: hide labels that would not be legible */
+@container (max-width:60px){.box3__dim{display:none}}
+@container (max-height:36px){.box3__dim{display:none}}
+
+/* Flat blank reflects the chosen board and print */
+.flat-blank svg[data-board="white"] .fb-board{fill:rgba(235,231,222,.24)}
+.flat-blank svg[data-board="kraft"] .fb-board{fill:rgba(185,138,86,.3)}
+.fb-logo{opacity:.95}
+.fb-logo--mark{filter:grayscale(1) brightness(1.9)}
+/* Larger lid logo on pizza and tacos boxes (full lid presence, as in the reference photos) */
+.box3:is([data-style="pizza"],[data-style="tacos"]) .box3__top .box3__print img{width:min(46cqw,62cqh)}
