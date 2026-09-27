@@ -39,53 +39,267 @@
   const productData = {
     en: [
       ['Corrugated Boxes','Structural packaging for transport, handling and storage.','Board structure / Format / Load needs','corrugated-boxes.webp'],
-      ['Custom Packaging','Made-to-fit concepts developed around the product.','Dimensions / Die-cut design / Fit','corrugated-boxes.webp'],
+      ['Custom Packaging','Packaging formats developed around the product.','Dimensions / Die-cut design / Fit','corrugated-boxes.webp'],
       ['Printed Packaging','Brand presence on a practical protective format.','Artwork / Coverage / Finish','corrugated-boxes.webp'],
-      ['Industrial Packaging','Packaging concepts for demanding industrial movement.','Protection / Handling / Stacking','factory-production.webp'],
+      ['Industrial Packaging','Packaging for demanding industrial handling.','Protection / Handling / Stacking','factory-production.webp'],
       ['E-commerce Packaging','Shipping formats with protection and presentation in mind.','Packing / Transit / Opening','corrugated-boxes.webp'],
       ['Protective Solutions','Internal corrugated elements designed around vulnerable parts.','Inserts / Separation / Cushioning','corrugated-boxes.webp']
     ],
     fr: [
       ['Caisses en carton ondulé','Emballages structurels pour le transport, la manutention et le stockage.','Structure / Format / Charge','corrugated-boxes.webp'],
-      ['Emballage sur mesure','Des concepts adaptés à la forme et aux besoins de votre produit.','Dimensions / Découpe / Ajustement','corrugated-boxes.webp'],
+      ['Emballage sur mesure','Des emballages adaptés à la forme et aux besoins de votre produit.','Dimensions / Découpe / Ajustement','corrugated-boxes.webp'],
       ['Emballage imprimé','Une expression de votre marque sur une protection fonctionnelle.','Fichiers / Couverture / Finition','corrugated-boxes.webp'],
-      ['Emballage industriel','Des concepts pour les exigences du transport industriel.','Protection / Manutention / Gerbage','factory-production.webp'],
+      ['Emballage industriel','Des emballages pour les exigences du transport industriel.','Protection / Manutention / Gerbage','factory-production.webp'],
       ['Emballage e-commerce','Des formats d’expédition pensés pour protéger et présenter.','Conditionnement / Transport / Ouverture','corrugated-boxes.webp'],
       ['Solutions de protection','Des éléments intérieurs adaptés aux parties sensibles du produit.','Calages / Séparation / Protection','corrugated-boxes.webp']
     ],
     ar: [
       ['صناديق كرتون مموج','عبوات متينة للنقل والمناولة والتخزين.','البنية / الشكل / الحمولة','corrugated-boxes.webp'],
-      ['تغليف مخصص','تصورات مصممة وفق شكل منتجك واحتياجاته.','الأبعاد / القص / الملاءمة','corrugated-boxes.webp'],
+      ['تغليف مخصص','عبوات مصممة وفق شكل منتجك واحتياجاته.','الأبعاد / القص / الملاءمة','corrugated-boxes.webp'],
       ['تغليف مطبوع','حضور لعلامتك التجارية على عبوة توفر الحماية.','ملفات التصميم / مساحة الطباعة / التشطيب','corrugated-boxes.webp'],
-      ['تغليف صناعي','تصورات تلائم متطلبات الحركة والنقل الصناعي.','الحماية / المناولة / التكديس','factory-production.webp'],
+      ['تغليف صناعي','عبوات تلائم متطلبات الحركة والنقل الصناعي.','الحماية / المناولة / التكديس','factory-production.webp'],
       ['تغليف التجارة الإلكترونية','عبوات شحن تراعي الحماية والعرض عند الفتح.','التعبئة / النقل / الفتح','corrugated-boxes.webp'],
       ['حلول الحماية','عناصر داخلية مموجة تحمي الأجزاء الحساسة.','فواصل / تثبيت / حماية','corrugated-boxes.webp']
     ]
   }[locale] || [];
   const assetRoot = locale === 'en' ? 'assets/' : '../assets/';
-  const photoLabel = { en: 'concept photograph', fr: 'photographie de concept', ar: 'صورة توضيحية' }[locale];
+  const photoLabel = { en: 'illustrative packaging image', fr: 'visuel d’emballage illustratif', ar: 'صورة توضيحية' }[locale];
   $('#product-grid').innerHTML = productData.map(([name, description, details, image], index) => `<article class="product-card"><img src="${assetRoot}images/${image}" loading="lazy" width="1400" height="900" alt="${name} — ${photoLabel}"><div class="product-content"><small>${String(index + 1).padStart(2, '0')} / ${copy.solution}</small><h3>${name}</h3><p>${description}</p><p class="details">${details}</p><a href="#contact" aria-label="${copy.explore} ${name}">${copy.explore} ↗</a></div></article>`).join('');
 
+  /* ==========================================================================
+     04 — PACKAGING CONFIGURATOR
+     Real-proportion 3D box (CSS 3D), flat-blank (dieline) view, live geometry
+     and automatic transfer of the specification into the quote form.
+     Geometry approximates a regular slotted carton (RSC / FEFCO 0201);
+     no prices or weights are invented.
+     ========================================================================== */
+  const T = {
+    en: { qty: 'Quantity', qtyPh: 'e.g. 5000', view3d: '3D box', viewFlat: 'Flat blank', reset: 'Reset view',
+      yourBox: 'Your box', style: 'Style', rsc: 'Regular slotted carton (FEFCO 0201)', blank: 'Flat blank size', area: 'Board per box',
+      total: 'Board for the order', volume: 'Volume', wall: 'Wall thickness', approx: 'Illustrative dimensions and area only. Confirm all production specifications with HR Géant Emballage.',
+      range: 'Enter a value between 100 and 1200 mm.', glue: 'Glue flap', cut: 'Cut', crease: 'Crease', sent: 'Your specification has been added to the quote form below.',
+      walls: { unspecified: '≈ 3–4 mm (to be recommended)', single: '≈ 3–4 mm', double: '≈ 6–7 mm' },
+      desc: 'Box specification from the online configurator', front: 'Front', side: 'Side', l: 'L', w: 'W', h: 'H', liters: 'L', m2: 'm²' },
+    fr: { qty: 'Quantité', qtyPh: 'ex. 5000', view3d: 'Boîte 3D', viewFlat: 'Mise à plat', reset: 'Réinitialiser la vue',
+      yourBox: 'Votre boîte', style: 'Modèle', rsc: 'Caisse américaine (FEFCO 0201)', blank: 'Format de la découpe à plat', area: 'Carton par boîte',
+      total: 'Carton pour la commande', volume: 'Volume', wall: 'Épaisseur de paroi', approx: 'Dimensions et surface indicatives. Confirmez les spécifications de production avec HR Géant Emballage.',
+      range: 'Saisissez une valeur entre 100 et 1200 mm.', glue: 'Patte de collage', cut: 'Coupe', crease: 'Rainage', sent: 'Votre spécification a été ajoutée au formulaire de devis ci-dessous.',
+      walls: { unspecified: '≈ 3–4 mm (à recommander)', single: '≈ 3–4 mm', double: '≈ 6–7 mm' },
+      desc: 'Spécification issue du configurateur en ligne', front: 'Face', side: 'Côté', l: 'L', w: 'l', h: 'H', liters: 'L', m2: 'm²' },
+    ar: { qty: 'الكمية', qtyPh: 'مثال: 5000', view3d: 'صندوق ثلاثي الأبعاد', viewFlat: 'الفرد المسطح', reset: 'إعادة ضبط العرض',
+      yourBox: 'صندوقك', style: 'النموذج', rsc: 'صندوق شحن قياسي (FEFCO 0201)', blank: 'مقاس اللوح المسطح', area: 'الكرتون لكل صندوق',
+      total: 'الكرتون للطلبية', volume: 'الحجم', wall: 'سماكة الجدار', approx: 'الأبعاد والمساحة توضيحية فقط. تُعتمد مواصفات الإنتاج مع HR Géant Emballage.',
+      range: 'أدخل قيمة بين 100 و1200 مم.', glue: 'لسان اللصق', cut: 'قص', crease: 'طي', sent: 'أُضيفت مواصفاتك إلى نموذج طلب عرض السعر أدناه.',
+      walls: { unspecified: '≈ 3–4 مم (يُحدد لاحقاً)', single: '≈ 3–4 مم', double: '≈ 6–7 مم' },
+      desc: 'مواصفات الصندوق من أداة التصميم', front: 'الواجهة', side: 'الجانب', l: 'ط', w: 'ع', h: 'ر', liters: 'لتر', m2: 'م²' }
+  }[locale] || null;
+
   const controls = $('#config-form');
-  const preview = $('#preview-box');
-  const updatePreview = () => {
-    const length = Math.min(1200, Math.max(100, Number($('#length').value) || 400));
-    const width = Math.min(1200, Math.max(100, Number($('#width').value) || 300));
-    const height = Math.min(1200, Math.max(100, Number($('#height').value) || 250));
-    preview.style.setProperty('--pw', `${Math.round(150 + 105 * length / 1200)}px`);
-    preview.style.setProperty('--ph', `${Math.round(95 + 135 * height / 1200)}px`);
-    preview.style.setProperty('--side', `${Math.round(50 + 55 * width / 1200)}px`);
-    preview.style.setProperty('--board', $('#board').value === 'white' ? '#dedbd2' : '#b58a58');
-    preview.className = `preview-box ${$('#printing').value} ${$('#finishing').value}`;
-    $('#quote-dimensions').value = `${length} × ${width} × ${height} mm (${copy.dimensions})`;
-    $('#quote-printing').value = $('#printing').selectedOptions[0].textContent;
+  const previewPane = $('.config-preview');
+  const oldPreview = $('#preview-box');
+  const nf = new Intl.NumberFormat(locale === 'ar' ? 'ar-DZ-u-nu-latn' : locale, { maximumFractionDigits: 2 });
+  const GLUE = 35;                                   // illustration allowance, not a manufacturing value
+  const WALL_MM = { unspecified: 3.5, single: 3.5, double: 6.5 };
+  const BOARD = { kraft: { face: '#b98a56', edge: '#8a6238' }, white: { face: '#ebe7de', edge: '#a47a4c' } };
+  const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+
+  // Quantity field (sits under the three dimension fields)
+  const qtyLabel = el('label', 'config-qty', T.qty);
+  const qtyInput = el('input'); Object.assign(qtyInput, { type: 'number', id: 'config-qty', min: 1, step: 1, inputMode: 'numeric', placeholder: T.qtyPh });
+  qtyLabel.append(qtyInput);
+  $('.dimension-fields').after(qtyLabel);
+  const rangeMsg = el('p', 'config-error'); rangeMsg.setAttribute('role', 'alert'); rangeMsg.hidden = true;
+  qtyLabel.after(rangeMsg);
+
+  // Live specification panel (above the CTA)
+  const spec = el('div', 'config-spec'); spec.setAttribute('aria-live', 'polite');
+  spec.append(el('p', 'config-spec__title', T.yourBox));
+  const specList = el('dl'); spec.append(specList, el('p', 'config-spec__note', T.approx));
+  $('#config-cta').before(spec);
+  const specRow = (k) => { const d = el('div'); const dt = el('dt', null, k); const dd = el('dd'); d.append(dt, dd); specList.append(d); return dd; };
+  const sStyle = specRow(T.style), sBlank = specRow(T.blank), sArea = specRow(T.area), sTotal = specRow(T.total), sVol = specRow(T.volume);
+  sStyle.textContent = T.rsc;
+  // Keep dimension notation in LTR order inside the Arabic interface.
+  [sBlank, sArea, sTotal, sVol].forEach(value => value.dir = 'ltr');
+
+  // Preview: view switch + 3D stage + flat blank
+  oldPreview.hidden = true;
+  previewPane.classList.add('is-live');
+  const tools = el('div', 'config-views'); tools.setAttribute('role', 'group');
+  const b3d = el('button', 'is-on', T.view3d), bFlat = el('button', null, T.viewFlat), bReset = el('button', 'config-views__reset', T.reset);
+  [b3d, bFlat, bReset].forEach(b => { b.type = 'button'; tools.append(b); });
+  b3d.setAttribute('aria-pressed', 'true'); bFlat.setAttribute('aria-pressed', 'false');
+  const stage = el('div', 'box-stage'); stage.tabIndex = 0;
+  stage.setAttribute('aria-label', `${T.view3d}. ← → ↑ ↓`);
+  const box = el('div', 'box3'); stage.append(box); box.append(el('div', 'box3__floor'));
+  const FACES = ['front', 'back', 'right', 'left', 'top', 'bottom'];
+  const NORMALS = { front: [0, 0, 1], back: [0, 0, -1], right: [1, 0, 0], left: [-1, 0, 0], top: [0, -1, 0], bottom: [0, 1, 0] };
+  const faces = {};
+  FACES.forEach(name => {
+    const f = el('div', `box3__face box3__${name}`);
+    f.append(el('i', 'box3__print'), el('i', 'box3__sheen'), el('i', 'box3__shade'));
+    box.append(f); faces[name] = f;
+  });
+  const logo = () => { const i = el('img'); i.src = `${assetRoot}logo.png`; i.alt = ''; i.decoding = 'async'; return i; };
+  ['front', 'back'].forEach(n => faces[n].querySelector('.box3__print').append(logo()));
+  faces.top.append(el('i', 'box3__seam'), el('i', 'box3__tape'));
+  const dimTag = (face, cls) => { const t = el('span', `box3__dim ${cls}`); faces[face].append(t); return t; };
+  const tagL = dimTag('front', 'is-bottom'), tagH = dimTag('front', 'is-side'), tagW = dimTag('right', 'is-bottom');
+  const flat = el('div', 'flat-blank'); flat.hidden = true;
+  previewPane.append(tools, stage, flat);
+
+  let rx = -22, ry = -34, dragging = null, idle = true;
+  const light = (() => { const v = [-0.45, -0.75, 0.55]; const m = Math.hypot(...v); return v.map(x => x / m); })();
+  const rotate = ([x, y, z]) => {                    // CSS "rotateX(rx) rotateY(ry)": Y first, then X
+    const a = ry * Math.PI / 180, b = rx * Math.PI / 180;
+    const x1 = x * Math.cos(a) + z * Math.sin(a), z1 = -x * Math.sin(a) + z * Math.cos(a);
+    return [x1, y * Math.cos(b) - z1 * Math.sin(b), y * Math.sin(b) + z1 * Math.cos(b)];
   };
-  controls.addEventListener('input', updatePreview); controls.addEventListener('change', updatePreview); updatePreview();
+  const paintView = () => {
+    box.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+    FACES.forEach(n => {
+      const nv = rotate(NORMALS[n]);
+      const lit = Math.max(0, nv[0] * light[0] + nv[1] * light[1] + nv[2] * light[2]);
+      faces[n].style.setProperty('--shade', (0.62 - 0.6 * lit).toFixed(3));
+      faces[n].style.setProperty('--sheen-x', `${Math.round(50 + nv[0] * 60)}%`);
+    });
+  };
+  const read = (id) => {
+    const input = $(id); const v = Number(input.value);
+    const ok = input.value !== '' && v >= 100 && v <= 1200;
+    input.toggleAttribute('aria-invalid', !ok);
+    return { v: ok ? v : Math.min(1200, Math.max(100, v || 100)), ok };
+  };
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = (tag, attrs, text) => { const n = document.createElementNS(svgNS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (text != null) n.textContent = text; return n; };
+  const drawBlank = (L, W, H) => {
+    const F = W / 2, total = GLUE + 2 * L + 2 * W, tall = H + 2 * F, pad = Math.max(total, tall) * 0.09;
+    const root = svg('svg', { viewBox: `${-pad} ${-pad} ${total + 2 * pad} ${tall + 2 * pad * 1.6}`, role: 'img', 'aria-label': `${T.blank}: ${Math.round(total)} × ${Math.round(tall)} mm` });
+    const fs = Math.max(total, tall) * 0.028;
+    const panels = [GLUE, L, W, L, W]; let x = 0; const xs = [];
+    panels.forEach(p => { xs.push(x); x += p; });
+    // cut outline
+    let d = `M0 ${F + 6} L${GLUE} ${F} `;
+    for (let i = 1; i < 5; i++) { d += `L${xs[i] + 3} ${F} L${xs[i] + 3} 0 L${xs[i] + panels[i] - 3} 0 L${xs[i] + panels[i] - 3} ${F} `; }
+    d += `L${total} ${F} L${total} ${F + H} `;
+    for (let i = 4; i >= 1; i--) { d += `L${xs[i] + panels[i] - 3} ${F + H} L${xs[i] + panels[i] - 3} ${tall} L${xs[i] + 3} ${tall} L${xs[i] + 3} ${F + H} `; }
+    d += `L${GLUE} ${F + H} L0 ${F + H - 6} Z`;
+    root.append(svg('path', { d, class: 'fb-board' }), svg('path', { d, class: 'fb-cut' }));
+    // creases
+    let c = `M${GLUE} ${F} V${F + H} `;
+    for (let i = 2; i < 5; i++) c += `M${xs[i]} ${F} V${F + H} `;
+    c += `M${GLUE} ${F} H${total} M${GLUE} ${F + H} H${total}`;
+    root.append(svg('path', { d: c, class: 'fb-crease' }));
+    // labels
+    const lab = (tx, ty, s) => root.append(svg('text', { x: tx, y: ty, 'font-size': fs, class: 'fb-label', 'text-anchor': 'middle' }, s));
+    lab(xs[1] + L / 2, F + H / 2, `${T.l} ${L}`); lab(xs[2] + W / 2, F + H / 2, `${T.w} ${W}`);
+    lab(xs[3] + L / 2, F + H / 2, `${T.l} ${L}`); lab(xs[4] + W / 2, F + H / 2, `${T.w} ${W}`);
+    lab(xs[1] + L / 2, F + H / 2 + fs * 1.4, `${T.h} ${H}`);
+    root.append(svg('text', { x: GLUE / 2, y: F + H / 2, 'font-size': fs * 0.7, class: 'fb-label fb-small', 'text-anchor': 'middle', transform: `rotate(-90 ${GLUE / 2} ${F + H / 2})` }, T.glue));
+    const y = tall + pad * 0.9;
+    root.append(svg('path', { d: `M0 ${y} H${total} M0 ${y - fs * 0.4} V${y + fs * 0.4} M${total} ${y - fs * 0.4} V${y + fs * 0.4}`, class: 'fb-dim' }));
+    lab(total / 2, y + fs * 1.3, `${Math.round(total)} × ${Math.round(tall)} mm`);
+    const ly = -pad * 0.35;
+    root.append(svg('path', { d: `M0 ${ly} h${fs * 2}`, class: 'fb-cut' }), svg('text', { x: fs * 2.5, y: ly + fs * 0.35, 'font-size': fs * 0.8, class: 'fb-label fb-small' }, T.cut));
+    root.append(svg('path', { d: `M${fs * 7} ${ly} h${fs * 2}`, class: 'fb-crease' }), svg('text', { x: fs * 9.5, y: ly + fs * 0.35, 'font-size': fs * 0.8, class: 'fb-label fb-small' }, T.crease));
+    flat.replaceChildren(root);
+  };
+
+  const update = () => {
+    const l = read('#length'), w = read('#width'), h = read('#height');
+    const L = l.v, W = w.v, H = h.v;
+    rangeMsg.hidden = l.ok && w.ok && h.ok; rangeMsg.textContent = T.range;
+    const board = BOARD[$('#board').value] || BOARD.kraft, flute = $('#flute').value, print = $('#printing').value, finish = $('#finishing').value;
+    // 3D size: fit the largest diagonal into the stage
+    const size = Math.min(stage.clientWidth || 420, stage.clientHeight || 420) * 0.68;
+    const s = size / Math.max(L, W, H);
+    const px = (mm) => `${(mm * s).toFixed(1)}px`;
+    box.style.setProperty('--L', px(L)); box.style.setProperty('--W', px(W)); box.style.setProperty('--H', px(H));
+    box.style.setProperty('--edge', `${Math.max(1.5, Math.min(7, WALL_MM[flute] * s * 2.2)).toFixed(1)}px`);
+    box.style.setProperty('--board', board.face); box.style.setProperty('--board-edge', board.edge);
+    box.dataset.print = print; box.dataset.finish = finish;
+    [tagL, tagW, tagH].forEach(tag => tag.dir = 'ltr');
+    tagL.textContent = `${T.l} ${L} mm`; tagW.textContent = `${T.w} ${W} mm`; tagH.textContent = `${T.h} ${H} mm`;
+    // geometry (RSC)
+    const blankL = GLUE + 2 * L + 2 * W, blankW = H + W, areaM2 = blankL * blankW / 1e6;
+    const qty = Math.max(0, Math.floor(Number(qtyInput.value) || 0));
+    sBlank.textContent = `${Math.round(blankL)} × ${Math.round(blankW)} mm`;
+    sArea.textContent = `${nf.format(areaM2)} ${T.m2}`;
+    sTotal.textContent = qty ? `${nf.format(Math.round(areaM2 * qty))} ${T.m2} (${nf.format(qty)} × ${nf.format(areaM2)})` : '—';
+    sVol.textContent = `${nf.format(L * W * H / 1e6)} ${T.liters}`;
+    if (!flat.hidden) drawBlank(L, W, H);
+    paintView();
+  };
+  controls.addEventListener('input', update); controls.addEventListener('change', update);
   controls.addEventListener('submit', (event) => event.preventDefault());
-  let dragStart = null;
-  $('.config-preview').addEventListener('pointerdown', event => { if (event.pointerType === 'mouse' || event.pointerType === 'touch') dragStart = event.clientX; });
-  $('.config-preview').addEventListener('pointermove', event => { if (dragStart !== null && !reducedMotion.matches) preview.style.transform = `skewY(-5deg) rotate(${Math.max(-12, Math.min(12, (event.clientX - dragStart) / 12))}deg)`; });
-  addEventListener('pointerup', () => { dragStart = null; preview.style.transform = ''; });
+  addEventListener('resize', update);
+
+  // View switch
+  const setView = (isFlat) => {
+    flat.hidden = !isFlat; stage.hidden = isFlat; bReset.hidden = isFlat;
+    b3d.classList.toggle('is-on', !isFlat); bFlat.classList.toggle('is-on', isFlat);
+    b3d.setAttribute('aria-pressed', String(!isFlat)); bFlat.setAttribute('aria-pressed', String(isFlat));
+    update();
+  };
+  b3d.addEventListener('click', () => setView(false)); bFlat.addEventListener('click', () => setView(true));
+  bReset.addEventListener('click', () => { rx = -22; ry = -34; paintView(); });
+
+  // Drag / keyboard rotation, gentle idle turn
+  stage.addEventListener('pointerdown', e => { dragging = { x: e.clientX, y: e.clientY, rx, ry }; idle = false; stage.setPointerCapture(e.pointerId); stage.classList.add('is-drag'); });
+  stage.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    ry = dragging.ry + (e.clientX - dragging.x) * 0.45;
+    rx = Math.max(-80, Math.min(20, dragging.rx - (e.clientY - dragging.y) * 0.35));
+    paintView();
+  });
+  const endDrag = () => { dragging = null; stage.classList.remove('is-drag'); };
+  stage.addEventListener('pointerup', endDrag); stage.addEventListener('pointercancel', endDrag);
+  stage.addEventListener('keydown', e => {
+    const k = { ArrowLeft: [0, -10], ArrowRight: [0, 10], ArrowUp: [-8, 0], ArrowDown: [8, 0] }[e.key];
+    if (!k) return; e.preventDefault(); idle = false;
+    rx = Math.max(-80, Math.min(20, rx + k[0])); ry += k[1]; paintView();
+  });
+  let last = 0;
+  const spin = (t) => {
+    if (t - last >= 50) {
+      if (idle && !reducedMotion.matches && !stage.hidden && document.visibilityState === 'visible') { ry += Math.min(60, t - last) * 0.006; paintView(); }
+      last = t;
+    }
+    requestAnimationFrame(spin);
+  };
+  requestAnimationFrame(spin);
+
+  // Export a useful summary without implying that a quotation was sent.
+  const exportBox = el('div', 'config-export'); exportBox.hidden = true;
+  const exportNote = el('p', null, { en: 'Copy these details into your message to HR Géant Emballage.', fr: 'Copiez ces données dans votre message à HR Géant Emballage.', ar: 'انسخ هذه البيانات في رسالتك إلى HR Géant Emballage.' }[locale]);
+  const exportText = el('textarea'); exportText.readOnly = true; exportText.rows = 9;
+  exportText.setAttribute('aria-label', T.yourBox);
+  const copyButton = el('button', 'button quiet', { en: 'COPY SPECIFICATION', fr: 'COPIER LES DONNÉES', ar: 'انسخ المواصفات' }[locale]); copyButton.type = 'button';
+  const exportLink = el('a', 'button primary', { en: 'CONTACT HR GÉANT EMBALLAGE ↗', fr: 'CONTACTER HR GÉANT EMBALLAGE ↗', ar: 'تواصل مع HR GÉANT EMBALLAGE ↗' }[locale]);
+  const copyStatus = el('p', 'config-copy-status'); copyStatus.setAttribute('role', 'status');
+  exportLink.href = '#contact'; exportBox.append(exportNote, exportText, copyButton, copyStatus, exportLink); $('#config-cta').after(exportBox);
+  copyButton.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(exportText.value); copyButton.textContent = { en: 'COPIED', fr: 'COPIÉ', ar: 'تم النسخ' }[locale]; copyStatus.textContent = ''; }
+    catch { exportText.focus(); exportText.select(); copyStatus.textContent = { en: 'The text is selected. Tap Copy in your phone’s menu.', fr: 'Le texte est sélectionné. Appuyez sur Copier dans le menu de votre téléphone.', ar: 'تم تحديد النص. اضغط على «نسخ» من قائمة هاتفك.' }[locale]; }
+  });
+  $('#config-cta').addEventListener('click', e => {
+    e.preventDefault();
+    if (!controls.reportValidity() || !['#length','#width','#height'].every(id => $(id).value !== '' && Number($(id).value) >= 100 && Number($(id).value) <= 1200)) { rangeMsg.hidden = false; rangeMsg.textContent = T.range; return; }
+    const c = locale === 'fr' ? ' :' : ':';
+    const sel = id => $(id).selectedOptions[0].textContent.trim();
+    const lines = [
+      `${T.desc}${c}`, `${T.style}${c} ${T.rsc}`,
+      `${T.l} × ${T.w} × ${T.h}${c} ${$('#length').value} × ${$('#width').value} × ${$('#height').value} mm`,
+      `${$('label[for="board"]').textContent.replace(/^\d+\s*—\s*/, '')}${c} ${sel('#board')}`,
+      `${$('label[for="flute"]').textContent.replace(/^\d+\s*—\s*/, '')}${c} ${sel('#flute')}`,
+      `${$('label[for="printing"]').textContent.replace(/^\d+\s*—\s*/, '')}${c} ${sel('#printing')}`,
+      `${$('label[for="finishing"]').textContent.replace(/^\d+\s*—\s*/, '')}${c} ${sel('#finishing')}`
+    ];
+    if (qtyInput.value) lines.push(`${T.qty}${c} ${qtyInput.value}`);
+    exportText.value = lines.join('\n'); copyStatus.textContent = ''; exportBox.hidden = false;
+    exportBox.scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'nearest' });
+  });
+  update();
   const hero = $('.hero');
   hero.addEventListener('pointermove', event => { if (event.pointerType === 'mouse' && !reducedMotion.matches && innerWidth > 850) { const x = (event.clientX / innerWidth - .5) * 18; const y = (event.clientY / innerHeight - .5) * 12; $('.box-cube').style.transform = `rotateX(${-22 - y}deg) rotateY(${-32 + x}deg)`; } });
   hero.addEventListener('pointerleave', () => { $('.box-cube').style.transform = ''; });
