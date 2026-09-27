@@ -1,6 +1,14 @@
 """Generate static French and Arabic pages from the English master and reviewed copy.
 Run: python3 scripts/build_locales.py (requires lxml locally; deployed site needs no build).
 """
+import sys
+# DISABLED 2026-09-27. This generator maps translations by the position of each text node
+# in an older English page (226 nodes, including a Projects section that no longer exists).
+# The current pages have diverged, so running it would fail, or, if forced, put translations
+# in the wrong places, rewrite index.html, and set frame-src 'none' (which blocks the Google map).
+# The French and Arabic pages are now maintained directly in fr/index.html and ar/index.html.
+if __name__ == '__main__' and '--i-understand-this-is-outdated' not in sys.argv:
+    sys.exit('build_locales.py is outdated and disabled. Edit fr/index.html and ar/index.html directly. See README.md.')
 from pathlib import Path
 from lxml import html, etree
 import hashlib
@@ -122,7 +130,7 @@ def create_page(code, translations):
     policy = ("default-src 'self'; base-uri 'self'; object-src 'none'; "
               "script-src 'self' 'sha256-"+schema_hash+"'; style-src 'self'; "
               "img-src 'self' data:; font-src 'self'; connect-src "+connect+"; "
-              "form-action 'self'; frame-src 'none'; upgrade-insecure-requests")
+              "form-action 'self'; frame-src https://www.google.com; upgrade-insecure-requests")
     csp = etree.Element('meta'); csp.set('http-equiv','Content-Security-Policy'); csp.set('content',policy)
     referrer = etree.Element('meta',name='referrer',content='strict-origin-when-cross-origin')
     head.insert(2,csp); head.insert(3,referrer)
