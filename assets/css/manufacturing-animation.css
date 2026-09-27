@@ -1,6 +1,0 @@
-/* Decorative process canvas below the original manufacturing copy. */
-.manufacturing-process-visual{position:relative;width:100%;height:clamp(300px,36vw,420px);margin-top:clamp(35px,5vw,65px);overflow:hidden;border:1px solid rgba(255,255,255,.1);background:rgba(8,10,12,.76);pointer-events:none}
-.manufacturing-process-visual:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(8,10,12,.35),transparent 35%,rgba(8,10,12,.25));}
-.manufacturing-process-visual canvas{display:block;width:100%;height:100%}
-@media(max-width:850px){.manufacturing-process-visual{height:350px;margin-top:36px}}
-@media(max-width:600px){.manufacturing-process-visual{height:320px}}
