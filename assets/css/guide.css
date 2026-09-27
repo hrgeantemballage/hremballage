@@ -1,0 +1,240 @@
+/* HR Géant Emballage — website guide ("Karto"). Scoped with the hrg- prefix. */
+.hrg-ready .whatsapp{display:none!important} /* WhatsApp now lives inside the guide panel */
+
+.hrg-launch{position:fixed;z-index:900;inset-block-end:calc(20px + env(safe-area-inset-bottom,0px));inset-inline-end:20px;
+  display:flex;align-items:center;gap:10px;min-height:56px;padding:6px 18px 6px 6px;border-radius:999px;cursor:pointer;
+  background:rgba(13,17,20,.92);color:#f3ece0;border:1px solid rgba(230,197,135,.45);
+  box-shadow:0 10px 30px rgba(0,0,0,.45);font:600 .95rem/1 system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;letter-spacing:0}
+[dir=rtl] .hrg-launch{padding:6px 6px 6px 18px;font-family:Tahoma,'Noto Sans Arabic',sans-serif}
+.hrg-launch:hover{border-color:#e6c587;background:#11161a}
+.hrg-launch:focus-visible,.hrg-panel :focus-visible{outline:2px solid #e6c587;outline-offset:3px}
+.hrg-open .hrg-launch{opacity:0;pointer-events:none}
+.hrg-bot{display:block;width:44px;height:44px;flex:none}
+.hrg-bot svg{display:block;width:100%;height:100%}
+.hrg-bot-sm{width:40px;height:40px}
+.hrg-eyes{transform-box:fill-box;transform-origin:center;animation:hrg-blink 5s infinite}
+@keyframes hrg-blink{0%,45%,49%,100%{transform:scaleY(1)}47%{transform:scaleY(.1)}}
+
+.hrg-panel{position:fixed;z-index:901;inset-block-end:20px;inset-inline-end:20px;width:min(370px,calc(100vw - 40px));
+  max-height:min(640px,calc(100vh - 110px));display:flex;flex-direction:column;border-radius:20px;overflow:hidden;
+  background:rgba(13,17,20,.97);color:#f3ece0;border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 24px 70px rgba(0,0,0,.55),0 0 0 1px rgba(230,197,135,.08);
+  font:400 .95rem/1.5 system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;letter-spacing:0;
+  opacity:0;transform:translateY(12px) scale(.98);transform-origin:100% 100%;transition:opacity .25s ease,transform .3s ease}
+[dir=rtl] .hrg-panel{transform-origin:0 100%;font-family:Tahoma,'Noto Sans Arabic',sans-serif}
+@supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+  .hrg-panel{background:rgba(13,17,20,.82);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%)}}
+.hrg-panel.hrg-in{opacity:1;transform:none}
+.hrg-panel[hidden]{display:none}
+
+.hrg-head{display:flex;align-items:center;gap:12px;padding:14px 12px 12px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
+[dir=rtl] .hrg-head{padding:14px 16px 12px 12px}
+.hrg-who{flex:1;min-width:0}
+.hrg-panel .hrg-title{margin:0;font-weight:700;font-size:1.05rem;line-height:1.2;font-family:inherit;letter-spacing:0;color:#e6c587;text-transform:none}
+.hrg-sub{margin:2px 0 0;font-size:.8rem;color:#b9ad9b}
+.hrg-x{flex:none;width:44px;height:44px;border-radius:12px;border:0;background:transparent;color:#f3ece0;font-size:1.6rem;line-height:1;cursor:pointer}
+.hrg-x:hover{background:rgba(255,255,255,.08)}
+
+.hrg-body{padding:16px;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:10px}
+.hrg-say{margin:0;color:#f3ece0}
+.hrg-disclose,.hrg-note,.hrg-count{margin:0;font-size:.78rem;color:#9e978b}
+.hrg-note{display:block;margin-top:3px;font-weight:400;color:inherit;opacity:.75}
+.hrg-label{margin:8px 0 0;font-size:.78rem;font-weight:700;color:#e6c587}
+.hrg-stop{margin:0;font-weight:700;color:#e6c587;font-size:.9rem}
+.hrg-extra{margin:0;font-size:.85rem;color:#cfc6b8}
+.hrg-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hrg-contact{display:flex;flex-direction:column;gap:8px;margin-top:4px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1)}
+.hrg-nav{display:grid;grid-template-columns:1fr 1.4fr;gap:8px;margin-top:4px}
+
+.hrg-btn{display:flex;flex-direction:column;justify-content:center;min-height:44px;padding:10px 14px;border-radius:12px;box-sizing:border-box;
+  border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#f3ece0;text-decoration:none;cursor:pointer;
+  font-weight:600;font-size:.9rem;line-height:1.3;font-family:inherit;text-align:start;letter-spacing:0}
+.hrg-btn:hover{background:rgba(230,197,135,.14);border-color:rgba(230,197,135,.5)}
+.hrg-primary{background:linear-gradient(135deg,#f1d9a4,#c99a4c);color:#1a1208;border-color:transparent}
+.hrg-primary:hover{background:linear-gradient(135deg,#f6e2b6,#d4a65a);color:#1a1208}
+.hrg-wide{align-items:center;text-align:center}
+.hrg-nav .hrg-btn{align-items:center;text-align:center}
+.hrg-link{min-height:44px;background:none;border:0;color:#b9ad9b;text-decoration:underline;text-underline-offset:3px;align-items:center}
+.hrg-link:hover{background:none;color:#f3ece0}
+.hrg-sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+
+/* the section being presented */
+.hrg-spot{box-shadow:inset 0 0 0 2px rgba(230,197,135,.55);transition:box-shadow .4s ease}
+
+/* phones: bottom sheet */
+@media (max-width:700px){
+  .hrg-launch{padding:5px;min-height:0;inset-inline-end:16px;inset-block-end:calc(16px + env(safe-area-inset-bottom,0px))}
+  .hrg-launch-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+  .hrg-bot{width:48px;height:48px}
+  .hrg-bot-sm{width:36px;height:36px}
+  .hrg-panel{inset-inline:0;inset-block-end:0;width:100%;max-height:78vh;max-height:78dvh;border-radius:20px 20px 0 0;
+    border-bottom:0;padding-bottom:env(safe-area-inset-bottom,0px);transform:translateY(24px);transform-origin:50% 100%}
+  .hrg-panel:before{content:"";display:block;width:40px;height:4px;border-radius:4px;background:rgba(255,255,255,.25);margin:8px auto 0}
+  /* during the tour the sheet stays short so the section above stays visible */
+  .hrg-panel.hrg-touring{max-height:46vh;max-height:46dvh}
+  .hrg-panel.hrg-touring .hrg-head{padding-block:6px}
+  .hrg-panel.hrg-touring .hrg-sub{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .hrg-eyes{animation:none}
+  .hrg-panel,.hrg-spot{transition:none}
+}
+
+/* ---------- Packy in his box (hero) ---------- */
+.hrg-has-hero .hero-object{display:none}
+.hrg-hero-visible .hrg-launch{opacity:0;pointer-events:none;visibility:hidden}
+.hrg-hero{position:absolute;z-index:3;inset-inline-end:7%;bottom:10%;width:230px;padding:0;border:0;background:none;cursor:pointer;color:#f3ece0;
+  display:flex;flex-direction:column;align-items:center;-webkit-tap-highlight-color:transparent;pointer-events:none}
+/* only Packy, his box and the bubble take taps; empty space lets taps reach the page underneath */
+.hrg-bubble,.p-box,.p-packy,.p-grip{pointer-events:auto}
+.hrg-hero:focus-visible{outline:2px solid #e6c587;outline-offset:6px;border-radius:16px}
+.hrg-scene{display:block;width:100%}
+.hrg-scene svg{display:block;width:100%;height:auto;overflow:visible}
+.hrg-bubble{position:relative;max-width:220px;margin-bottom:-78px;transition:margin .45s ease;padding:10px 14px;border-radius:16px;
+  background:rgba(13,17,20,.86);border:1px solid rgba(230,197,135,.5);box-shadow:0 10px 30px rgba(0,0,0,.4);
+  font:600 .88rem/1.35 system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;letter-spacing:0;text-transform:none;text-align:center}
+[dir=rtl] .hrg-bubble{font-family:Tahoma,'Noto Sans Arabic',sans-serif}
+.hrg-bubble:after{content:"";position:absolute;left:50%;bottom:-7px;width:12px;height:12px;margin-left:-6px;transform:rotate(45deg);
+  background:rgba(13,17,20,.95);border-right:1px solid rgba(230,197,135,.5);border-bottom:1px solid rgba(230,197,135,.5)}
+@supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){.hrg-bubble{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}}
+.hrg-hero:hover .hrg-bubble,.hrg-hero:focus-visible .hrg-bubble{border-color:#e6c587}
+
+.p-packy,.p-wave,.p-box,.p-eyes,.p-look,.p-ant{transform-box:fill-box}
+.p-packy{transition:transform .55s cubic-bezier(.34,1.56,.64,1);animation:p-peek 3.2s ease-in-out infinite}
+.hrg-hero:hover .p-packy,.hrg-hero:focus-visible .p-packy{animation:none;transform:translateY(-10px)}
+.hrg-hero.is-out .p-packy{animation:none;transform:translateY(-80px)}
+.p-arms{opacity:0;transition:opacity .15s}
+.hrg-hero.is-out .p-arms{opacity:1;transition-delay:.25s}
+.p-grip{transition:opacity .12s}
+.hrg-hero.is-out .p-grip{opacity:0}
+.p-wave{transform-origin:0% 100%}
+.hrg-hero.is-out .p-wave{animation:p-wave .5s .45s ease-in-out 3 alternate}
+.hrg-hero.is-out .p-box{animation:p-squash .45s ease-out}
+.p-box{transform-origin:50% 100%}
+.p-eyes{transform-origin:center;animation:p-blink 4.6s infinite}
+.p-look{animation:p-look 8s ease-in-out infinite}
+.hrg-hero.is-out .p-look{animation:none}
+.p-ant{transform-origin:50% 100%;animation:p-bob 1.8s ease-in-out infinite}
+@keyframes p-peek{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes p-wave{from{transform:rotate(-12deg)}to{transform:rotate(18deg)}}
+@keyframes p-squash{0%{transform:scale(1,1)}30%{transform:scale(1.04,.94)}60%{transform:scale(.98,1.03)}100%{transform:scale(1,1)}}
+@keyframes p-blink{0%,44%,48%,100%{transform:scaleY(1)}46%{transform:scaleY(.1)}}
+@keyframes p-look{0%,30%,100%{transform:translateX(0)}38%,52%{transform:translateX(5px)}60%,78%{transform:translateX(-5px)}}
+@keyframes p-bob{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+
+@media (max-width:850px){.hrg-hero{inset-inline-end:3%;bottom:9%;width:190px}}
+.hrg-hero.is-out .hrg-bubble{margin-bottom:-14px}
+@media (max-width:700px){
+  /* phones: Packy sits in the bottom corner below the buttons, his bubble beside him */
+  .hrg-has-hero .hero-bottom{display:none}
+  .hrg-hero{inset-inline-end:4px;bottom:2px;width:auto;flex-direction:row;align-items:flex-end}
+  .hrg-scene{width:118px;flex:none}
+  .hrg-bubble,.hrg-hero.is-out .hrg-bubble{max-width:176px;margin:0 0 14px;margin-inline-end:-4px;padding:8px 11px;font-size:.74rem;border-radius:12px;text-align:start}
+  .hrg-bubble:after{left:auto;inset-inline-end:-7px;bottom:14px;margin-left:0;border-bottom:0;border-top:1px solid rgba(230,197,135,.5)}
+  [dir=rtl] .hrg-bubble:after{border-top:0;border-right:0;border-bottom:1px solid rgba(230,197,135,.5);border-left:1px solid rgba(230,197,135,.5)}
+}
+@media (prefers-reduced-motion:reduce){
+  .p-packy,.p-eyes,.p-look,.p-ant,.hrg-hero.is-out .p-wave,.hrg-hero.is-out .p-box{animation:none}
+  .p-packy,.p-arms,.p-grip{transition:none}
+}
+
+/* ---------- window-free tour ---------- */
+.hrg-touring-mode .hrg-launch{opacity:0;pointer-events:none;visibility:hidden}
+.hrg-spot{box-shadow:none}
+.hrg-tour{position:fixed;z-index:902;inset-inline-end:24px;bottom:calc(22px + env(safe-area-inset-bottom,0px));display:flex;align-items:flex-end;gap:8px}
+.hrg-tour[hidden]{display:none}
+.hrg-tour-bot{width:60px;height:60px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.5));animation:hrg-hover 2.8s ease-in-out infinite}
+.hrg-tour-bot.hrg-emit{animation:hrg-hover 2.8s ease-in-out infinite,hrg-emit .6s ease-out}
+@keyframes hrg-hover{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes hrg-emit{0%{filter:drop-shadow(0 0 0 rgba(255,210,120,0))}40%{filter:drop-shadow(0 0 14px rgba(255,210,120,.9))}100%{filter:drop-shadow(0 8px 18px rgba(0,0,0,.5))}}
+.hrg-pill{display:flex;align-items:center;gap:2px;padding:4px;border-radius:999px;background:rgba(13,17,20,.9);
+  border:1px solid rgba(230,197,135,.45);box-shadow:0 10px 30px rgba(0,0,0,.45)}
+@supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){.hrg-pill{background:rgba(13,17,20,.75);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}}
+.hrg-pbtn{width:44px;height:44px;border-radius:50%;border:0;background:transparent;color:#f3ece0;font-size:1rem;line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;padding:0}
+.hrg-pbtn:hover{background:rgba(230,197,135,.16)}
+.hrg-pbtn:focus-visible{outline:2px solid #e6c587;outline-offset:1px}
+.hrg-pnext{background:linear-gradient(135deg,#f1d9a4,#c99a4c);color:#1a1208}
+.hrg-pnext:hover{background:linear-gradient(135deg,#f6e2b6,#d4a65a)}
+.hrg-arrow{font-size:1.7rem;padding-bottom:3px}
+.hrg-play{font-size:.8rem;letter-spacing:-2px}
+.hrg-pcount{min-width:42px;text-align:center;font:600 .8rem/1 system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#e6c587;letter-spacing:0}
+
+/* signal waves from Packy's antenna towards the title */
+.hrg-waves{position:fixed;z-index:899;pointer-events:none;border-radius:50%;opacity:0;
+  -webkit-mask:conic-gradient(from var(--from,0deg),#000 0deg,#000 64deg,transparent 64deg);mask:conic-gradient(from var(--from,0deg),#000 0deg,#000 64deg,transparent 64deg)}
+.hrg-waves.go{opacity:1}
+.hrg-waves i{position:absolute;inset:0;border-radius:50%;border:3px solid rgba(255,222,160,.95);box-shadow:0 0 24px 4px rgba(255,200,110,.6),inset 0 0 24px 4px rgba(255,200,110,.45);
+  transform:scale(.05);opacity:0}
+.hrg-waves.go i{animation:hrg-ring 1.3s cubic-bezier(.2,.7,.3,1) forwards}
+.hrg-waves.go i:nth-child(2){animation-delay:.22s}
+.hrg-waves.go i:nth-child(3){animation-delay:.44s}
+@keyframes hrg-ring{0%{transform:scale(.05);opacity:0}15%{opacity:1}100%{transform:scale(1);opacity:0}}
+
+/* the page's own title and text light up */
+.hrg-lit-title{position:relative;text-shadow:0 0 22px rgba(255,205,120,.55),0 0 2px rgba(255,230,180,.6);transition:text-shadow .6s ease}
+.hrg-lit-title:after{content:"";position:absolute;inset:-6px -10px;pointer-events:none;border-radius:8px;mix-blend-mode:screen;
+  background:linear-gradient(100deg,transparent 35%,rgba(255,214,140,.55) 50%,transparent 65%) 0 0/250% 100% no-repeat;
+  animation:hrg-sweep 1.1s ease-out forwards}
+@keyframes hrg-sweep{from{background-position:130% 0;opacity:1}to{background-position:-40% 0;opacity:0}}
+.hrg-lit-text{position:relative;color:#fff!important;transition:color .6s ease}
+.hrg-lit-text:after{content:"";position:absolute;left:-8px;right:-8px;top:0;height:1.7em;pointer-events:none;border-radius:6px;mix-blend-mode:screen;
+  background:linear-gradient(90deg,rgba(255,210,130,0),rgba(255,210,130,.38),rgba(255,210,130,0));
+  animation:hrg-scan 1.8s ease-in-out forwards}
+@keyframes hrg-scan{0%{transform:translateY(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(calc(var(--hrg-h,4em) - 1.2em));opacity:0}}
+
+@media (max-width:700px){
+  .hrg-tour{bottom:calc(12px + env(safe-area-inset-bottom,0px));inset-inline-end:10px;gap:6px}
+  .hrg-tour-bot{width:50px;height:50px}
+  .hrg-pbtn{width:42px;height:42px}
+}
+@media (prefers-reduced-motion:reduce){
+  .hrg-tour-bot,.hrg-tour-bot.hrg-emit{animation:none}
+  .hrg-waves{display:none}
+  .hrg-lit-title:after,.hrg-lit-text:after{display:none}
+  .hrg-spot{box-shadow:inset 0 0 0 2px rgba(230,197,135,.55)}
+}
+
+/* ---------- Phase 1: intents, live demonstrations, design mode ---------- */
+.hrg-eyes-live .p-look{animation:none;transition:transform .18s ease-out}
+.hrg-ask{font-size:1.05rem;font-weight:700;color:#fff}
+.hrg-intents{display:flex;flex-direction:column;gap:8px}
+.hrg-intent{min-height:48px;font-size:.92rem;background:rgba(255,255,255,.07)}
+.hrg-intent:hover{background:rgba(230,197,135,.16);border-color:#e6c587;transform:translateX(2px)}
+[dir=rtl] .hrg-intent:hover{transform:translateX(-2px)}
+.hrg-design{min-height:48px;align-items:center;text-align:center;background:transparent;border:1px dashed rgba(230,197,135,.7);color:#e6c587}
+.hrg-design:hover{background:rgba(230,197,135,.12)}
+
+.hrg-tour{flex-direction:column;align-items:flex-end}
+.hrg-tour-row{display:flex;align-items:flex-end;gap:8px}
+.hrg-tbubble{margin:0;max-width:300px;padding:10px 14px;border-radius:14px;background:rgba(13,17,20,.92);color:#f3ece0;
+  border:1px solid rgba(230,197,135,.5);box-shadow:0 10px 30px rgba(0,0,0,.45);
+  font:600 .9rem/1.4 system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;letter-spacing:0;display:flex;flex-direction:column;gap:8px}
+[dir=rtl] .hrg-tbubble{font-family:Tahoma,'Noto Sans Arabic',sans-serif}
+.hrg-tbubble.pop{animation:hrg-pop .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes hrg-pop{from{transform:scale(.9) translateY(6px);opacity:0}to{transform:none;opacity:1}}
+.hrg-send{align-items:center;text-align:center;background:linear-gradient(135deg,#f1d9a4,#c99a4c);color:#1a1208;border-color:transparent}
+.hrg-send:hover{background:linear-gradient(135deg,#f6e2b6,#d4a65a);color:#1a1208}
+.hrg-tbubble .hrg-note{font-weight:400;color:#b9ad9b}
+
+/* elements Packy points at */
+.hrg-lit-item{outline:2px solid rgba(255,214,140,.9)!important;outline-offset:4px;border-radius:6px;
+  box-shadow:0 0 0 6px rgba(230,197,135,.12),0 0 34px rgba(255,200,110,.35)!important;transition:outline-color .3s,box-shadow .3s}
+.hrg-pin{position:relative}
+.hrg-pin:after{content:"";position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;pointer-events:none;
+  border:3px solid #ffd68c;box-shadow:0 0 18px rgba(255,200,110,.8);animation:hrg-pinpulse 1.4s ease-out infinite}
+@keyframes hrg-pinpulse{from{transform:scale(.4);opacity:1}to{transform:scale(3.2);opacity:0}}
+
+@media (max-width:700px){
+  .hrg-tbubble{max-width:calc(100vw - 24px);font-size:.85rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .hrg-tbubble.pop,.hrg-pin:after{animation:none}
+  .hrg-intent:hover{transform:none}
+}
+
+/* design mode: featured entry + copy button */
+.hrg-design{background:linear-gradient(135deg,rgba(241,217,164,.16),rgba(201,154,76,.1));border:1px solid rgba(230,197,135,.75);border-style:solid;color:#f1d9a4;gap:3px}
+.hrg-design .hrg-note{display:block;color:#cfc6b8;font-weight:400}
+.hrg-copy{align-items:center;text-align:center}
+.hrg-body > *{flex-shrink:0}
