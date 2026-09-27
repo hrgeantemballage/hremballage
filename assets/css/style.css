@@ -141,18 +141,17 @@
 .box3[data-style="pizza"][data-print="graphic"] .box3__top .box3__print,.box3[data-style="tacos"][data-print="graphic"] .box3__top .box3__print{opacity:1;background:linear-gradient(90deg,#1E6FD9 0 80%,#E5197D 80%) bottom/100% 8% no-repeat}
 .box3[data-print="graphic"] :is(.box3__front,.box3__back,.box3__left,.box3__right) .box3__print{background:linear-gradient(90deg,#1E6FD9 0 84%,#E5197D 84%) bottom/100% 8% no-repeat}
 
-.config-state{position:absolute;inset-inline:24px;bottom:5px;margin:0;max-width:calc(100% - 48px);font-size:.61rem;color:#aeb4b4;text-align:center;line-height:1.4;pointer-events:none}[dir="rtl"] .config-state{direction:rtl}
+.config-state{grid-column:2;align-self:start;margin:0;padding:12px 24px 16px;background:#0b1012;border-top:1px solid rgba(255,255,255,.12);color:#d5dbdc;font-size:.75rem;line-height:1.6;overflow-wrap:anywhere}[dir="rtl"] .config-state{direction:rtl}
 
 /* Satellite map: preserve the interactive controls and Google attribution. */
 .location-grid>.map-panel-live{min-width:0}.map-panel-live iframe{display:block;width:100%;height:100%;border:0}.map-open{grid-column:2;justify-self:start;font-size:.72rem;letter-spacing:.1em;font-weight:700;color:var(--white);border-bottom:1px solid var(--blue);padding-bottom:.5rem}@media(max-width:850px){.map-open{grid-column:1}}
 
 /* Supplied product photography complements the live box, without implying photo-real-time rendering. */
-.config-product-photo{position:absolute;z-index:2;right:18px;bottom:74px;width:118px;margin:0;padding:5px;background:#111719;border:1px solid rgba(255,255,255,.32);box-shadow:0 12px 30px rgba(0,0,0,.48);pointer-events:none}
-.config-product-photo[hidden]{display:none}
-.config-product-photo img{width:100%;height:115px;object-fit:contain;background:#e8e5df;display:block}
-.config-product-photo figcaption{text-align:center;padding:5px 1px 2px;color:#e5e6e2;font-size:.55rem;letter-spacing:.06em}
+
 .config-controls input[readonly]{border-color:#314151;color:#dbe1df;cursor:default}
-@media(max-width:600px){.config-product-photo{right:10px;bottom:72px;width:86px}.config-product-photo img{height:78px}.config-product-photo figcaption{font-size:.47rem}}
+
 
 /* Search context remains visible without compromising the editorial hero. */
-.hero-seo-kicker{display:block;margin-bottom:clamp(12px,2vw,26px);font-size:clamp(.6rem,.8vw,.76rem);line-height:1.4;letter-spacing:.14em;font-weight:650;color:#c7d4dd;text-transform:uppercase}[dir="rtl"] .hero-seo-kicker{letter-spacing:0}
+
+
+@media(max-width:850px){.config-state{grid-column:1}}
