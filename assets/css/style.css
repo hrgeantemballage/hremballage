@@ -38,5 +38,76 @@
 /* Arabic is connected script; remove tracking from all Arabic page copy. */
 [dir=rtl] :where(body *):not(.brand,.brand *){letter-spacing:0!important}
 
-/* French headlines use the English typeface, sized to fit longer words. */
-@media(min-width:601px){html[lang="fr"] .hero h1{font-size:clamp(3.2rem,6.6vw,8rem)}}
+/* ==========================================================================
+   04 — Live configurator (3D box, flat blank, specification)
+   ========================================================================== */
+.config-qty{font-size:.72rem;color:var(--muted);display:block}
+.config-error{color:#ff8a8a;font-size:.78rem;margin:0}
+.config-controls input[aria-invalid]{border-color:#ff6b6b}
+.config-spec{margin-top:18px;border:1px solid var(--line);background:rgba(255,255,255,.025);padding:16px 18px}
+.config-spec__title{margin:0 0 10px;font-size:.7rem;letter-spacing:.15em;font-weight:700;color:#e6e8e6;text-transform:uppercase}
+.config-spec dl{margin:0;display:grid;gap:7px}
+.config-spec dl div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:12px;font-size:.8rem;border-top:1px solid rgba(255,255,255,.06);padding-top:7px}
+.config-spec dt{color:var(--muted)}
+.config-spec dd{margin:0;color:#f3f1ea;font-variant-numeric:tabular-nums}
+.config-spec__note{margin:10px 0 0;font-size:.72rem;color:var(--muted)}
+
+.config-preview.is-live{min-height:600px}
+.config-views{position:absolute;top:58px;inset-inline-start:30px;inset-inline-end:30px;display:flex;flex-wrap:wrap;gap:6px;z-index:2}
+.config-views button{font:inherit;font-size:.68rem;letter-spacing:.08em;color:#d6dbdc;background:rgba(10,13,15,.55);border:1px solid var(--line);padding:8px 12px;cursor:pointer;min-height:36px}
+.config-views button.is-on{background:#1E6FD9;border-color:#1E6FD9;color:#fff}
+.config-views .config-views__reset{margin-inline-start:auto}
+.config-views button:focus-visible,.box-stage:focus-visible{outline:2px solid #F5D800;outline-offset:3px}
+
+.box-stage{position:absolute;inset:110px 20px 70px;perspective:1300px;cursor:grab;touch-action:none;user-select:none}
+.box-stage.is-drag{cursor:grabbing}
+.box-stage[hidden],.flat-blank[hidden]{display:none}
+.box3{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d;--L:200px;--W:150px;--H:125px;--edge:3px;--board:#b98a56;--board-edge:#8a6238}
+.box3__face{position:absolute;left:0;top:0;box-sizing:border-box;overflow:hidden;
+  background:repeating-linear-gradient(90deg,rgba(60,38,18,.045) 0 2px,transparent 2px 7px),var(--board);
+  border:var(--edge) solid var(--board-edge);transition:width .35s,height .35s,transform .35s}
+.box3__front,.box3__back{width:var(--L);height:var(--H)}
+.box3__right,.box3__left{width:var(--W);height:var(--H)}
+.box3__top,.box3__bottom{width:var(--L);height:var(--W)}
+.box3__front{transform:translate(-50%,-50%) translateZ(calc(var(--W) / 2))}
+.box3__back{transform:translate(-50%,-50%) rotateY(180deg) translateZ(calc(var(--W) / 2))}
+.box3__right{transform:translate(-50%,-50%) rotateY(90deg) translateZ(calc(var(--L) / 2))}
+.box3__left{transform:translate(-50%,-50%) rotateY(-90deg) translateZ(calc(var(--L) / 2))}
+.box3__top{transform:translate(-50%,-50%) rotateX(90deg) translateZ(calc(var(--H) / 2))}
+.box3__bottom{transform:translate(-50%,-50%) rotateX(-90deg) translateZ(calc(var(--H) / 2))}
+.box3__print,.box3__sheen,.box3__shade{position:absolute;inset:0;pointer-events:none}
+.box3__shade{background:#000;opacity:var(--shade,.2)}
+.box3__print{display:grid;place-items:center;opacity:0;transition:opacity .3s}
+.box3__print img{width:34%;max-width:120px;height:auto;mix-blend-mode:multiply;filter:saturate(.85)}
+.box3[data-print="mark"] .box3__print{opacity:.9}
+.box3[data-print="mark"] .box3__print img{filter:grayscale(1) brightness(.35) contrast(1.4)}
+.box3[data-print="graphic"] :is(.box3__front,.box3__back,.box3__left,.box3__right) .box3__print{opacity:1;background:
+  linear-gradient(90deg,#1E6FD9 0 25%,#4CAF50 25% 50%,#F5D800 50% 75%,#E5197D 75%) bottom/100% 11% no-repeat}
+.box3__seam{position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(40,25,10,.55)}
+.box3__tape{position:absolute;left:-2%;right:-2%;top:44%;height:12%;background:rgba(196,160,112,.55);box-shadow:inset 0 0 0 1px rgba(90,60,30,.2)}
+.box3[data-finish="smooth"] .box3__sheen{background:linear-gradient(115deg,transparent calc(var(--sheen-x,50%) - 30%),rgba(255,255,255,.28) var(--sheen-x,50%),transparent calc(var(--sheen-x,50%) + 30%))}
+.box3[data-finish="matte"] .box3__face{filter:saturate(.8) brightness(.96)}
+.box3__dim{position:absolute;font-size:10px;letter-spacing:.06em;color:rgba(30,20,10,.75);white-space:nowrap;font-variant-numeric:tabular-nums;z-index:1}
+.box3__dim.is-bottom{bottom:5px;left:50%;transform:translateX(-50%)}
+.box3__dim.is-side{top:50%;left:6px;transform:translateY(-50%) rotate(-90deg);transform-origin:left center}
+/* Contact shadow lives in 3D space, just under the box, so it follows rotation */
+.box3__floor{position:absolute;left:0;top:0;width:calc(var(--L) * 1.5);height:calc(var(--W) * 1.5);transform:translate(-50%,-50%) translateY(calc(var(--H) / 2 + 1px)) rotateX(90deg);background:radial-gradient(closest-side,rgba(0,0,0,.6),rgba(0,0,0,.25) 60%,transparent);pointer-events:none}
+
+.flat-blank{position:absolute;inset:110px 24px 70px;display:grid;place-items:center}
+.flat-blank svg{width:100%;height:100%;overflow:visible}
+.fb-board{fill:rgba(185,138,86,.18)}
+.fb-cut{fill:none;stroke:#5aa7ff;stroke-width:1.6;vector-effect:non-scaling-stroke}
+.fb-crease{fill:none;stroke:#E5197D;stroke-width:1.2;stroke-dasharray:6 4;vector-effect:non-scaling-stroke}
+.fb-dim{fill:none;stroke:#c2c8c9;stroke-width:1;vector-effect:non-scaling-stroke}
+.fb-label{fill:#e8ecec;font-family:inherit;font-variant-numeric:tabular-nums}
+.fb-small{fill:#aab2b4}
+
+@media (max-width:850px){.config-preview.is-live{min-height:480px}.box-stage,.flat-blank{inset:104px 10px 60px}}
+@media (max-width:600px){.config-preview.is-live{min-height:440px}.config-views{top:52px;inset-inline-start:16px;inset-inline-end:16px}.config-views button{padding:7px 9px}}
+@media (prefers-reduced-motion:reduce){.box3__face,.box3__print{transition:none}}
+
+[hidden]{display:none!important}.contact-route-note{max-width:34rem;margin-top:1.25rem;color:var(--muted)}.config-export{display:grid;gap:12px;margin-top:20px}.config-export textarea{width:100%;min-height:170px;resize:vertical;background:#171b1c;border:1px solid var(--line);color:var(--white);padding:14px;line-height:1.55}.config-export .button{justify-content:center}
+
+.contact-phone{margin-top:10px;max-width:max-content}.footer-links a[href^="mailto:"],.footer-links a[href^="tel:"]{overflow-wrap:anywhere}
+
+.config-spec dd[dir="ltr"]{text-align:start;unicode-bidi:isolate}[dir="rtl"] .config-spec dd[dir="ltr"]{text-align:right}.box3__dim{direction:ltr;unicode-bidi:isolate}.config-copy-status{margin:0;font-size:.8rem;color:var(--muted)}
