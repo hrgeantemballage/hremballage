@@ -98,7 +98,7 @@
   const previewPane = $('.config-preview');
   const oldPreview = $('#preview-box');
   const nf = new Intl.NumberFormat(locale === 'ar' ? 'ar-DZ-u-nu-latn' : locale, { maximumFractionDigits: 2 });
-  // Reference images supplied by HR. Dimensions are indicative until production sizes are confirmed.
+  // These dimensions drive an illustrative preview, not a production dieline.
   const STYLE_SIZES = { shipping: [400, 300, 250], small: [200, 200, 40], medium: [260, 260, 40], large: [330, 330, 40], tacos: [220, 120, 50] };
   const sizeNames = {
     en: { custom: 'Custom dimensions', small: 'Small · 20 × 20 × 4 cm', medium: 'Medium · 26 × 26 × 4 cm', large: 'Large · indicative size', tacos: 'One tacos size · indicative' },
@@ -107,13 +107,6 @@
   }[locale];
   const sizeControl = $('#box-size');
   const dimensions = ['#length', '#width', '#height'].map(id => $(id));
-  const reference = $('.config-product-photo');
-  const referenceImage = $('#config-photo');
-  const photoNames = {
-    en: { pizza: 'HR pizza packaging reference photograph', tacos: 'HR tacos packaging reference photograph' },
-    fr: { pizza: 'Photo de référence de boîte à pizza HR', tacos: 'Photo de référence de boîte à tacos HR' },
-    ar: { pizza: 'صورة مرجعية لعلبة البيتزا من HR', tacos: 'صورة مرجعية لعلبة التاكو من HR' }
-  }[locale];
   const setSizeOptions = () => {
     const style = $('#box-style').value;
     const options = style === 'pizza' ? ['small','medium','large'] : style === 'tacos' ? ['tacos'] : ['custom'];
@@ -123,17 +116,6 @@
     [L, W, H].forEach((value, i) => { dimensions[i].value = value; dimensions[i].readOnly = style !== 'shipping'; });
     rx = style === 'shipping' ? -22 : -53; ry = -34;
     update();
-  };
-  const setProductPhoto = (style, board, print) => {
-    reference.hidden = style === 'shipping';
-    if (reference.hidden) return;
-    // Product photos show supplied examples; the CSS box is the live visualisation.
-    const filename = style === 'tacos' ? (print === 'none' ? 'pizza-tacos-reference.png' : 'tacos-printed.jpg')
-      : print === 'none' ? 'pizza-tacos-reference.png'
-      : board === 'white' ? 'pizza-white-print.jpg' : 'pizza-kraft-print.jpg';
-    const url = `${assetRoot}images/${filename}`;
-    if (referenceImage.getAttribute('src') !== url) referenceImage.src = url;
-    referenceImage.alt = print === 'none' ? ({ en: 'Supplied chart comparing unprinted and printed pizza and tacos boxes', fr: 'Tableau fourni comparant les boîtes à pizza et à tacos imprimées ou non', ar: 'جدول مرجعي يقارن علب البيتزا والتاكو المطبوعة وغير المطبوعة' }[locale]) : photoNames[style];
   };
   const GLUE = 35;                                   // illustration allowance, not a manufacturing value
   const WALL_MM = { unspecified: 3.5, single: 3.5, double: 6.5 };
@@ -188,7 +170,9 @@
   const flat = el('div', 'flat-blank'); flat.hidden = true;
   const viewNote = el('p', 'config-view-note'); viewNote.hidden = true; viewNote.textContent = { en: 'The flat blank is illustrated for the shipping carton only.', fr: 'La découpe à plat est illustrée uniquement pour la caisse de transport.', ar: 'يظهر مخطط الفرد لصندوق الشحن فقط.' }[locale];
   const stateLine = el('p', 'config-state'); stateLine.setAttribute('aria-live', 'polite');
-  previewPane.append(tools, stage, flat, viewNote, stateLine);
+  previewPane.append(tools, stage, flat, viewNote);
+  // Keep the options readable outside the interactive 3D stage at every viewport width.
+  previewPane.after(stateLine);
 
   let rx = -22, ry = -34, dragging = null, idle = true;
   const light = (() => { const v = [-0.45, -0.75, 0.55]; const m = Math.hypot(...v); return v.map(x => x / m); })();
@@ -255,7 +239,6 @@
     const board = BOARD[$('#board').value] || BOARD.kraft, flute = $('#flute').value, print = $('#printing').value, finish = $('#finishing').value;
     const style = $('#box-style').value;
     box.dataset.style = style; sStyle.textContent = styleName();
-    setProductPhoto(style, $('#board').value, print);
     bFlat.disabled = style !== 'shipping'; viewNote.hidden = style === 'shipping';
     if (style !== 'shipping' && !flat.hidden) { flat.hidden = true; stage.hidden = false; bReset.hidden = false; bFlat.classList.remove('is-on'); b3d.classList.add('is-on'); bFlat.setAttribute('aria-pressed', 'false'); b3d.setAttribute('aria-pressed', 'true'); }
     // 3D size: fit the largest diagonal into the stage
