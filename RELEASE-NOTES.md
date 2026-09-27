@@ -1,3 +1,12 @@
+# 2026-09-27 — Packy Phase 1 and page updates
+
+- Header: larger logo and company name.
+- Hero: removed the green dot and "HR Géant Emballage / Algeria" line.
+- Section 02: new box-folding animation synced with Idea / Engineering / Production / Packaging.
+- Configurator: steps numbered 01 to 06; removed "Visual demonstration only · Not a production specification" under the live preview.
+- Section 13: removed the "Email … or call …" sentence (email and call buttons remain).
+- Packy: intent-based tours, live demonstrations, and a 6-step "Design your box with me" that controls the live preview and ends with copy / email of the box details.
+
 # 2026-09-27 — Integration fixes
 
 - Manufacturing section: new headline in EN/FR/AR; factory photo and old description removed; full-section production-line animation with translated step names, mirrored for Arabic. Replaces the earlier `manufacturing-animation` add-on (files removed).
@@ -5,6 +14,8 @@
 - Added the missing social sharing image `assets/images/hr-geant-emballage-social.jpg` (1200 × 630), referenced by every page's Open Graph and Twitter tags.
 - WhatsApp button label translated on the French and Arabic pages.
 - Removed committed `__pycache__` files; added `.gitignore`.
+- Added the website assistant "Packy" (tour, quick jumps, contact) in EN/FR/AR. He lives in a box in the hero, in place of the 3D box, and replaces the floating WhatsApp button.
+- main.js: the Escape key no longer moves focus to the mobile menu button when the menu is closed.
 
 # HR Géant Emballage — French and Arabic + security update
 
