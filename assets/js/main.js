@@ -63,6 +63,9 @@
     ]
   }[locale] || [];
   const assetRoot = locale === 'en' ? 'assets/' : '../assets/';
+  // Copyright year: updates itself every January. textContent only (no HTML), so the CSP and XSS protection are unaffected.
+  // Never shows a year earlier than 2026, even if a visitor's device clock is wrong. Without JavaScript the HTML value 2026 stays.
+  document.querySelectorAll('[data-year]').forEach(el => { el.textContent = String(Math.max(2026, new Date().getFullYear())); });
   const photoLabel = { en: 'illustrative packaging image', fr: 'visuel d’emballage illustratif', ar: 'صورة توضيحية' }[locale];
   $('#product-grid').innerHTML = productData.map(([name, description, details, image], index) => `<article class="product-card"><img src="${assetRoot}images/${image}" loading="lazy" width="1400" height="900" alt="${name} — ${photoLabel}"><div class="product-content"><small>${String(index + 1).padStart(2, '0')} / ${copy.solution}</small><h3>${name}</h3><p>${description}</p><p class="details">${details}</p><a href="#contact" aria-label="${copy.explore} ${name}">${copy.explore} ↗</a></div></article>`).join('');
 
@@ -307,8 +310,10 @@
       lab(n, L / 2, ly + W * (item.window || item.zone ? 0.85 : 0.5), WORDS.lid, 1.2, 0, true);
       lab(n, L / 2, -H / 2, `${T.h} ${H}`); lab(n, L / 2, fy + H + Tk / 2, WORDS.tuck, 0.8);
       if (item.window) n.holes.push({ t: 'rrect', x0: L * 0.25, y0: ly + W * 0.3, x1: L * 0.75, y1: ly + W * 0.62, r: 8 });
-      if (item.zone) { n.holes.push({ t: 'zone', x0: L * 0.12, y0: ly + W * 0.12, x1: L * 0.88, y1: ly + W * 0.62 }); lab(n, L / 2, ly + W * 0.4, WORDS.zone, 1.1, 0, true); }
-      if (!item.window && !item.zone) n.print.push({ x0: 0, y0: ly, x1: L, y1: fy });
+      if (item.zone) { n.holes.push({ t: 'zone', x0: L * 0.12, y0: ly + W * 0.12, x1: L * 0.88, y1: ly + W * 0.62 }); lab(n, L / 2, ly + W * 0.25, WORDS.zone, 1.1, 0, true); }
+      if (item.window) n.print.push({ x0: 0, y0: -H, x1: L, y1: 0 }, { x0: 0, y0: fy, x1: L, y1: fy + H });
+      else if (item.zone) n.print.push({ x0: L * 0.12, y0: ly + W * 0.12, x1: L * 0.88, y1: ly + W * 0.62 }); // artwork sits inside the design area
+      else n.print.push({ x0: 0, y0: ly, x1: L, y1: fy });
       return n;
     },
     tuck(L, W, H, item) {
@@ -343,6 +348,7 @@
       }
       lab(n, L / 2 + x0, W / 2 + y0, title, 1.2, 0, true); lab(n, L / 2 + x0, W / 2 - W * 0.16 + y0, `${T.l} ${L} × ${T.w} ${W}`);
       lab(n, L / 2 + x0, -H / 2 + y0, `${T.h} ${H}`);
+      if (extras && item.kind === 'tray') n.print.push({ x0: x0, y0: -H + y0, x1: L + x0, y1: y0 }, { x0: x0, y0: W + y0, x1: L + x0, y1: W + H + y0 });
       return n;
     },
     clam(L, W, H, item) {
@@ -359,6 +365,7 @@
       lab(n, L / 2, ly + W * (item.window ? 0.8 : 0.5), WORDS.lid, 1.2, 0, true);
       lab(n, L / 2, -hb * 0.78, `${T.h} ${hb}`); lab(n, L / 2, ly + W + hl / 2, `${T.h} ${hl}`, 0.9);
       if (item.window) n.holes.push({ t: 'rrect', x0: L * 0.22, y0: ly + W * 0.18, x1: L * 0.78, y1: ly + W * 0.62, r: 8 });
+      if (item.window) n.print.push({ x0: 0, y0: -hb, x1: L, y1: 0 }, { x0: 0, y0: ly + W, x1: L, y1: ly + W + hl });
       else n.print.push({ x0: 0, y0: ly, x1: L, y1: ly + W });
       return n;
     },
