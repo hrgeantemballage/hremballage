@@ -68,28 +68,28 @@
 
   /* ==========================================================================
      04 — PACKAGING CONFIGURATOR
-     Real-proportion 3D box (CSS 3D), flat-blank (dieline) view, live geometry
-     and automatic transfer of the specification into the quote form.
+     Live CSS 3D previews for shipping, pizza and tacos styles. A simplified
+     blank illustration is shown only for the standard shipping carton.
      Geometry approximates a regular slotted carton (RSC / FEFCO 0201);
      no prices or weights are invented.
      ========================================================================== */
   const T = {
     en: { qty: 'Quantity', qtyPh: 'e.g. 5000', view3d: '3D box', viewFlat: 'Flat blank', reset: 'Reset view',
-      yourBox: 'Your box', style: 'Style', rsc: 'Regular slotted carton (FEFCO 0201)', blank: 'Flat blank size', area: 'Board per box',
+      yourBox: 'Your box', style: 'Style', rsc: 'Shipping carton (RSC / FEFCO 0201)', pizza: 'Pizza box — illustrative', tacos: 'Tacos takeout box — illustrative', blank: 'Flat blank size', area: 'Board per box',
       total: 'Board for the order', volume: 'Volume', wall: 'Wall thickness', approx: 'Illustrative dimensions and area only. Confirm all production specifications with HR Géant Emballage.',
-      range: 'Enter a value between 100 and 1200 mm.', glue: 'Glue flap', cut: 'Cut', crease: 'Crease', sent: 'Your specification has been added to the quote form below.',
+      range: 'Length and width: 100–1200 mm. Height: 40–1200 mm.', glue: 'Glue flap', cut: 'Cut', crease: 'Crease', sent: 'Your specification has been added to the quote form below.',
       walls: { unspecified: '≈ 3–4 mm (to be recommended)', single: '≈ 3–4 mm', double: '≈ 6–7 mm' },
       desc: 'Box specification from the online configurator', front: 'Front', side: 'Side', l: 'L', w: 'W', h: 'H', liters: 'L', m2: 'm²' },
     fr: { qty: 'Quantité', qtyPh: 'ex. 5000', view3d: 'Boîte 3D', viewFlat: 'Mise à plat', reset: 'Réinitialiser la vue',
-      yourBox: 'Votre boîte', style: 'Modèle', rsc: 'Caisse américaine (FEFCO 0201)', blank: 'Format de la découpe à plat', area: 'Carton par boîte',
+      yourBox: 'Votre boîte', style: 'Modèle', rsc: 'Caisse de transport (FEFCO 0201)', pizza: 'Boîte à pizza — illustration', tacos: 'Boîte à tacos — illustration', blank: 'Format de la découpe à plat', area: 'Carton par boîte',
       total: 'Carton pour la commande', volume: 'Volume', wall: 'Épaisseur de paroi', approx: 'Dimensions et surface indicatives. Confirmez les spécifications de production avec HR Géant Emballage.',
-      range: 'Saisissez une valeur entre 100 et 1200 mm.', glue: 'Patte de collage', cut: 'Coupe', crease: 'Rainage', sent: 'Votre spécification a été ajoutée au formulaire de devis ci-dessous.',
+      range: 'Longueur et largeur : 100–1200 mm. Hauteur : 40–1200 mm.', glue: 'Patte de collage', cut: 'Coupe', crease: 'Rainage', sent: 'Votre spécification a été ajoutée au formulaire de devis ci-dessous.',
       walls: { unspecified: '≈ 3–4 mm (à recommander)', single: '≈ 3–4 mm', double: '≈ 6–7 mm' },
       desc: 'Spécification issue du configurateur en ligne', front: 'Face', side: 'Côté', l: 'L', w: 'l', h: 'H', liters: 'L', m2: 'm²' },
     ar: { qty: 'الكمية', qtyPh: 'مثال: 5000', view3d: 'صندوق ثلاثي الأبعاد', viewFlat: 'الفرد المسطح', reset: 'إعادة ضبط العرض',
-      yourBox: 'صندوقك', style: 'النموذج', rsc: 'صندوق شحن قياسي (FEFCO 0201)', blank: 'مقاس اللوح المسطح', area: 'الكرتون لكل صندوق',
+      yourBox: 'صندوقك', style: 'النموذج', rsc: 'صندوق شحن (FEFCO 0201)', pizza: 'علبة بيتزا — نموذج توضيحي', tacos: 'علبة تاكوس — نموذج توضيحي', blank: 'مقاس اللوح المسطح', area: 'الكرتون لكل صندوق',
       total: 'الكرتون للطلبية', volume: 'الحجم', wall: 'سماكة الجدار', approx: 'الأبعاد والمساحة توضيحية فقط. تُعتمد مواصفات الإنتاج مع HR Géant Emballage.',
-      range: 'أدخل قيمة بين 100 و1200 مم.', glue: 'لسان اللصق', cut: 'قص', crease: 'طي', sent: 'أُضيفت مواصفاتك إلى نموذج طلب عرض السعر أدناه.',
+      range: 'الطول والعرض: من 100 إلى 1200 مم. الارتفاع: من 40 إلى 1200 مم.', glue: 'لسان اللصق', cut: 'قص', crease: 'طي', sent: 'أُضيفت مواصفاتك إلى نموذج طلب عرض السعر أدناه.',
       walls: { unspecified: '≈ 3–4 مم (يُحدد لاحقاً)', single: '≈ 3–4 مم', double: '≈ 6–7 مم' },
       desc: 'مواصفات الصندوق من أداة التصميم', front: 'الواجهة', side: 'الجانب', l: 'ط', w: 'ع', h: 'ر', liters: 'لتر', m2: 'م²' }
   }[locale] || null;
@@ -98,6 +98,43 @@
   const previewPane = $('.config-preview');
   const oldPreview = $('#preview-box');
   const nf = new Intl.NumberFormat(locale === 'ar' ? 'ar-DZ-u-nu-latn' : locale, { maximumFractionDigits: 2 });
+  // Reference images supplied by HR. Dimensions are indicative until production sizes are confirmed.
+  const STYLE_SIZES = { shipping: [400, 300, 250], small: [200, 200, 40], medium: [260, 260, 40], large: [330, 330, 40], tacos: [220, 120, 50] };
+  const sizeNames = {
+    en: { custom: 'Custom dimensions', small: 'Small · 20 × 20 × 4 cm', medium: 'Medium · 26 × 26 × 4 cm', large: 'Large · indicative size', tacos: 'One tacos size · indicative' },
+    fr: { custom: 'Dimensions personnalisées', small: 'Petit · 20 × 20 × 4 cm', medium: 'Moyen · 26 × 26 × 4 cm', large: 'Grand · taille indicative', tacos: 'Une taille tacos · indicative' },
+    ar: { custom: 'أبعاد مخصصة', small: 'صغير · 20 × 20 × 4 سم', medium: 'متوسط · 26 × 26 × 4 سم', large: 'كبير · مقاس توضيحي', tacos: 'مقاس واحد للتاكوس · توضيحي' }
+  }[locale];
+  const sizeControl = $('#box-size');
+  const dimensions = ['#length', '#width', '#height'].map(id => $(id));
+  const reference = $('.config-product-photo');
+  const referenceImage = $('#config-photo');
+  const photoNames = {
+    en: { pizza: 'HR pizza packaging reference photograph', tacos: 'HR tacos packaging reference photograph' },
+    fr: { pizza: 'Photo de référence de boîte à pizza HR', tacos: 'Photo de référence de boîte à tacos HR' },
+    ar: { pizza: 'صورة مرجعية لعلبة البيتزا من HR', tacos: 'صورة مرجعية لعلبة التاكو من HR' }
+  }[locale];
+  const setSizeOptions = () => {
+    const style = $('#box-style').value;
+    const options = style === 'pizza' ? ['small','medium','large'] : style === 'tacos' ? ['tacos'] : ['custom'];
+    sizeControl.replaceChildren(...options.map(key => new Option(sizeNames[key], key)));
+    sizeControl.disabled = options.length === 1;
+    const [L, W, H] = STYLE_SIZES[options[0] === 'custom' ? 'shipping' : options[0]];
+    [L, W, H].forEach((value, i) => { dimensions[i].value = value; dimensions[i].readOnly = style !== 'shipping'; });
+    rx = style === 'shipping' ? -22 : -53; ry = -34;
+    update();
+  };
+  const setProductPhoto = (style, board, print) => {
+    reference.hidden = style === 'shipping';
+    if (reference.hidden) return;
+    // Product photos show supplied examples; the CSS box is the live visualisation.
+    const filename = style === 'tacos' ? (print === 'none' ? 'pizza-tacos-reference.png' : 'tacos-printed.jpg')
+      : print === 'none' ? 'pizza-tacos-reference.png'
+      : board === 'white' ? 'pizza-white-print.jpg' : 'pizza-kraft-print.jpg';
+    const url = `${assetRoot}images/${filename}`;
+    if (referenceImage.getAttribute('src') !== url) referenceImage.src = url;
+    referenceImage.alt = print === 'none' ? ({ en: 'Supplied chart comparing unprinted and printed pizza and tacos boxes', fr: 'Tableau fourni comparant les boîtes à pizza et à tacos imprimées ou non', ar: 'جدول مرجعي يقارن علب البيتزا والتاكو المطبوعة وغير المطبوعة' }[locale]) : photoNames[style];
+  };
   const GLUE = 35;                                   // illustration allowance, not a manufacturing value
   const WALL_MM = { unspecified: 3.5, single: 3.5, double: 6.5 };
   const BOARD = { kraft: { face: '#b98a56', edge: '#8a6238' }, white: { face: '#ebe7de', edge: '#a47a4c' } };
@@ -118,7 +155,8 @@
   $('#config-cta').before(spec);
   const specRow = (k) => { const d = el('div'); const dt = el('dt', null, k); const dd = el('dd'); d.append(dt, dd); specList.append(d); return dd; };
   const sStyle = specRow(T.style), sBlank = specRow(T.blank), sArea = specRow(T.area), sTotal = specRow(T.total), sVol = specRow(T.volume);
-  sStyle.textContent = T.rsc;
+  const styleName = () => T[$('#box-style').value] || T.rsc;
+  sStyle.textContent = styleName();
   // Keep dimension notation in LTR order inside the Arabic interface.
   [sBlank, sArea, sTotal, sVol].forEach(value => value.dir = 'ltr');
 
@@ -141,12 +179,16 @@
     box.append(f); faces[name] = f;
   });
   const logo = () => { const i = el('img'); i.src = `${assetRoot}logo.png`; i.alt = ''; i.decoding = 'async'; return i; };
-  ['front', 'back'].forEach(n => faces[n].querySelector('.box3__print').append(logo()));
-  faces.top.append(el('i', 'box3__seam'), el('i', 'box3__tape'));
+  ['front', 'back', 'top'].forEach(n => faces[n].querySelector('.box3__print').append(logo()));
+  faces.top.append(el('i', 'box3__seam'), el('i', 'box3__tape'), el('i', 'box3__lid-mark'));
+  faces.front.append(el('i', 'box3__closure'));
+  faces.left.append(el('i', 'box3__fold')); faces.right.append(el('i', 'box3__fold'));
   const dimTag = (face, cls) => { const t = el('span', `box3__dim ${cls}`); faces[face].append(t); return t; };
   const tagL = dimTag('front', 'is-bottom'), tagH = dimTag('front', 'is-side'), tagW = dimTag('right', 'is-bottom');
   const flat = el('div', 'flat-blank'); flat.hidden = true;
-  previewPane.append(tools, stage, flat);
+  const viewNote = el('p', 'config-view-note'); viewNote.hidden = true; viewNote.textContent = { en: 'The flat blank is illustrated for the shipping carton only.', fr: 'La découpe à plat est illustrée uniquement pour la caisse de transport.', ar: 'يظهر مخطط الفرد لصندوق الشحن فقط.' }[locale];
+  const stateLine = el('p', 'config-state'); stateLine.setAttribute('aria-live', 'polite');
+  previewPane.append(tools, stage, flat, viewNote, stateLine);
 
   let rx = -22, ry = -34, dragging = null, idle = true;
   const light = (() => { const v = [-0.45, -0.75, 0.55]; const m = Math.hypot(...v); return v.map(x => x / m); })();
@@ -166,9 +208,10 @@
   };
   const read = (id) => {
     const input = $(id); const v = Number(input.value);
-    const ok = input.value !== '' && v >= 100 && v <= 1200;
+    const min = id === '#height' ? 40 : 100;
+    const ok = input.value !== '' && v >= min && v <= 1200;
     input.toggleAttribute('aria-invalid', !ok);
-    return { v: ok ? v : Math.min(1200, Math.max(100, v || 100)), ok };
+    return { v: ok ? v : Math.min(1200, Math.max(min, v || min)), ok };
   };
   const svgNS = 'http://www.w3.org/2000/svg';
   const svg = (tag, attrs, text) => { const n = document.createElementNS(svgNS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (text != null) n.textContent = text; return n; };
@@ -210,6 +253,11 @@
     const L = l.v, W = w.v, H = h.v;
     rangeMsg.hidden = l.ok && w.ok && h.ok; rangeMsg.textContent = T.range;
     const board = BOARD[$('#board').value] || BOARD.kraft, flute = $('#flute').value, print = $('#printing').value, finish = $('#finishing').value;
+    const style = $('#box-style').value;
+    box.dataset.style = style; sStyle.textContent = styleName();
+    setProductPhoto(style, $('#board').value, print);
+    bFlat.disabled = style !== 'shipping'; viewNote.hidden = style === 'shipping';
+    if (style !== 'shipping' && !flat.hidden) { flat.hidden = true; stage.hidden = false; bReset.hidden = false; bFlat.classList.remove('is-on'); b3d.classList.add('is-on'); bFlat.setAttribute('aria-pressed', 'false'); b3d.setAttribute('aria-pressed', 'true'); }
     // 3D size: fit the largest diagonal into the stage
     const size = Math.min(stage.clientWidth || 420, stage.clientHeight || 420) * 0.68;
     const s = size / Math.max(L, W, H);
@@ -218,19 +266,32 @@
     box.style.setProperty('--edge', `${Math.max(1.5, Math.min(7, WALL_MM[flute] * s * 2.2)).toFixed(1)}px`);
     box.style.setProperty('--board', board.face); box.style.setProperty('--board-edge', board.edge);
     box.dataset.print = print; box.dataset.finish = finish;
+    const qtyText = qtyInput.value && Number(qtyInput.value) > 0 ? ` · ${T.qty}: ${nf.format(Number(qtyInput.value))}` : '';
+    stateLine.textContent = `${styleName()} · ${$('#board').selectedOptions[0].textContent} · ${$('#flute').selectedOptions[0].textContent} · ${$('#printing').selectedOptions[0].textContent} · ${$('#finishing').selectedOptions[0].textContent}${qtyText}`;
     [tagL, tagW, tagH].forEach(tag => tag.dir = 'ltr');
     tagL.textContent = `${T.l} ${L} mm`; tagW.textContent = `${T.w} ${W} mm`; tagH.textContent = `${T.h} ${H} mm`;
-    // geometry (RSC)
+    // A flat blank estimate is meaningful here only for the shipping carton.
     const blankL = GLUE + 2 * L + 2 * W, blankW = H + W, areaM2 = blankL * blankW / 1e6;
     const qty = Math.max(0, Math.floor(Number(qtyInput.value) || 0));
-    sBlank.textContent = `${Math.round(blankL)} × ${Math.round(blankW)} mm`;
-    sArea.textContent = `${nf.format(areaM2)} ${T.m2}`;
-    sTotal.textContent = qty ? `${nf.format(Math.round(areaM2 * qty))} ${T.m2} (${nf.format(qty)} × ${nf.format(areaM2)})` : '—';
+    sBlank.parentElement.hidden = style !== 'shipping';
+    sArea.parentElement.hidden = style !== 'shipping';
+    sTotal.parentElement.hidden = style !== 'shipping';
+    if (style === 'shipping') {
+      sBlank.textContent = `${Math.round(blankL)} × ${Math.round(blankW)} mm`;
+      sArea.textContent = `${nf.format(areaM2)} ${T.m2}`;
+      sTotal.textContent = qty ? `${nf.format(Math.round(areaM2 * qty))} ${T.m2} (${nf.format(qty)} × ${nf.format(areaM2)})` : '—';
+    }
     sVol.textContent = `${nf.format(L * W * H / 1e6)} ${T.liters}`;
     if (!flat.hidden) drawBlank(L, W, H);
     paintView();
   };
   controls.addEventListener('input', update); controls.addEventListener('change', update);
+  $('#box-style').addEventListener('change', setSizeOptions);
+  sizeControl.addEventListener('change', () => {
+    const values = STYLE_SIZES[sizeControl.value];
+    if (values) values.forEach((value, i) => { dimensions[i].value = value; });
+    update();
+  });
   controls.addEventListener('submit', (event) => event.preventDefault());
   addEventListener('resize', update);
 
@@ -242,7 +303,7 @@
     update();
   };
   b3d.addEventListener('click', () => setView(false)); bFlat.addEventListener('click', () => setView(true));
-  bReset.addEventListener('click', () => { rx = -22; ry = -34; paintView(); });
+  bReset.addEventListener('click', () => { rx = $('#box-style').value === 'shipping' ? -22 : -53; ry = -34; paintView(); });
 
   // Drag / keyboard rotation, gentle idle turn
   stage.addEventListener('pointerdown', e => { dragging = { x: e.clientX, y: e.clientY, rx, ry }; idle = false; stage.setPointerCapture(e.pointerId); stage.classList.add('is-drag'); });
@@ -284,11 +345,11 @@
   });
   $('#config-cta').addEventListener('click', e => {
     e.preventDefault();
-    if (!controls.reportValidity() || !['#length','#width','#height'].every(id => $(id).value !== '' && Number($(id).value) >= 100 && Number($(id).value) <= 1200)) { rangeMsg.hidden = false; rangeMsg.textContent = T.range; return; }
+    if (!controls.reportValidity() || !['#length','#width','#height'].every(id => $(id).value !== '' && Number($(id).value) >= (id === '#height' ? 40 : 100) && Number($(id).value) <= 1200)) { rangeMsg.hidden = false; rangeMsg.textContent = T.range; return; }
     const c = locale === 'fr' ? ' :' : ':';
     const sel = id => $(id).selectedOptions[0].textContent.trim();
     const lines = [
-      `${T.desc}${c}`, `${T.style}${c} ${T.rsc}`,
+      `${T.desc}${c}`, `${T.style}${c} ${styleName()}`,
       `${T.l} × ${T.w} × ${T.h}${c} ${$('#length').value} × ${$('#width').value} × ${$('#height').value} mm`,
       `${$('label[for="board"]').textContent.replace(/^\d+\s*—\s*/, '')}${c} ${sel('#board')}`,
       `${$('label[for="flute"]').textContent.replace(/^\d+\s*—\s*/, '')}${c} ${sel('#flute')}`,
@@ -299,7 +360,7 @@
     exportText.value = lines.join('\n'); copyStatus.textContent = ''; exportBox.hidden = false;
     exportBox.scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'nearest' });
   });
-  update();
+  setSizeOptions();
   const hero = $('.hero');
   hero.addEventListener('pointermove', event => { if (event.pointerType === 'mouse' && !reducedMotion.matches && innerWidth > 850) { const x = (event.clientX / innerWidth - .5) * 18; const y = (event.clientY / innerHeight - .5) * 12; $('.box-cube').style.transform = `rotateX(${-22 - y}deg) rotateY(${-32 + x}deg)`; } });
   hero.addEventListener('pointerleave', () => { $('.box-cube').style.transform = ''; });
