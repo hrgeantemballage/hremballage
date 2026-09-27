@@ -1,28 +1,40 @@
-# HR Géant Emballage website
+# HR GÉANT EMBALLAGE
 
-Static GitHub Pages website. The included `CNAME` preserves the existing `www.hrgeantemballage.com` GitHub Pages domain. No build step is required.
+**Corrugated packaging, engineered around the product.**  
+Béni Tamou · Blida · Algeria
 
-## Before launch
+[Visit the website](https://www.hrgeantemballage.com/) · [Explore in French](https://www.hrgeantemballage.com/fr/) · [تصفح الموقع بالعربية](https://www.hrgeantemballage.com/ar/) · [Email our commercial team](mailto:commercial@hrgeantemballage.com)
 
-- Replace illustrative imagery in `assets/images/` with approved company photography. Current images are original concept visuals, not documentary images of the HR factory or products.
-- Verify the isolated emblem in `assets/logo.png` against approved brand artwork before print or brand-sensitive use. It is an optimized 128 × 128 concept extraction, not a verified copy of the official artwork.
-- Replace every `[ADD REAL DATA]` with verified contact details, capabilities and case studies, or remove those placeholders when publishing a customer-facing version.
-- Set `FORM_ENDPOINT` in `assets/js/main.js` to a tested HTTPS endpoint supporting multipart uploads, then add the endpoint origin to `connect-src` in the Content-Security-Policy `<meta>` tag of all three pages. Test the submission and confirmation with the chosen service. The quote form deliberately does not transmit until configured.
-- The honeypot is named `_gotcha`, and the client checks artwork against a 10 MB limit. Configure the future form service or Worker to inspect the same `_gotcha` field, enforce file types and size, and add its own rate limits. Client-side checks alone do not stop spam or oversized requests.
-- Set `WHATSAPP_NUMBER` in `assets/js/main.js` to the verified international digits. The floating action stays hidden until then.
-- Review the French and Arabic editorial copy with a native industry specialist before final publication. The site includes static localized pages at `/fr/` and `/ar/`; the latter sets `lang="ar" dir="rtl"`. **Edit all three pages directly** (`index.html`, `fr/index.html`, `ar/index.html`) and keep them in sync. `scripts/build_locales.py` is outdated and disabled: it was written for an older page and would misplace translations and block the Google map. Dynamic product content and status messages live in `assets/js/main.js`.
-- Check actual printing processes, flute profiles and plant-specific stages before presenting them as capabilities.
+---
 
-## File structure
+## Packaging built for the real world
 
-`index.html` · `fr/index.html` · `ar/index.html` · `CNAME` · `robots.txt` · `sitemap.xml` · `assets/logo.png` · `assets/css/style.css` · `assets/css/manufacturing-section.css` · `assets/js/main.js` · `assets/js/manufacturing-section.js` · `assets/images/*.webp` · `assets/images/hr-geant-emballage-social.jpg`
+**HR Géant Emballage** is an Algerian manufacturer of corrugated cardboard boxes, printed packaging and custom industrial packaging. We work with businesses seeking packaging shaped around their products, presentation and handling requirements.
 
-The Manufacturing section (`#manufacturing`) is a headline over a decorative canvas animation (`manufacturing-section.js`). The 7 step names are read from the hidden, translated `<ol class="timeline mfg-steps">` in each page, so edit step names there. The animation mirrors automatically on the Arabic page, pauses off-screen, and shows a still frame when the visitor prefers reduced motion.
+Our focus is practical: understand what the packaging must do, choose a suitable structure and develop a solution for the journey from production to delivery. The website introduces our approach and gives buyers a direct way to discuss a project with our team.
 
-The existing `CNAME` must be preserved unchanged when merging this upgrade. Canonical, social metadata, schema, robots and sitemap use the `www` host consistently. Asset paths are relative and work from the custom domain or repository root. No Node.js runtime or framework is required. The CSP uses self-hosted CSS, JavaScript and images; external Google Fonts have been removed. Note: `style.css` names 'Space Grotesk' but no font files are included, so visitors see the fallback fonts unless the font files are added to the repository with an `@font-face` rule.
+### What we make
 
-Do not commit `__pycache__/` folders (see `.gitignore`).
+- Corrugated cardboard boxes
+- Custom packaging
+- Printed corrugated packaging
+- Industrial packaging solutions
 
-## Deployment
+For a specific box style, board profile, print process, quantity or delivery requirement, contact the team to confirm availability and request a quotation.
 
-Upload the files in this directory to the repository root on `main` (or merge a review branch). Keep `CNAME` as included. GitHub Pages should serve from the root of the branch. The preferred canonical URL is `https://www.hrgeantemballage.com/`.
+## Start a project
+
+**Commercial team:** [commercial@hrgeantemballage.com](mailto:commercial@hrgeantemballage.com)  
+**Telephone:** [+213 770 691 631](tel:+213770691631)  
+**Location:** SEC 12 LOT 806 PART 02, Béni Tamou, Blida 09240, Algeria  
+**Website:** [www.hrgeantemballage.com](https://www.hrgeantemballage.com/)
+
+The website's interactive box preview helps visitors describe an idea. It is an illustration for a project discussion; final production details are confirmed with the HR Géant Emballage team.
+
+---
+
+## Explore HR Géant Emballage
+
+Our website is available in [English](https://www.hrgeantemballage.com/), [French](https://www.hrgeantemballage.com/fr/) and [Arabic](https://www.hrgeantemballage.com/ar/). Explore our packaging approach and contact our commercial team to discuss the requirements of your next project.
+
+© 2026 HR Géant Emballage.
