@@ -37,3 +37,6 @@
 .hp-field{position:absolute!important;width:1px!important;height:1px!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important;clip-path:inset(50%)!important;opacity:0!important;pointer-events:none!important}
 /* Arabic is connected script; remove tracking from all Arabic page copy. */
 [dir=rtl] :where(body *):not(.brand,.brand *){letter-spacing:0!important}
+
+/* French headlines use the English typeface, sized to fit longer words. */
+@media(min-width:601px){html[lang="fr"] .hero h1{font-size:clamp(3.2rem,6.6vw,8rem)}}
