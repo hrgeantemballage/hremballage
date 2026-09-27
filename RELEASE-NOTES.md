@@ -1,3 +1,11 @@
+# 2026-09-27 — Integration fixes
+
+- Manufacturing section: new headline in EN/FR/AR; factory photo and old description removed; full-section production-line animation with translated step names, mirrored for Arabic. Replaces the earlier `manufacturing-animation` add-on (files removed).
+- `scripts/build_locales.py` disabled: it no longer matches the pages and would have misplaced translations and blocked the Google map (`frame-src 'none'`). FR/AR pages are edited directly.
+- Added the missing social sharing image `assets/images/hr-geant-emballage-social.jpg` (1200 × 630), referenced by every page's Open Graph and Twitter tags.
+- WhatsApp button label translated on the French and Arabic pages.
+- Removed committed `__pycache__` files; added `.gitignore`.
+
 # HR Géant Emballage — French and Arabic + security update
 
 Version: 2026-09-27-fr-ar-security
