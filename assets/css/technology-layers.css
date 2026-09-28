@@ -1,0 +1,7 @@
+/* Section 07 "Strength in the layers": fluting is formed, glued, sandwiched between two liners, then load-tested. */
+.board-diagram.tl-on{padding:28px 24px 22px}
+.tl-svg{display:block;width:100%;height:auto;overflow:visible}
+.board-diagram.tl-on .board-labels{display:flex;justify-content:space-between;gap:10px;margin-top:14px;position:static}
+.board-diagram.tl-on .board-labels span{flex:1;text-align:center;padding:9px 6px;border-top:2px solid rgba(255,255,255,.14);color:#8b949a;
+  transition:color .4s,border-color .4s}
+.board-diagram.tl-on .board-labels span.tl-now{color:#fff;border-top-color:#e6c587}
