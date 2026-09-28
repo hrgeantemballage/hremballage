@@ -19,21 +19,21 @@
       intents:{ boxes:'📦 I need boxes for my products', print:'🎨 I want printed boxes with my brand', work:'🏭 I want to see how you work', look:'👀 Just looking around' },
       design:'✏️ Design your box with me', designNote:'Build it live in 3D, then copy or email the details to us.', copyDetails:'Copy details', copied:'Copied!', tryIt:'✏️ Design your box with me', goto:'Or go straight to', contact:'Talk to our team',
       email:'Email our sales team', emailNote:'Opens your email app. You send the message yourself.', call:'Call', whatsapp:'WhatsApp',
-      subject:'Packaging enquiry', next:'Next', back:'Back', finish:'Finish', menu:'Main menu', close:'Close',
+      subject:'Packaging enquiry', next:'Next', back:'Back', finish:'Finish', menu:'Main menu', close:'Close', repeat:'Repeat all', viewSection:'View this section', move:'Drag this message to move it; use Alt and arrow keys to adjust its position.',
       step:'Stop {n} of {t}', play:'Play automatically', pause:'Pause', endTour:'End the tour',
       end:'That’s it! Ready to talk about your packaging?', restart:'Choose another tour',
       sendDesign:'Email my design', sendNote:'Your email app opens with your box details. You send it yourself.',
       lines:{
-        company:'This is us. Nice to meet you!',
-        products:'Here are our packaging solutions. Let me show you each one.',
-        industries:'Which world is yours? Let me flip through them.',
-        configurator:'Watch this: I change the box live. Your turn next!',
-        'printing-section':'Your logo on your box. That’s where brands come alive.',
-        manufacturing:'Hop on! Let’s ride the production line together.',
-        quality:'Here are the quality points to discuss, one by one.',
-        technology:'The secret is in the layers: liner, fluting, liner.',
-        location:'Here’s where to find us in Algeria.',
-        contact:'Ready when you are. Email or call our team!',
+        company:'Discover how we approach packaging around the product and its journey.',
+        products:'Explore each packaging family. Select a product for its details, or continue when you are ready.',
+        industries:'Explore the applications shown for each sector. Tell us about your product to discuss a suitable format.',
+        configurator:'See how the model and print affect this illustrative box preview. Your own choices will be restored.',
+        'printing-section':'Printing connects the package with your brand. Discuss artwork and available processes with our team.',
+        manufacturing:'Follow the seven stages shown here, from paper to finished packaging. Continue at your pace.',
+        quality:'These quality considerations help frame a project discussion. Ask our team about your requirements.',
+        technology:'See how the outer liners and the fluted middle layer form corrugated board.',
+        location:'Find us in Béni Tamou, Blida. Open the map when you want directions.',
+        contact:'Describe your project by email, or call our commercial team directly.',
         d1:'Step 1: choose your box model. Watch the live preview change!', d2:'Step 2: type your size in millimetres. I’ll turn the box so you see every side.',
         d3:'Step 3: kraft or white? Single or double wall? See the difference live.', d4:'Step 4: add your print and finish. Your box, your brand.',
         d5:'Step 5: here’s your box unfolded, the flat blank.', d6:'Your box is ready! Copy the details or email them to our team.' },
@@ -45,21 +45,21 @@
       intents:{ boxes:'📦 J’ai besoin de caisses pour mes produits', print:'🎨 Je veux des emballages imprimés à mon image', work:'🏭 Je veux voir comment vous travaillez', look:'👀 Je jette juste un œil' },
       design:'✏️ Concevez votre caisse avec moi', designNote:'Créez-la en 3D en direct, puis copiez ou envoyez-nous les détails.', copyDetails:'Copier les détails', copied:'Copié !', tryIt:'✏️ Concevez votre caisse avec moi', goto:'Ou allez directement à', contact:'Parler à notre équipe',
       email:'Écrire au service commercial', emailNote:'Ouvre votre messagerie. C’est vous qui envoyez le message.', call:'Appeler', whatsapp:'WhatsApp',
-      subject:'Demande d’emballage', next:'Suivant', back:'Précédent', finish:'Terminer', menu:'Menu principal', close:'Fermer',
+      subject:'Demande d’emballage', next:'Suivant', back:'Précédent', finish:'Terminer', menu:'Menu principal', close:'Fermer', repeat:'Revoir toute la visite', viewSection:'Voir cette section', move:'Faites glisser ce message pour le déplacer ; utilisez Alt et les flèches pour ajuster sa position.',
       step:'Étape {n} sur {t}', play:'Lecture automatique', pause:'Pause', endTour:'Quitter la visite',
       end:'Et voilà ! Parlons de votre projet d’emballage ?', restart:'Choisir une autre visite',
       sendDesign:'Envoyer mon design par e-mail', sendNote:'Votre messagerie s’ouvre avec les détails de votre caisse. C’est vous qui l’envoyez.',
       lines:{
-        company:'Voici qui nous sommes. Enchanté !',
-        products:'Voici nos solutions d’emballage. Je vous les montre une par une.',
-        industries:'Quel est votre secteur ? Je les fais défiler.',
-        configurator:'Regardez : je modifie la caisse en direct. À vous ensuite !',
-        'printing-section':'Votre logo sur votre emballage : votre marque prend vie.',
-        manufacturing:'En route ! Parcourons la ligne de production ensemble.',
-        quality:'Voici les points qualité à discuter, un par un.',
-        technology:'Le secret est dans les couches : couverture, cannelure, couverture.',
-        location:'Voici où nous trouver en Algérie.',
-        contact:'Quand vous voulez ! Écrivez ou appelez notre équipe.',
+        company:'Découvrez notre approche de l’emballage, pensée autour du produit et de son parcours.',
+        products:'Explorez chaque famille d’emballages. Consultez les détails avant de poursuivre à votre rythme.',
+        industries:'Découvrez les applications présentées pour chaque secteur. Parlez-nous de votre produit.',
+        configurator:'Observez l’effet du modèle et de l’impression sur cet aperçu illustratif. Vos choix seront rétablis.',
+        'printing-section':'L’impression relie l’emballage à votre marque. Discutez des visuels et des procédés disponibles avec notre équipe.',
+        manufacturing:'Suivez les sept étapes présentées, du papier à l’emballage fini, à votre rythme.',
+        quality:'Ces points de qualité aident à préciser vos besoins. Parlez de vos exigences à notre équipe.',
+        technology:'Découvrez les deux couvertures et la cannelure qui composent le carton ondulé.',
+        location:'Retrouvez-nous à Béni Tamou, Blida. Ouvrez la carte pour obtenir l’itinéraire.',
+        contact:'Décrivez votre projet par e-mail ou appelez directement notre équipe commerciale.',
         d1:'Étape 1 : choisissez votre modèle. Regardez l’aperçu changer en direct !', d2:'Étape 2 : indiquez vos dimensions en millimètres. Je fais tourner la caisse pour voir chaque face.',
         d3:'Étape 3 : kraft ou blanc ? Simple ou double cannelure ? Voyez la différence en direct.', d4:'Étape 4 : ajoutez impression et finition. Votre caisse, votre marque.',
         d5:'Étape 5 : voici votre caisse à plat, le flan découpé.', d6:'Votre caisse est prête ! Copiez les détails ou envoyez-les à notre équipe.' },
@@ -71,21 +71,21 @@
       intents:{ boxes:'📦 أحتاج صناديق لمنتجاتي', print:'🎨 أريد عبوات مطبوعة بعلامتي', work:'🏭 أريد أن أرى طريقة عملكم', look:'👀 أتصفح فقط' },
       design:'✏️ صمّم عبوتك معي', designNote:'اصنعها مباشرة بتقنية ثلاثية الأبعاد، ثم انسخ التفاصيل أو أرسلها إلينا.', copyDetails:'انسخ التفاصيل', copied:'تم النسخ!', tryIt:'✏️ صمّم عبوتك معي', goto:'أو انتقل مباشرة إلى', contact:'تحدث مع فريقنا',
       email:'راسل فريق المبيعات', emailNote:'يفتح تطبيق البريد لديك، وأنت من يرسل الرسالة.', call:'اتصل', whatsapp:'واتساب',
-      subject:'استفسار عن التغليف', next:'التالي', back:'السابق', finish:'إنهاء', menu:'القائمة الرئيسية', close:'إغلاق',
+      subject:'استفسار عن التغليف', next:'التالي', back:'السابق', finish:'إنهاء', menu:'القائمة الرئيسية', close:'إغلاق', repeat:'إعادة الجولة كاملة', viewSection:'عرض هذا القسم', move:'اسحب هذه الرسالة لتحريكها، أو استخدم Alt مع مفاتيح الأسهم لضبط موضعها.',
       step:'المحطة {n} من {t}', play:'تشغيل تلقائي', pause:'إيقاف مؤقت', endTour:'إنهاء الجولة',
       end:'هذا كل شيء! هل نناقش مشروع التغليف الخاص بك؟', restart:'اختر جولة أخرى',
       sendDesign:'أرسل تصميمي بالبريد', sendNote:'يفتح تطبيق البريد مع تفاصيل عبوتك، وأنت من يرسلها.',
       lines:{
-        company:'هذه نحن. تشرفنا بمعرفتك!',
-        products:'إليك حلول التغليف لدينا. سأعرضها عليك واحداً تلو الآخر.',
-        industries:'ما قطاعك؟ دعني أتصفحها لك.',
-        configurator:'شاهد: أغيّر العبوة مباشرة. والآن دورك!',
-        'printing-section':'شعارك على عبوتك: هنا تنبض علامتك بالحياة.',
-        manufacturing:'هيا بنا! لنرافق خط الإنتاج معاً.',
-        quality:'إليك جوانب الجودة التي نناقشها، واحداً تلو الآخر.',
-        technology:'السرّ في الطبقات: طبقة خارجية، تموج، طبقة خارجية.',
-        location:'هنا تجدنا في الجزائر.',
-        contact:'نحن جاهزون متى شئت. راسل فريقنا أو اتصل به!',
+        company:'تعرّف على نهجنا في تصميم التغليف بما يلائم المنتج ورحلته.',
+        products:'استكشف فئات التغليف وتفاصيلها، ثم تابع الجولة بالوتيرة التي تناسبك.',
+        industries:'تعرّف على التطبيقات المعروضة لكل قطاع، وأخبرنا عن منتجك لمناقشة العبوة المناسبة.',
+        configurator:'شاهد تأثير النموذج والطباعة على هذه المعاينة التوضيحية. سنعيد اختياراتك كما كانت.',
+        'printing-section':'تربط الطباعة العبوة بعلامتك. ناقش التصميم والخيارات المتاحة مع فريقنا.',
+        manufacturing:'تابع المراحل السبع المعروضة من الورق إلى العبوة النهائية، على مهل.',
+        quality:'تساعد جوانب الجودة هذه في تحديد احتياجات مشروعك. ناقش متطلباتك مع فريقنا.',
+        technology:'تعرّف على الطبقتين الخارجيتين والطبقة المموجة بينهما.',
+        location:'تجدنا في بني تامو بالبليدة. افتح الخريطة لمعرفة الطريق.',
+        contact:'صف مشروعك عبر البريد الإلكتروني أو اتصل بفريق المبيعات مباشرة.',
         d1:'الخطوة 1: اختر نموذج عبوتك. شاهد المعاينة تتغير مباشرة!', d2:'الخطوة 2: أدخل المقاسات بالمليمتر. سأدير العبوة لترى كل جوانبها.',
         d3:'الخطوة 3: كرافت أم أبيض؟ طبقة واحدة أم طبقتان؟ شاهد الفرق مباشرة.', d4:'الخطوة 4: أضف الطباعة والتشطيب. عبوتك بعلامتك.',
         d5:'الخطوة 5: هذه عبوتك مفرودة، أي القطعة المسطحة قبل الطي.', d6:'عبوتك جاهزة! انسخ التفاصيل أو أرسلها إلى فريقنا.' },
@@ -308,6 +308,7 @@
   const header = byId('site-header');
   let spotSection = null;
   function scrollToEl(target, block) {
+    if (!target) return;
     const hh = header ? header.getBoundingClientRect().height : 0;
     const r = target.getBoundingClientRect();
     let y = r.top + window.scrollY - hh - 12;
@@ -337,7 +338,7 @@
     body.replaceChildren();
     body.appendChild(el('p', 'hrg-say hrg-ask', t.ask));
     if (byId('configurator') && $('#config-cta')) {
-      const d = btn(t.design, 'hrg-design', startDesign);
+      const d = btn(t.design, 'hrg-design', () => startDesign());
       d.appendChild(el('small', 'hrg-note', t.designNote));
       body.appendChild(d);
     }
@@ -357,6 +358,7 @@
     body.replaceChildren();
     body.appendChild(el('p', 'hrg-say', t.end));
     body.appendChild(contactBlock());
+    if (lastTour) body.appendChild(btn(t.repeat, 'hrg-primary hrg-wide', repeatAll));
     body.appendChild(btn(t.restart, 'hrg-link', renderHome));
     announce(t.end);
   }
@@ -377,7 +379,9 @@
   Object.keys(PATHS).forEach(k => { PATHS[k] = PATHS[k].filter(byId); });
 
   const tp = el('div', 'hrg-tour'); tp.hidden = true;
-  const tpBubble = el('p', 'hrg-tbubble');
+  const tpBubble = el('div', 'hrg-tbubble');
+  tpBubble.tabIndex = 0;
+  tpBubble.setAttribute('aria-label', t.move);
   const tpRow = el('div', 'hrg-tour-row');
   const tpBot = bot('hrg-tour-bot');
   const pill = el('div', 'hrg-pill'); pill.setAttribute('role', 'toolbar'); pill.setAttribute('aria-label', t.name);
@@ -385,15 +389,48 @@
   const pCount = el('span', 'hrg-pcount');
   const pNext = btn(rtl ? '‹' : '›', 'hrg-pbtn hrg-pnext hrg-arrow', () => go(idx + 1));
   const pPlay = btn('▶', 'hrg-pbtn hrg-play', () => setPlay(!playing));
+  const pRepeat = btn('↺', 'hrg-pbtn hrg-repeat', repeatAll); pRepeat.setAttribute('aria-label', t.repeat); pRepeat.title = t.repeat;
   const pEnd = btn('✕', 'hrg-pbtn', () => endTour(false)); pEnd.setAttribute('aria-label', t.endTour);
-  pill.append(pBack, pCount, pNext, pPlay, pEnd);
+  pill.append(pBack, pCount, pNext, pPlay, pRepeat, pEnd);
   tpRow.append(tpBot, pill);
   tp.append(tpBubble, tpRow);
   const waves = el('div', 'hrg-waves'); waves.setAttribute('aria-hidden', 'true');
   for (let k = 0; k < 3; k++) waves.appendChild(el('i', ''));
   document.body.append(waves, tp);
 
-  let steps = [], idx = -1, token = 0, playing = false, playTimer = 0, lit = [];
+  let steps = [], idx = -1, token = 0, playing = false, playTimer = 0, lit = [], lastTour = null, looping = false;
+  // The message is visitor-movable without dragging its action buttons.
+  let drag = null, bubbleX = 0, bubbleY = 0;
+  const clampBubble = (x, y) => {
+    const r = tpBubble.getBoundingClientRect();
+    return [Math.max(12 - r.left + bubbleX, Math.min(x, innerWidth - 12 - r.right + bubbleX)),
+      Math.max(12 - r.top + bubbleY, Math.min(y, innerHeight - 12 - r.bottom + bubbleY))];
+  };
+  const moveBubble = (x, y) => {
+    [bubbleX, bubbleY] = clampBubble(x, y);
+    tpBubble.style.setProperty('--hrg-drag-x', bubbleX + 'px');
+    tpBubble.style.setProperty('--hrg-drag-y', bubbleY + 'px');
+  };
+  tpBubble.addEventListener('pointerdown', e => {
+    if (e.target.closest('button,a,input,textarea,select') || e.button !== 0) return;
+    drag = { id:e.pointerId, x:e.clientX, y:e.clientY, bx:bubbleX, by:bubbleY };
+    tpBubble.setPointerCapture(e.pointerId);
+    tpBubble.classList.add('hrg-dragging');
+  });
+  tpBubble.addEventListener('pointermove', e => {
+    if (!drag || drag.id !== e.pointerId) return;
+    moveBubble(drag.bx + e.clientX - drag.x, drag.by + e.clientY - drag.y);
+  });
+  const stopDrag = e => { if (drag && drag.id === e.pointerId) { drag = null; tpBubble.classList.remove('hrg-dragging'); } };
+  tpBubble.addEventListener('pointerup', stopDrag);
+  tpBubble.addEventListener('pointercancel', stopDrag);
+  tpBubble.addEventListener('keydown', e => {
+    if (e.target !== tpBubble || !e.altKey || !/^Arrow(Left|Right|Up|Down)$/.test(e.key)) return;
+    e.preventDefault(); e.stopPropagation();
+    moveBubble(bubbleX + (e.key === 'ArrowLeft' ? -24 : e.key === 'ArrowRight' ? 24 : 0),
+      bubbleY + (e.key === 'ArrowUp' ? -24 : e.key === 'ArrowDown' ? 24 : 0));
+  });
+  window.addEventListener('resize', () => { if (!tp.hidden) moveBubble(bubbleX, bubbleY); }, { passive:true });
   const later = (ms, fn) => { const tk = token; setTimeout(() => { if (tk === token) fn(); }, reduce ? Math.min(ms, 50) : ms); };
   function unlight() {
     lit.forEach(e => e.classList.remove('hrg-lit-title', 'hrg-lit-text', 'hrg-lit-item', 'hrg-pin'));
@@ -435,6 +472,15 @@
     items.forEach((item, i) => later(start + i * gap, () => {
       spot(item, true); fireWaves(item);
       if (fn) fn(item, i);
+      const heading = item.querySelector('h3, h4, strong, b') || item;
+      const title = clean(heading.textContent).slice(0, 85);
+      const detail = item.querySelector('p, small');
+      const sentence = detail && clean(detail.textContent) !== title ? clean(detail.textContent).slice(0, 160) : '';
+      if (title) {
+        const note = el('span', 'hrg-item-note', title + (sentence ? ' — ' + sentence : ''));
+        const prev = $('.hrg-item-note', tpBubble); if (prev) prev.remove();
+        tpBubble.appendChild(note);
+      }
       if (window.innerWidth <= 700) { const r = item.getBoundingClientRect(); if (r.top < 90 || r.bottom > window.innerHeight - 140) scrollToEl(item, 'center'); }
     }));
     return start + items.length * gap + 600;
@@ -449,8 +495,8 @@
   // What Packy does at each stop. Every action works on the page's own elements. Returns its length in ms.
   const ACT = {
     company(s) { lightTitle(s); const cta = $('.text-link, .button', s); if (cta) later(2600, () => { spot(cta); fireWaves(cta); }); return 5200; },
-    products(s) { lightTitle(s); return sequence($$('#product-grid .product-card'), 2200, 1100); },
-    industries(s) { lightTitle(s); return sequence($$('#industry-list button'), 1900, 1200, b => b.click()); },
+    products(s) { lightTitle(s); return sequence($$('#product-grid .product-card'), 2600, 3200); },
+    industries(s) { lightTitle(s); return sequence($$('#industry-list button'), 2400, 3200, b => b.click()); },
     configurator(s) {
       lightTitle(s);
       const style = byId('box-style'), print = byId('printing'), preview = $('.config-preview');
@@ -458,7 +504,7 @@
       later(2300, () => { setSelect(style, 'pizza'); spot(style, true); fireWaves(style); });
       later(3900, () => { setSelect(print, 'mark'); spot(print, true); fireWaves(print); });
       later(5500, () => { setSelect(style, 'gift'); spot(style, true); fireWaves(style); });
-      later(7000, () => { if (preview) { spot(preview, true); fireWaves(preview); } tpBubble.appendChild(btn(t.tryIt, 'hrg-send', startDesign)); });
+      later(7000, () => { if (preview) { spot(preview, true); fireWaves(preview); } tpBubble.appendChild(btn(t.tryIt, 'hrg-send', () => startDesign())); });
       return 9000;
     },
     'printing-section'(s) { lightTitle(s); const img = $('.printing-image', s); later(2600, () => { spot(img); fireWaves(img); }); return 5600; },
@@ -467,8 +513,8 @@
       later(1500, () => { if (window.HRManufacturing) window.HRManufacturing.ride(reduce ? 0 : 7000); });
       return 9000;
     },
-    quality(s) { lightTitle(s); return sequence($$('.quality-list > div', s), 2000, 800); },
-    technology(s) { lightTitle(s); return sequence($$('.board-diagram .board-liner, .board-diagram .board-flute', s), 2200, 1000); },
+    quality(s) { lightTitle(s); return sequence($$('.quality-list > div', s), 2200, 3200); },
+    technology(s) { lightTitle(s); const layers = $$('.tl-label', s); if (layers.length) return sequence(layers, 2400, 3000); return sequence($$('.board-diagram .board-liner, .board-diagram .board-flute', s), 2200, 3200); },
     location(s) {
       lightTitle(s);
       const map = $('.map-panel', s), open = $('.map-open', s);
@@ -554,7 +600,7 @@
       });
     } }
   ];
-  function designStep(d) { d.run(); return 0; }
+  function designStep(d) { d.run(); return d.line === 'd1' ? 8500 : 7500; }
   function sendDesign() {
     const cta = byId('config-cta');
     if (cta) cta.click();
@@ -568,17 +614,34 @@
 
   function setPlay(on) {
     playing = !!on;
+    if (!playing && looping) setLoop(false);
     clearTimeout(playTimer);
     pPlay.textContent = playing ? '❚❚' : '▶';
     pPlay.setAttribute('aria-label', playing ? t.pause : t.play);
     pPlay.setAttribute('aria-pressed', playing ? 'true' : 'false');
     if (playing && idx >= 0) scheduleNext(steps[idx].len || 6000);
   }
-  function scheduleNext(ms) { clearTimeout(playTimer); if (playing) playTimer = setTimeout(() => go(idx + 1), Math.max(4500, ms + 900)); }
+  function scheduleNext(ms) {
+    clearTimeout(playTimer);
+    const current = tpBubble.textContent.length;
+    if (playing) playTimer = setTimeout(() => go(idx + 1), Math.max(8000, ms + 1400, current * 80));
+  }
+  function setLoop(on) {
+    looping = !!on;
+    pRepeat.classList.toggle('is-on', looping);
+    pRepeat.setAttribute('aria-pressed', looping ? 'true' : 'false');
+  }
+  // Repeat all: Packy plays the whole tour automatically and starts it again at the end, until the visitor stops him.
+  function repeatAll() {
+    if (idx >= 0) { const on = !looping; setLoop(on); setPlay(on || playing); if (on && !playing) setPlay(true); return; }
+    if (!lastTour) return;
+    if (lastTour.kind === 'design') startDesign(true); else startTour(lastTour.kind, true);
+    setLoop(true);
+  }
 
   function go(i) {
     if (i < 0) { endTour(false); return; }
-    if (i >= steps.length) { endTour(true); return; }
+    if (i >= steps.length) { if (looping && playing) { i = 0; } else { endTour(true); return; } }
     runCleanups(); token++; idx = i;
     unlight(); waves.classList.remove('go');
     const st = steps[i];
@@ -589,6 +652,7 @@
     pNext.textContent = last ? '✓' : (rtl ? '‹' : '›');
     pNext.setAttribute('aria-label', last ? t.finish : t.next);
     tpBubble.replaceChildren(el('span', '', t.lines[st.line] || ''));
+    moveBubble(bubbleX, bubbleY);
     tpBubble.classList.remove('pop'); void tpBubble.offsetWidth; tpBubble.classList.add('pop');
     let len;
     if (st.design) { highlight(null); len = designStep(st.design); }
@@ -598,16 +662,17 @@
     announce(t.step.replace('{n}', i + 1).replace('{t}', steps.length) + '. ' + (t.lines[st.line] || '') + (c ? ' ' + c.title : ''));
     if (playing) scheduleNext(len);
   }
-  function begin(list, canPlay) {
+  function begin(list, canPlay, auto) {
     close(false);
     steps = list; pPlay.hidden = !canPlay; setPlay(false);
     go(0);
+    if (auto) setPlay(true);
     pNext.focus({ preventScroll: true });
   }
-  function startTour(key) { begin(PATHS[key].map(id => ({ id, line: id })), true); }
-  function startDesign() { begin(DESIGN.map(d => ({ design: d, line: d.line })), false); }
+  function startTour(key, auto = false) { lastTour = { kind:key }; begin(PATHS[key].map(id => ({ id, line:id })), true, auto); }
+  function startDesign(auto = false) { lastTour = { kind:'design' }; begin(DESIGN.map(d => ({ design:d, line:d.line })), true, auto); }
   function endTour(finished) {
-    runCleanups(); token++; setPlay(false);
+    runCleanups(); token++; setLoop(false); setPlay(false);
     idx = -1; unlight(); highlight(null);
     tp.hidden = true; document.body.classList.remove('hrg-touring-mode');
     waves.classList.remove('go');
@@ -622,6 +687,9 @@
     if (e.key === fwd) { e.preventDefault(); go(idx + 1); }
     else if (e.key === bwd) { e.preventDefault(); go(idx - 1); }
     else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); endTour(false); }
+  });
+  document.addEventListener('click', e => {
+    if (idx >= 0 && playing && e.isTrusted && !e.target.closest('.hrg-tour, .hrg-panel')) setPlay(false);
   });
 
   // ---------- open / close ----------
