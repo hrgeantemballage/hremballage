@@ -1,0 +1,41 @@
+/* Footer: 3D social tiles (WhatsApp, Facebook, TikTok) + contact column refinements */
+.social-3d{margin-top:26px}
+.social-title{margin:0 0 14px;font-size:.66rem;font-weight:700;letter-spacing:.22em;color:#8b949a}
+.social-row{display:flex;gap:18px;flex-wrap:wrap;perspective:600px}
+.s3d{--accent:#e6c587;display:flex;flex-direction:column;align-items:center;gap:9px;text-decoration:none;color:#b9b2a6;outline:none;-webkit-tap-highlight-color:transparent}
+.s3d-wa{--accent:#8db889}.s3d-fb{--accent:#4f9ad8}.s3d-tt{--accent:#e62e7b}
+.s3d-tile{position:relative;display:grid;place-items:center;width:62px;height:62px;border-radius:18px;transform-style:preserve-3d;
+  background:linear-gradient(150deg,#2b3034 0%,#15191c 55%,#0d1012 100%);
+  border:1px solid rgba(230,197,135,.35);
+  box-shadow:0 1px 0 rgba(255,255,255,.12) inset,0 -6px 14px rgba(0,0,0,.35) inset,0 5px 0 #07090a,0 5px 0 1px rgba(230,197,135,.18),0 14px 26px rgba(0,0,0,.55),0 0 0 0 var(--accent);
+  transform:rotateX(14deg) translateY(0);animation:s3d-float 4.2s ease-in-out infinite;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s ease,border-color .35s ease}
+.s3d-fb .s3d-tile{animation-delay:-1.4s}.s3d-tt .s3d-tile{animation-delay:-2.8s}
+.s3d-tile svg{width:30px;height:30px;color:var(--accent);filter:drop-shadow(0 2px 0 rgba(0,0,0,.55)) drop-shadow(0 0 8px color-mix(in srgb,var(--accent) 45%,transparent));transform:translateZ(14px);transition:transform .35s ease}
+/* glossy light that passes over the tile */
+.s3d-tile:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.2) 48%,transparent 60%) 0 0/260% 100% no-repeat;animation:s3d-shine 5.5s ease-in-out infinite}
+.s3d-fb .s3d-tile:after{animation-delay:1.8s}.s3d-tt .s3d-tile:after{animation-delay:3.6s}
+/* a soft ring that pulses in the channel's accent */
+.s3d-tile:before{content:"";position:absolute;inset:-4px;border-radius:21px;border:1px solid var(--accent);opacity:0;pointer-events:none;animation:s3d-ring 4.2s ease-out infinite}
+.s3d-fb .s3d-tile:before{animation-delay:1.4s}.s3d-tt .s3d-tile:before{animation-delay:2.8s}
+.s3d-name{font-size:.72rem;font-weight:600;letter-spacing:.04em;transition:color .3s}
+.s3d:hover .s3d-tile,.s3d:focus-visible .s3d-tile{animation-play-state:paused;transform:rotateX(0) rotateY(-14deg) translateY(-6px) scale(1.06);border-color:var(--accent);
+  box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 -6px 14px rgba(0,0,0,.3) inset,0 8px 0 #07090a,0 8px 0 1px color-mix(in srgb,var(--accent) 50%,transparent),0 20px 34px rgba(0,0,0,.6),0 0 26px color-mix(in srgb,var(--accent) 40%,transparent)}
+[dir=rtl] .s3d:hover .s3d-tile,[dir=rtl] .s3d:focus-visible .s3d-tile{transform:rotateX(0) rotateY(14deg) translateY(-6px) scale(1.06)}
+.s3d:hover .s3d-tile svg,.s3d:focus-visible .s3d-tile svg{transform:translateZ(22px) scale(1.08)}
+.s3d:hover .s3d-name,.s3d:focus-visible .s3d-name{color:#fff}
+.s3d:focus-visible .s3d-tile{outline:2px solid #e6c587;outline-offset:5px}
+.s3d:active .s3d-tile{transform:rotateX(8deg) translateY(2px) scale(.98);box-shadow:0 2px 0 #07090a,0 8px 16px rgba(0,0,0,.5)}
+@keyframes s3d-float{0%,100%{transform:rotateX(14deg) translateY(0)}50%{transform:rotateX(8deg) translateY(-5px)}}
+@keyframes s3d-shine{0%,62%{background-position:130% 0}82%,100%{background-position:-40% 0}}
+@keyframes s3d-ring{0%,55%{opacity:0;transform:scale(.92)}65%{opacity:.7}100%{opacity:0;transform:scale(1.22)}}
+
+/* contact column: tidy email break, tappable address, Ask Packy */
+.footer-links a[href^="mailto:"]{overflow-wrap:normal;word-break:normal}
+.footer-map{line-height:1.5}
+.footer-map:hover{color:#fff}
+.footer-packy{display:inline-flex!important;align-items:center;gap:6px;margin-top:4px;color:#e6c587!important}
+.footer-packy:before{content:"";width:8px;height:8px;border-radius:50%;background:#e6c587;box-shadow:0 0 10px rgba(230,197,135,.8)}
+@media (max-width:600px){.social-row{gap:14px}.s3d-tile{width:56px;height:56px;border-radius:16px}.s3d-tile svg{width:27px;height:27px}}
+@media (prefers-reduced-motion:reduce){.s3d-tile,.s3d-tile:after,.s3d-tile:before{animation:none}.s3d-tile{transform:none}.s3d:hover .s3d-tile,.s3d:focus-visible .s3d-tile{transform:translateY(-3px)}}

@@ -319,3 +319,8 @@
   .hrg-design-summary .hrg-tbubble{max-height:min(260px,40dvh)}
 }
 @media (prefers-reduced-motion:reduce){.box-stage.hrg-glide .box3{transition:none}.box-stage.hrg-swap{animation:none}}
+
+/* 2026-09-28: Packy steps aside at the footer; social links in his contact panel */
+.hrg-footer-visible:not(.hrg-open) .hrg-launch{opacity:0;pointer-events:none;visibility:hidden}
+.hrg-social{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hrg-social .hrg-btn{align-items:center;text-align:center}
