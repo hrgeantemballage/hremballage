@@ -566,7 +566,7 @@
 
   // Static GitHub Pages has no form processing. Add a verified HTTPS endpoint, then enable this block.
   const FORM_ENDPOINT = ''; // e.g. your verified Formspree or custom API endpoint
-  const WHATSAPP_NUMBER = ''; // E.164 digits, without + or spaces
+  const WHATSAPP_NUMBER = '213770691631'; // E.164 digits, without + or spaces
   const MAX_ARTWORK_BYTES = 10 * 1024 * 1024;
   const whatsapp = $('#whatsapp-link');
   if (/^\d{8,15}$/.test(WHATSAPP_NUMBER)) { whatsapp.href = `https://wa.me/${WHATSAPP_NUMBER}`; whatsapp.hidden = false; }

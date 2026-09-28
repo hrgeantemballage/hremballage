@@ -19,7 +19,7 @@
       intents:{ boxes:'📦 I need boxes for my products', print:'🎨 I want printed boxes with my brand', work:'🏭 I want to see how you work', look:'👀 Just looking around' },
       design:'✏️ Design your box with me', designNote:'Build it live in 3D, then copy or email the details to us.', copyDetails:'Copy details', copied:'Copied!', tryIt:'✏️ Design your box with me', goto:'Or go straight to', contact:'Talk to our team',
       email:'Email our sales team', emailNote:'Opens your email app. You send the message yourself.', call:'Call', whatsapp:'WhatsApp',
-      subject:'Packaging enquiry', next:'Next', back:'Back', finish:'Finish', menu:'Main menu', close:'Close', repeat:'Repeat all', viewSection:'View this section', move:'Drag this message to move it; use Alt and arrow keys to adjust its position.',
+      subject:'Packaging enquiry', next:'Next', back:'Back', finish:'Finish', menu:'Main menu', close:'Close', contactAsk:'How would you like to reach us?', follow:'Follow us', repeat:'Repeat all', viewSection:'View this section', move:'Drag this message to move it; use Alt and arrow keys to adjust its position.',
       step:'Stop {n} of {t}', play:'Play automatically', pause:'Pause', endTour:'End the tour',
       end:'That’s it! Ready to talk about your packaging?', restart:'Choose another tour',
       sendDesign:'Email my design', sendNote:'Your email app opens with your box details. You send it yourself.',
@@ -45,7 +45,7 @@
       intents:{ boxes:'📦 J’ai besoin de caisses pour mes produits', print:'🎨 Je veux des emballages imprimés à mon image', work:'🏭 Je veux voir comment vous travaillez', look:'👀 Je jette juste un œil' },
       design:'✏️ Concevez votre caisse avec moi', designNote:'Créez-la en 3D en direct, puis copiez ou envoyez-nous les détails.', copyDetails:'Copier les détails', copied:'Copié !', tryIt:'✏️ Concevez votre caisse avec moi', goto:'Ou allez directement à', contact:'Parler à notre équipe',
       email:'Écrire au service commercial', emailNote:'Ouvre votre messagerie. C’est vous qui envoyez le message.', call:'Appeler', whatsapp:'WhatsApp',
-      subject:'Demande d’emballage', next:'Suivant', back:'Précédent', finish:'Terminer', menu:'Menu principal', close:'Fermer', repeat:'Revoir toute la visite', viewSection:'Voir cette section', move:'Faites glisser ce message pour le déplacer ; utilisez Alt et les flèches pour ajuster sa position.',
+      subject:'Demande d’emballage', next:'Suivant', back:'Précédent', finish:'Terminer', menu:'Menu principal', close:'Fermer', contactAsk:'Comment souhaitez-vous nous contacter ?', follow:'Suivez-nous', repeat:'Revoir toute la visite', viewSection:'Voir cette section', move:'Faites glisser ce message pour le déplacer ; utilisez Alt et les flèches pour ajuster sa position.',
       step:'Étape {n} sur {t}', play:'Lecture automatique', pause:'Pause', endTour:'Quitter la visite',
       end:'Et voilà ! Parlons de votre projet d’emballage ?', restart:'Choisir une autre visite',
       sendDesign:'Envoyer mon design par e-mail', sendNote:'Votre messagerie s’ouvre avec les détails de votre caisse. C’est vous qui l’envoyez.',
@@ -71,7 +71,7 @@
       intents:{ boxes:'📦 أحتاج صناديق لمنتجاتي', print:'🎨 أريد عبوات مطبوعة بعلامتي', work:'🏭 أريد أن أرى طريقة عملكم', look:'👀 أتصفح فقط' },
       design:'✏️ صمّم عبوتك معي', designNote:'اصنعها مباشرة بتقنية ثلاثية الأبعاد، ثم انسخ التفاصيل أو أرسلها إلينا.', copyDetails:'انسخ التفاصيل', copied:'تم النسخ!', tryIt:'✏️ صمّم عبوتك معي', goto:'أو انتقل مباشرة إلى', contact:'تحدث مع فريقنا',
       email:'راسل فريق المبيعات', emailNote:'يفتح تطبيق البريد لديك، وأنت من يرسل الرسالة.', call:'اتصل', whatsapp:'واتساب',
-      subject:'استفسار عن التغليف', next:'التالي', back:'السابق', finish:'إنهاء', menu:'القائمة الرئيسية', close:'إغلاق', repeat:'إعادة الجولة كاملة', viewSection:'عرض هذا القسم', move:'اسحب هذه الرسالة لتحريكها، أو استخدم Alt مع مفاتيح الأسهم لضبط موضعها.',
+      subject:'استفسار عن التغليف', next:'التالي', back:'السابق', finish:'إنهاء', menu:'القائمة الرئيسية', close:'إغلاق', contactAsk:'كيف تفضّل التواصل معنا؟', follow:'تابعنا', repeat:'إعادة الجولة كاملة', viewSection:'عرض هذا القسم', move:'اسحب هذه الرسالة لتحريكها، أو استخدم Alt مع مفاتيح الأسهم لضبط موضعها.',
       step:'المحطة {n} من {t}', play:'تشغيل تلقائي', pause:'إيقاف مؤقت', endTour:'إنهاء الجولة',
       end:'هذا كل شيء! هل نناقش مشروع التغليف الخاص بك؟', restart:'اختر جولة أخرى',
       sendDesign:'أرسل تصميمي بالبريد', sendNote:'يفتح تطبيق البريد مع تفاصيل عبوتك، وأنت من يرسلها.',
@@ -342,7 +342,18 @@
     if (wa && !wa.hidden && /^https:\/\/wa\.me\/\d{8,15}$/.test(wa.href)) {
       const a = link(t.whatsapp, wa.href, ''); a.target = '_blank'; a.rel = 'noopener noreferrer'; box.appendChild(a);
     }
+    const socials = $$('.social-3d a.s3d:not(.s3d-wa)');
+    if (socials.length) {
+      const row = el('div', 'hrg-social');
+      socials.forEach(s => { const a = link(clean($('.s3d-name', s).textContent), s.href, ''); a.target = '_blank'; a.rel = 'noopener noreferrer'; row.appendChild(a); });
+      box.append(el('p', 'hrg-label', t.follow), row);
+    }
     return box;
+  }
+  function renderContact() {
+    highlight(null);
+    body.replaceChildren(el('p', 'hrg-say hrg-ask', t.contactAsk), contactBlock());
+    const back = btn(t.menu, 'hrg-link', renderHome); body.appendChild(back);
   }
 
   function renderHome() {
@@ -751,7 +762,7 @@
     launch.setAttribute('aria-expanded', 'true');
     if (stage) stage.setAttribute('aria-expanded', 'true');
     document.body.classList.add('hrg-open');
-    if (view === 'end') renderEnd(); else renderHome();
+    if (view === 'end') renderEnd(); else if (view === 'contact') renderContact(); else renderHome();
     place(anchor);
     requestAnimationFrame(() => panel.classList.add('hrg-in'));
     title.focus({ preventScroll: true });
@@ -773,6 +784,15 @@
     }
   }
   launch.addEventListener('click', () => (panel.hidden ? open(null) : close()));
+  document.addEventListener('click', e => {
+    const opener = e.target.closest && e.target.closest('[data-hrg-open]');
+    if (!opener) return;
+    e.preventDefault();
+    if (idx >= 0) endTour(false);
+    open(null, opener.getAttribute('data-hrg-open'));
+  });
+  const foot = $('footer');
+  if (foot && 'IntersectionObserver' in window) new IntersectionObserver(([e]) => document.body.classList.toggle('hrg-footer-visible', e.isIntersecting), { threshold: 0.05 }).observe(foot);
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) { e.preventDefault(); e.stopPropagation(); close(); } });
   if (rtl) panel.dir = 'rtl';
 })();
