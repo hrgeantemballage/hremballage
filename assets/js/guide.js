@@ -310,9 +310,21 @@
   function scrollToEl(target, block) {
     if (!target) return;
     const hh = header ? header.getBoundingClientRect().height : 0;
+    const designTour = document.body.classList.contains('hrg-design-tour');
+    // The live preview stays docked while the visitor reads the relevant control.
+    // Scrolling it into the middle of the screen would push that control away.
+    if (designTour && target.closest('.config-preview-col')) return;
     const r = target.getBoundingClientRect();
     let y = r.top + window.scrollY - hh - 12;
-    if (block === 'center') y = r.top + window.scrollY - Math.max(hh + 12, (window.innerHeight - r.height) / 2);
+    if (designTour) {
+      const preview = $('.config-preview');
+      const previewCol = $('.config-preview-col');
+      const reserve = window.innerWidth <= 700
+        ? (previewCol ? parseFloat(getComputedStyle(previewCol).top) || 180 : 180)
+          + (preview ? preview.getBoundingClientRect().height : 220) + 22
+        : hh + 154;
+      y = r.top + window.scrollY - reserve;
+    } else if (block === 'center') y = r.top + window.scrollY - Math.max(hh + 12, (window.innerHeight - r.height) / 2);
     window.scrollTo({ top: Math.max(0, y), behavior: reduce ? 'auto' : 'smooth' });
   }
   function highlight(section) {
@@ -528,16 +540,24 @@
   // "Design your box with me": Packy demonstrates on the live preview, then hands control back to the visitor.
   const views = () => $$('.config-views button');
   const boxStage = () => $('.box-stage');
+  function glide(ms) { // the preview eases between Packy's moves instead of jumping
+    const st = boxStage(); if (!st || reduce) return;
+    st.classList.add('hrg-glide');
+    clearTimeout(glide.t); glide.t = setTimeout(() => st.classList.remove('hrg-glide'), ms);
+    cleanups.push(() => st.classList.remove('hrg-glide'));
+  }
   function turn(deg, stepMs) { // rotates the live 3D preview through the site's own keyboard control
     const st = boxStage(); if (!st) return;
-    const n = Math.round(Math.abs(deg) / 10), key = deg > 0 ? 'ArrowRight' : 'ArrowLeft';
-    for (let i = 0; i < n; i++) later(i * (stepMs || 45), () => st.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true })));
+    const n = Math.round(Math.abs(deg) / 10), key = deg > 0 ? 'ArrowRight' : 'ArrowLeft', gap = stepMs || 45;
+    later(0, () => glide(n * gap + 1200));
+    for (let i = 0; i < n; i++) later(i * gap, () => st.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true })));
   }
-  function tilt(steps) { const st = boxStage(); if (st) for (let i = 0; i < Math.abs(steps); i++) later(i * 60, () => st.dispatchEvent(new KeyboardEvent('keydown', { key: steps > 0 ? 'ArrowDown' : 'ArrowUp', bubbles: true }))); }
+  function tilt(steps) { const st = boxStage(); if (!st) return; later(0, () => glide(Math.abs(steps) * 260 + 1200)); for (let i = 0; i < Math.abs(steps); i++) later(i * 260, () => st.dispatchEvent(new KeyboardEvent('keydown', { key: steps > 0 ? 'ArrowDown' : 'ArrowUp', bubbles: true }))); }
   function showView(flat) { const v = views(); const b = flat ? v[1] : v[0]; if (b) b.click(); }
   function resetView() { const r = $('.config-views__reset'); if (r) r.click(); }
   // try an option on the preview, then give the visitor's own choice back
   let cleanups = [];
+  function swap() { const st = boxStage(); if (!st || reduce) return; st.classList.remove('hrg-swap'); void st.offsetWidth; st.classList.add('hrg-swap'); }
   function runCleanups() { const c = cleanups; cleanups = []; c.forEach(fn => fn()); }
   function tryOption(sel, values, start, gap) {
     const e = byId(sel); if (!e) return start;
@@ -545,46 +565,46 @@
     let changed = false;
     const restore = () => { if (changed) { changed = false; setSelect(e, mine); } };
     cleanups.push(restore); // the visitor's own choice always comes back, even if they skip ahead
-    values.forEach((v, i) => later(start + i * gap, () => { changed = true; setSelect(e, v); spot(e, true); fireWaves(e); }));
+    values.forEach((v, i) => later(start + i * gap, () => { changed = true; swap(); setSelect(e, v); spot(e, true); fireWaves(e); }));
     later(start + values.length * gap, restore);
     return start + values.length * gap + 300;
   }
   function focusPreview() {
     const p = $('.config-preview');
-    if (p && window.innerWidth <= 700) scrollToEl(p, 'center');
+    if (p && window.innerWidth <= 700 && !document.body.classList.contains('hrg-design-tour')) scrollToEl(p, 'center');
     return p;
   }
   const DESIGN = [
     { line: 'd1', run() {
       const style = byId('box-style'); if (style) { scrollToEl(style, 'center'); later(500, () => { spot(style); fireWaves(style); }); }
       later(1300, focusPreview);
-      tryOption('box-style', ['pizza', 'cake', 'gift'], 1700, 1300);
-      later(5900, () => { if (style) { scrollToEl(style, 'center'); spot(style, true); } });
+      const shown = tryOption('box-style', ['dates', 'cosmetics', 'produce'], 1700, 3400);
+      later(shown, () => { if (style) spot(style, true); });
     } },
     { line: 'd2', run() {
       const dims = $('.dimension-fields'); if (dims) { scrollToEl(dims, 'center'); later(500, () => { spot(dims); fireWaves(dims); }); }
       later(1400, () => { focusPreview(); showView(false); spot($('.config-preview')); });
-      later(1900, () => turn(360, 40));
-      later(3600, () => tilt(-3));
-      later(4600, () => { resetView(); if (dims) scrollToEl(dims, 'center'); });
+      later(1900, () => turn(360, 190));
+      later(9000, () => tilt(-2));
+      later(10400, () => { glide(1400); resetView(); if (dims) spot(dims, true); });
     } },
     { line: 'd3', run() {
       const board = byId('board'); if (board) { scrollToEl(board, 'center'); later(500, () => { spot(board); fireWaves(board); }); }
       later(1200, focusPreview);
-      const n = tryOption('board', ['white'], 1600, 1600);
-      tryOption('flute', ['double'], n + 200, 1800);
-      later(n + 2400, () => { if (board) scrollToEl(board, 'center'); });
+      const n = tryOption('board', ['white'], 1600, 2600);
+      tryOption('flute', ['double'], n + 200, 2800);
+      later(n + 2400, () => { if (board) spot(board, true); });
     } },
     { line: 'd4', run() {
       const pr = byId('printing'); if (pr) { scrollToEl(pr, 'center'); later(500, () => { spot(pr); fireWaves(pr); }); }
       later(1200, focusPreview);
-      const n = tryOption('printing', ['mark', 'graphic'], 1600, 1500);
-      later(n + 300, () => { if (pr) scrollToEl(pr, 'center'); spot(byId('finishing')); });
+      const n = tryOption('printing', ['mark', 'graphic'], 1600, 2800);
+      later(n + 300, () => { spot(byId('finishing')); });
     } },
     { line: 'd5', run() {
       const p = $('.config-preview'); if (p) { scrollToEl(p, 'center'); later(500, () => { spot(p); fireWaves(p); }); }
-      later(900, () => showView(true));
-      later(4200, () => showView(false));
+      later(1200, () => { swap(); showView(true); });
+      later(5600, () => { swap(); showView(false); });
     } },
     { line: 'd6', run() {
       const cta = byId('config-cta');
@@ -600,7 +620,8 @@
       });
     } }
   ];
-  function designStep(d) { d.run(); return d.line === 'd1' ? 8500 : 7500; }
+  const DESIGN_MS = { d1: 13000, d2: 12500, d3: 9000, d4: 8500, d5: 7000, d6: 9000 };
+  function designStep(d) { d.run(); return DESIGN_MS[d.line] || 8000; }
   function sendDesign() {
     const cta = byId('config-cta');
     if (cta) cta.click();
@@ -646,6 +667,12 @@
     unlight(); waves.classList.remove('go');
     const st = steps[i];
     tp.hidden = false; document.body.classList.add('hrg-touring-mode');
+    document.body.classList.toggle('hrg-design-tour', !!st.design);
+    document.body.classList.toggle('hrg-design-summary', st.line === 'd6');
+    if (st.design) requestAnimationFrame(() => {
+      const r = tpBubble.getBoundingClientRect();
+      if (r.height) document.body.style.setProperty('--hrg-dock', Math.round(r.bottom + 8) + 'px');
+    });
     pCount.textContent = (i + 1) + '/' + steps.length;
     pCount.setAttribute('aria-label', t.step.replace('{n}', i + 1).replace('{t}', steps.length));
     const last = i === steps.length - 1;
@@ -674,7 +701,7 @@
   function endTour(finished) {
     runCleanups(); token++; setLoop(false); setPlay(false);
     idx = -1; unlight(); highlight(null);
-    tp.hidden = true; document.body.classList.remove('hrg-touring-mode');
+    tp.hidden = true; document.body.classList.remove('hrg-touring-mode', 'hrg-design-tour', 'hrg-design-summary');
     waves.classList.remove('go');
     if (window.HRManufacturing) window.HRManufacturing.ride(-1);
     if (finished) open(null, 'end'); else launch.focus({ preventScroll: true });
