@@ -539,6 +539,12 @@
 
   // "Design your box with me": Packy demonstrates on the live preview, then hands control back to the visitor.
   const views = () => $$('.config-views button');
+  let designInitialView = null;
+  let userChangedView = false;
+  // Programmatic demonstrations must not overwrite a view the visitor chose.
+  document.addEventListener('click', e => {
+    if (idx >= 0 && steps[idx] && steps[idx].design && e.isTrusted && e.target.closest('.config-views button')) userChangedView = true;
+  });
   const boxStage = () => $('.box-stage');
   function glide(ms) { // the preview eases between Packy's moves instead of jumping
     const st = boxStage(); if (!st || reduce) return;
@@ -576,6 +582,7 @@
   }
   const DESIGN = [
     { line: 'd1', run() {
+      if (!userChangedView) showView(false);
       const style = byId('box-style'); if (style) { scrollToEl(style, 'center'); later(500, () => { spot(style); fireWaves(style); }); }
       later(1300, focusPreview);
       const shown = tryOption('box-style', ['dates', 'cosmetics', 'produce'], 1700, 3400);
@@ -583,7 +590,7 @@
     } },
     { line: 'd2', run() {
       const dims = $('.dimension-fields'); if (dims) { scrollToEl(dims, 'center'); later(500, () => { spot(dims); fireWaves(dims); }); }
-      later(1400, () => { focusPreview(); showView(false); spot($('.config-preview')); });
+      later(1400, () => { focusPreview(); if (!userChangedView) showView(false); spot($('.config-preview')); });
       later(1900, () => turn(360, 190));
       later(9000, () => tilt(-2));
       later(10400, () => { glide(1400); resetView(); if (dims) spot(dims, true); });
@@ -603,8 +610,8 @@
     } },
     { line: 'd5', run() {
       const p = $('.config-preview'); if (p) { scrollToEl(p, 'center'); later(500, () => { spot(p); fireWaves(p); }); }
-      later(1200, () => { swap(); showView(true); });
-      later(5600, () => { swap(); showView(false); });
+      later(1200, () => { if (!userChangedView) { swap(); showView(true); } });
+      later(5600, () => { if (!userChangedView) { swap(); showView(false); } });
     } },
     { line: 'd6', run() {
       const cta = byId('config-cta');
@@ -697,9 +704,17 @@
     pNext.focus({ preventScroll: true });
   }
   function startTour(key, auto = false) { lastTour = { kind:key }; begin(PATHS[key].map(id => ({ id, line:id })), true, auto); }
-  function startDesign(auto = false) { lastTour = { kind:'design' }; begin(DESIGN.map(d => ({ design:d, line:d.line })), true, auto); }
+  function startDesign(auto = false) {
+    lastTour = { kind:'design' };
+    designInitialView = views().findIndex(b => b.getAttribute('aria-pressed') === 'true');
+    userChangedView = false;
+    begin(DESIGN.map(d => ({ design:d, line:d.line })), true, auto);
+  }
   function endTour(finished) {
     runCleanups(); token++; setLoop(false); setPlay(false);
+    if (designInitialView >= 0 && !userChangedView) showView(designInitialView === 1);
+    designInitialView = null;
+    userChangedView = false;
     idx = -1; unlight(); highlight(null);
     tp.hidden = true; document.body.classList.remove('hrg-touring-mode', 'hrg-design-tour', 'hrg-design-summary');
     waves.classList.remove('go');
