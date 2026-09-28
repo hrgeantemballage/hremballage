@@ -1,0 +1,47 @@
+/* Section 09: small looping illustrations above each principle */
+.eco-ready .principle-grid h3{margin-top:18px}
+.eco-ico{width:120px;height:80px;margin-top:18px;margin-inline-start:-6px}
+.eco-ico svg{display:block;width:100%;height:100%;overflow:visible}
+.eco-ico *{transform-box:fill-box}
+.eco-ico .e-loop,.eco-ico .e-core,.eco-ico .e-extra,.eco-ico .e-prod,.eco-ico .e-tick,.eco-ico .e-fit,.eco-ico .e-scraps rect,.eco-ico .e-load,.eco-ico .e-b{animation-duration:6s;animation-iteration-count:infinite;animation-timing-function:ease-in-out;animation-play-state:paused}
+.eco-run .eco-ico *{animation-play-state:running}
+.principle-grid article:hover .eco-ico{filter:brightness(1.15)}
+
+/* 01 recyclability */
+.eco-1 .e-loop{transform-origin:center;animation-name:eco-spin;animation-timing-function:linear;animation-duration:8s}
+.eco-1 .e-core{transform-origin:center;animation-name:eco-core}
+@keyframes eco-spin{to{transform:rotate(360deg)}}
+@keyframes eco-core{0%,100%{transform:scale(1)}40%{transform:scale(1,.35)}55%{transform:scale(1,.35)}80%{transform:scale(1)}}
+
+/* 02 material optimization */
+.eco-2 .e-extra{animation-name:eco-extra}
+.eco-2 .e-prod{animation-name:eco-prod}
+.eco-2 .e-tick,.eco-3 .e-tick{transform-origin:center;animation-name:eco-tick}
+@keyframes eco-extra{0%,30%{opacity:1;transform:none}48%,88%{opacity:0;transform:translateX(18px)}100%{opacity:1;transform:none}}
+@keyframes eco-prod{0%{transform:translateY(-26px);opacity:0}14%,30%{transform:translateY(0);opacity:1}50%,88%{transform:translateY(12px);opacity:1}100%{transform:translateY(12px);opacity:0}}
+@keyframes eco-tick{0%,52%{opacity:0;transform:scale(.5)}60%,86%{opacity:1;transform:scale(1)}96%,100%{opacity:0;transform:scale(.8)}}
+
+/* 03 waste reduction */
+.eco-3 .e-fit{transform-origin:center;animation-name:eco-fit}
+.eco-3 .e-scraps rect{animation-name:eco-scrap;animation-fill-mode:both;opacity:0}
+@keyframes eco-fit{0%,16%{transform:scale(1)}46%,88%{transform:scale(.5,.46)}100%{transform:scale(1)}}
+@keyframes eco-scrap{0%,22%{opacity:0;transform:translateY(0)}30%{opacity:1}58%{opacity:0;transform:translateY(16px) rotate(35deg)}100%{opacity:0}}
+.eco-3 .e-s2,.eco-3 .e-s4{animation-delay:.25s}
+
+/* 04 efficient design */
+.eco-4 .e-load{animation-name:eco-go}
+@keyframes eco-go{0%,78%{transform:none;opacity:1}92%{transform:translateX(26px);opacity:0}100%{transform:none;opacity:0}}
+@keyframes eco-b1{0%,9%{transform:translateY(-46px);opacity:0}11%{opacity:1}16%{transform:translateY(0);opacity:1}100%{transform:translateY(0);opacity:1}}
+.eco-4 .e-b1{animation-name:eco-b1}
+@keyframes eco-b2{0%,17%{transform:translateY(-46px);opacity:0}19%{opacity:1}24%{transform:translateY(0);opacity:1}100%{transform:translateY(0);opacity:1}}
+.eco-4 .e-b2{animation-name:eco-b2}
+@keyframes eco-b3{0%,25%{transform:translateY(-46px);opacity:0}27%{opacity:1}32%{transform:translateY(0);opacity:1}100%{transform:translateY(0);opacity:1}}
+.eco-4 .e-b3{animation-name:eco-b3}
+@keyframes eco-b4{0%,33%{transform:translateY(-46px);opacity:0}35%{opacity:1}40%{transform:translateY(0);opacity:1}100%{transform:translateY(0);opacity:1}}
+.eco-4 .e-b4{animation-name:eco-b4}
+@keyframes eco-b5{0%,41%{transform:translateY(-46px);opacity:0}43%{opacity:1}48%{transform:translateY(0);opacity:1}100%{transform:translateY(0);opacity:1}}
+.eco-4 .e-b5{animation-name:eco-b5}
+@keyframes eco-b6{0%,49%{transform:translateY(-46px);opacity:0}51%{opacity:1}56%{transform:translateY(0);opacity:1}100%{transform:translateY(0);opacity:1}}
+.eco-4 .e-b6{animation-name:eco-b6}
+
+@media (prefers-reduced-motion:reduce){.eco-ico *{animation:none!important}.eco-2 .e-extra{opacity:0}.eco-2 .e-prod{transform:translateY(12px)}.eco-3 .e-fit{transform:scale(.5,.46)}.eco-3 .e-scraps{display:none}}
