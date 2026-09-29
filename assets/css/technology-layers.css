@@ -5,3 +5,13 @@
 .board-diagram.tl-on .board-labels span{flex:1;text-align:center;padding:9px 6px;border-top:2px solid rgba(255,255,255,.14);color:#8b949a;
   transition:color .4s,border-color .4s}
 .board-diagram.tl-on .board-labels span.tl-now{color:#fff;border-top-color:#e6c587}
+
+/* 2026-09-29: keep section 07 inside narrow screens in every language (long French labels and title) */
+.technology-grid>*{min-width:0}
+.board-diagram.tl-on .board-labels span{min-width:0;overflow-wrap:anywhere}
+@media (max-width:600px){
+  #technology h2{font-size:clamp(2.1rem,10.4vw,3rem);overflow-wrap:break-word}
+  .board-diagram.tl-on{padding:20px 14px 16px}
+  .board-diagram.tl-on .board-labels{gap:6px}
+  .board-diagram.tl-on .board-labels span{font-size:.6rem;letter-spacing:.08em;padding:8px 2px}
+}
