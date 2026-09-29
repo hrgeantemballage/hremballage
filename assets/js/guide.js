@@ -392,7 +392,10 @@
     const h = $('h2', target);
     if (h) { if (!h.hasAttribute('tabindex')) h.tabIndex = -1; setTimeout(() => h.focus({ preventScroll: true }), reduce ? 0 : 450); }
   }
-  // ---------- tours: Packy travels, sends waves, lights up the page and demonstrates it ----------
+  // ---------- guided tours (rebuilt 2026-09-29) ----------
+  // One controller, one card. Every timer goes through `sched` so Pause, Next and Close cancel everything.
+  // The visitor's configuration is never changed except by an explicit "Watch a demonstration",
+  // which snapshots it first and restores it unless the visitor interacts in the meantime.
   const PATHS = {
     boxes: ['products', 'industries', 'configurator', 'contact'],
     print: ['printing-section', 'configurator', 'contact'],
@@ -401,418 +404,534 @@
   };
   Object.keys(PATHS).forEach(k => { PATHS[k] = PATHS[k].filter(byId); });
 
-  const tp = el('div', 'hrg-tour'); tp.hidden = true;
-  const tpBubble = el('div', 'hrg-tbubble');
-  tpBubble.tabIndex = 0;
-  tpBubble.setAttribute('aria-label', t.move);
-  const tpRow = el('div', 'hrg-tour-row');
-  // Bubble text lives in its own area so it can be shortened on phones ("More" / "Less").
-  let tbText = el('div', 'hrg-tb-text');
-  const tbMore = el('button', 'hrg-tb-more', t.more); tbMore.type = 'button'; tbMore.hidden = true;
-  tbMore.addEventListener('click', () => {
-    const open = !tpBubble.classList.contains('is-open');
-    tpBubble.classList.toggle('is-open', open);
-    tbMore.textContent = open ? t.less : t.more;
-    tbMore.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-  function fitText() {
-    requestAnimationFrame(() => {
-      if (tpBubble.classList.contains('is-open')) { tbMore.hidden = false; return; }
-      tbMore.hidden = !(tbText.scrollHeight > tbText.clientHeight + 2);
-    });
-  }
-  function setNote(text) {
-    const prev = $('.hrg-item-note', tbText); if (prev) prev.remove();
-    if (text) {
-      // on phones the item being shown comes first; Packy's introduction stays one tap away ("More")
-      const n = el('span', 'hrg-item-note', text);
-      if (window.innerWidth <= 700 && !document.body.classList.contains('hrg-design-tour')) { n.classList.add('is-first'); tbText.prepend(n); } else tbText.appendChild(n);
+  const TT = {
+    en: {
+      titles: { company:'Who we are', products:'Packaging solutions', industries:'Industries we serve', configurator:'Live box preview', 'printing-section':'Printing and branding', manufacturing:'Manufacturing journey', quality:'Quality points', technology:'Corrugated board', location:'Where we are', contact:'Start your project' },
+      tries: { company:'Read how we work, then use “Discuss your requirements” when you are ready.', products:'Open a product card to see what it covers.', industries:'Tap a sector to see the matching packaging application.', configurator:'Change the box model and watch the preview follow, or let me guide you step by step.', 'printing-section':'Keep your logo and artwork files ready to share when you contact us.', manufacturing:'Watch the line: each stage lights up as I pass it.', quality:'Note the points that matter most for your product and mention them in your request.', technology:'Watch the layers come together in the animation.', location:'Open the map for directions to Béni Tamou.', contact:'Email or call our team. Your email app opens with a ready subject.' },
+      design: {
+        d1:['Box model','Choose the model closest to your product. The 3D preview switches to that shape.','Open the list and pick your model.'],
+        d2:['Size','Enter length, width and height in millimetres, or pick an example size. The preview follows your numbers.','Type your length in millimetres.'],
+        d3:['Board and flute','Choose natural kraft or a white surface, and a flute profile. Flute profiles must be confirmed with HR Géant Emballage.','Switch between kraft and white and compare.'],
+        d4:['Printing and finish','Add printing and choose a finish. The preview shows where the print goes; artwork is agreed with our team.','Pick a printing option.'],
+        d5:['Flat blank','Flat blank shows your box unfolded, as the cut sheet before folding.','Tap “Flat blank”, then “3D box” to come back.'],
+        d6:['Your box details','Your choices are summarised as a specification you can copy or email to our sales team.','Tap “Show my box details”.']
+      },
+      ui: { more:'More details', less:'Less', options:'More options', play:'Play automatically', pause:'Pause', repeatOn:'Repeat all: on', repeatOff:'Repeat all: off', reset:'Reset position', showMe:'Show me: {x}', seeResult:'See result', back:'Back to option', demo:'Watch a demonstration', demoNote:'Your choices are saved first and come back after.', stopDemo:'Stop demonstration', move:'Move Packy. Drag, or use the arrow keys.', of:'{n} of {t}', next:'Next', prev:'Previous step', close:'Close the tour', finish:'Finish', design:'Design your box', showSpec:'Show my box details', now:'Now: {x}' }
+    },
+    fr: {
+      titles: { company:'Qui nous sommes', products:'Solutions d’emballage', industries:'Secteurs servis', configurator:'Aperçu 3D en direct', 'printing-section':'Impression et marque', manufacturing:'Parcours de fabrication', quality:'Points qualité', technology:'Le carton ondulé', location:'Où nous trouver', contact:'Lancer votre projet' },
+      tries: { company:'Découvrez notre approche, puis utilisez « Discuter de vos besoins » quand vous êtes prêt.', products:'Ouvrez une fiche produit pour voir ce qu’elle couvre.', industries:'Touchez un secteur pour voir l’application d’emballage correspondante.', configurator:'Changez le modèle et regardez l’aperçu suivre, ou laissez-moi vous guider étape par étape.', 'printing-section':'Préparez votre logo et vos fichiers à partager lorsque vous nous contactez.', manufacturing:'Regardez la ligne : chaque étape s’allume à mon passage.', quality:'Notez les points importants pour votre produit et mentionnez-les dans votre demande.', technology:'Regardez les couches s’assembler dans l’animation.', location:'Ouvrez la carte pour l’itinéraire vers Béni Tamou.', contact:'Écrivez ou appelez notre équipe. Votre messagerie s’ouvre avec un objet prêt.' },
+      design: {
+        d1:['Modèle de caisse','Choisissez le modèle le plus proche de votre produit. L’aperçu 3D prend cette forme.','Ouvrez la liste et choisissez votre modèle.'],
+        d2:['Dimensions','Saisissez longueur, largeur et hauteur en millimètres, ou choisissez un format exemple. L’aperçu suit vos valeurs.','Saisissez votre longueur en millimètres.'],
+        d3:['Carton et cannelure','Choisissez kraft naturel ou surface blanche, et un profil de cannelure. Les profils de cannelure doivent être confirmés avec HR Géant Emballage.','Passez du kraft au blanc et comparez.'],
+        d4:['Impression et finition','Ajoutez une impression et une finition. L’aperçu montre l’emplacement de l’impression ; la maquette est validée avec notre équipe.','Choisissez une option d’impression.'],
+        d5:['Mise à plat','La mise à plat montre votre caisse dépliée, comme le flan découpé avant pliage.','Touchez « Mise à plat », puis « Boîte 3D » pour revenir.'],
+        d6:['Détails de votre caisse','Vos choix sont résumés dans une fiche que vous pouvez copier ou envoyer par e-mail à notre service commercial.','Touchez « Afficher les détails de ma caisse ».']
+      },
+      ui: { more:'Plus de détails', less:'Moins', options:'Plus d’options', play:'Lecture automatique', pause:'Pause', repeatOn:'Tout répéter : activé', repeatOff:'Tout répéter : désactivé', reset:'Réinitialiser la position', showMe:'Montre-moi : {x}', seeResult:'Voir le résultat', back:'Retour à l’option', demo:'Voir une démonstration', demoNote:'Vos choix sont enregistrés avant et rétablis après.', stopDemo:'Arrêter la démonstration', move:'Déplacer Packy. Glissez, ou utilisez les flèches du clavier.', of:'{n} sur {t}', next:'Suivant', prev:'Étape précédente', close:'Fermer la visite', finish:'Terminer', design:'Concevez votre caisse', showSpec:'Afficher les détails de ma caisse', now:'En ce moment : {x}' }
+    },
+    ar: {
+      titles: { company:'من نحن', products:'حلول التغليف', industries:'القطاعات التي نخدمها', configurator:'معاينة العبوة المباشرة', 'printing-section':'الطباعة والعلامة', manufacturing:'رحلة التصنيع', quality:'جوانب الجودة', technology:'الكرتون المموج', location:'أين نحن', contact:'ابدأ مشروعك' },
+      tries: { company:'اقرأ عن طريقة عملنا، ثم استخدم زر مناقشة احتياجاتك عندما تكون جاهزاً.', products:'افتح بطاقة منتج لترى ما تشمله.', industries:'اضغط على قطاع لترى تطبيق التغليف المناسب له.', configurator:'غيّر نموذج العبوة وشاهد المعاينة تتبعك، أو دعني أرشدك خطوة بخطوة.', 'printing-section':'جهّز شعارك وملفات التصميم لمشاركتها عند التواصل معنا.', manufacturing:'شاهد الخط: كل مرحلة تضيء عندما أمر بها.', quality:'دوّن الجوانب الأهم لمنتجك واذكرها في طلبك.', technology:'شاهد الطبقات تتجمع في الرسم المتحرك.', location:'افتح الخريطة للحصول على الاتجاهات إلى بني تامو.', contact:'راسل فريقنا أو اتصل به. يفتح تطبيق البريد مع عنوان جاهز.' },
+      design: {
+        d1:['نموذج العبوة','اختر النموذج الأقرب إلى منتجك، وستتخذ المعاينة ثلاثية الأبعاد هذا الشكل.','افتح القائمة واختر نموذجك.'],
+        d2:['المقاسات','أدخل الطول والعرض والارتفاع بالمليمتر أو اختر مقاساً مثالياً، وستتبع المعاينة أرقامك.','اكتب الطول بالمليمتر.'],
+        d3:['الكرتون والتموج','اختر كرافت طبيعياً أو سطحاً أبيض ونوع التموج. يجب تأكيد نوع التموج مع HR Géant Emballage.','بدّل بين الكرافت والأبيض وقارن.'],
+        d4:['الطباعة والتشطيب','أضف طباعة واختر تشطيباً. تُظهر المعاينة موضع الطباعة، ويُتفق على التصميم مع فريقنا.','اختر خيار طباعة.'],
+        d5:['القطعة المسطحة','تُظهر القطعة المسطحة عبوتك مفرودة كما تُقص قبل الطي.','اضغط على زر العرض المسطح، ثم على زر العرض ثلاثي الأبعاد للعودة.'],
+        d6:['تفاصيل عبوتك','تُلخَّص اختياراتك في مواصفات يمكنك نسخها أو إرسالها بالبريد إلى فريق المبيعات.','اضغط على «اعرض تفاصيل عبوتي».']
+      },
+      ui: { more:'المزيد من التفاصيل', less:'أقل', options:'خيارات إضافية', play:'تشغيل تلقائي', pause:'إيقاف مؤقت', repeatOn:'تكرار الكل: مفعّل', repeatOff:'تكرار الكل: متوقف', reset:'إعادة ضبط الموضع', showMe:'أرني: {x}', seeResult:'عرض النتيجة', back:'العودة إلى الخيار', demo:'شاهد عرضاً توضيحياً', demoNote:'تُحفظ اختياراتك أولاً ثم تُعاد بعد العرض.', stopDemo:'إيقاف العرض', move:'تحريك باكي: اسحب أو استخدم مفاتيح الأسهم.', of:'{n} من {t}', next:'التالي', prev:'الخطوة السابقة', close:'إغلاق الجولة', finish:'إنهاء', design:'صمّم عبوتك', showSpec:'اعرض تفاصيل عبوتي', now:'الآن: {x}' }
     }
-    fitText();
-  }
-  const tpBot = bot('hrg-tour-bot');
-  const pill = el('div', 'hrg-pill'); pill.setAttribute('role', 'toolbar'); pill.setAttribute('aria-label', t.name);
-  const pBack = btn(rtl ? '›' : '‹', 'hrg-pbtn hrg-arrow', () => go(idx - 1)); pBack.setAttribute('aria-label', t.back);
-  const pCount = el('span', 'hrg-pcount');
-  const pNext = btn(rtl ? '‹' : '›', 'hrg-pbtn hrg-pnext hrg-arrow', () => go(idx + 1));
-  const pPlay = btn('▶', 'hrg-pbtn hrg-play', () => setPlay(!playing));
-  const pRepeat = btn('↺', 'hrg-pbtn hrg-repeat', repeatAll); pRepeat.setAttribute('aria-label', t.repeat); pRepeat.title = t.repeat;
-  const pEnd = btn('✕', 'hrg-pbtn', () => endTour(false)); pEnd.setAttribute('aria-label', t.endTour);
-  pill.append(pBack, pCount, pNext, pPlay, pRepeat, pEnd);
-  tpRow.append(tpBot, pill);
-  tp.append(tpBubble, tpRow);
-  const waves = el('div', 'hrg-waves'); waves.setAttribute('aria-hidden', 'true');
-  for (let k = 0; k < 3; k++) waves.appendChild(el('i', ''));
-  document.body.append(waves, tp);
-
-  let steps = [], idx = -1, token = 0, playing = false, playTimer = 0, lit = [], lastTour = null, looping = false;
-  // The message is visitor-movable without dragging its action buttons.
-  let drag = null, bubbleX = 0, bubbleY = 0;
-  const clampBubble = (x, y) => {
-    const r = tpBubble.getBoundingClientRect();
-    return [Math.max(12 - r.left + bubbleX, Math.min(x, innerWidth - 12 - r.right + bubbleX)),
-      Math.max(12 - r.top + bubbleY, Math.min(y, innerHeight - 12 - r.bottom + bubbleY))];
   };
-  const moveBubble = (x, y) => {
-    [bubbleX, bubbleY] = clampBubble(x, y);
-    tpBubble.style.setProperty('--hrg-drag-x', bubbleX + 'px');
-    tpBubble.style.setProperty('--hrg-drag-y', bubbleY + 'px');
-  };
-  tpBubble.addEventListener('pointerdown', e => {
-    if (e.target.closest('button,a,input,textarea,select') || e.button !== 0) return;
-    drag = { id:e.pointerId, x:e.clientX, y:e.clientY, bx:bubbleX, by:bubbleY };
-    tpBubble.setPointerCapture(e.pointerId);
-    tpBubble.classList.add('hrg-dragging');
-  });
-  tpBubble.addEventListener('pointermove', e => {
-    if (!drag || drag.id !== e.pointerId) return;
-    userMovedBubble = true;
-    moveBubble(drag.bx + e.clientX - drag.x, drag.by + e.clientY - drag.y);
-  });
-  const stopDrag = e => { if (drag && drag.id === e.pointerId) { drag = null; tpBubble.classList.remove('hrg-dragging'); } };
-  tpBubble.addEventListener('pointerup', stopDrag);
-  tpBubble.addEventListener('pointercancel', stopDrag);
-  tpBubble.addEventListener('keydown', e => {
-    if (e.target !== tpBubble || !e.altKey || !/^Arrow(Left|Right|Up|Down)$/.test(e.key)) return;
-    e.preventDefault(); e.stopPropagation(); userMovedBubble = true;
-    moveBubble(bubbleX + (e.key === 'ArrowLeft' ? -24 : e.key === 'ArrowRight' ? 24 : 0),
-      bubbleY + (e.key === 'ArrowUp' ? -24 : e.key === 'ArrowDown' ? 24 : 0));
-  });
-  window.addEventListener('resize', () => { if (!tp.hidden) moveBubble(bubbleX, bubbleY); }, { passive:true });
-  const later = (ms, fn) => { const tk = token; setTimeout(() => { if (tk === token) fn(); }, reduce ? Math.min(ms, 50) : ms); };
-  function unlight() {
-    lit.forEach(e => e.classList.remove('hrg-lit-title', 'hrg-lit-text', 'hrg-lit-item', 'hrg-pin'));
-    lit = [];
-  }
-  function mark(e, cls) { if (e) { e.classList.add(cls); lit.push(e); } }
-  function spot(e, only) {
-    if (!e) return;
-    if (only) lit.filter(x => x.classList.contains('hrg-lit-item')).forEach(x => x.classList.remove('hrg-lit-item'));
-    mark(e, 'hrg-lit-item');
-  }
-  function fireWaves(target) {
-    if (reduce || !target) return;
-    const a = tpBot.getBoundingClientRect(), r = target.getBoundingClientRect();
-    const ox = a.left + a.width / 2, oy = a.top + a.height * 0.08;
-    const tx = rtl ? r.right - Math.min(r.width, 260) / 2 : r.left + Math.min(r.width, 260) / 2;
-    const ty = r.top + Math.min(r.height, 80) / 2;
-    const d = Math.max(80, Math.hypot(tx - ox, ty - oy) + 30);
-    const ang = Math.atan2(ty - oy, tx - ox) * 180 / Math.PI + 90;
-    waves.style.left = (ox - d) + 'px'; waves.style.top = (oy - d) + 'px';
-    waves.style.width = waves.style.height = (2 * d) + 'px';
-    waves.style.setProperty('--from', (ang - 32) + 'deg');
-    waves.classList.remove('go'); void waves.offsetWidth; waves.classList.add('go');
-    tpBot.classList.remove('hrg-emit'); void tpBot.offsetWidth; tpBot.classList.add('hrg-emit');
-  }
-  function lightTitle(section) {
-    const c = stopContent(section);
-    later(650, () => {
-      fireWaves(c.titleEl || section);
-      later(650, () => {
-        mark(c.titleEl, 'hrg-lit-title');
-        if (c.textEl) later(700, () => { c.textEl.style.setProperty('--hrg-h', c.textEl.offsetHeight + 'px'); mark(c.textEl, 'hrg-lit-text'); });
-      });
-    });
-    return c;
-  }
-  // step through a list: light each item in turn, with a wave, optionally doing something to it
-  function sequence(items, start, gap, fn) {
-    items.forEach((item, i) => later(start + i * gap, () => {
-      spot(item, true); showItem(item); later(reduce ? 0 : 480, () => fireWaves(item));
-      if (fn) fn(item, i);
-      setNote(noteFor(item));
-    }));
-    return start + items.length * gap + 600;
-  }
-  function noteFor(item) {
-    const head = item.querySelector('h3, h4, strong');
-    let title;
-    if (head) title = clean(head.textContent);
-    else { const c = item.cloneNode(true); $$('span', c).forEach(x => { if (/^[\s↗→←]*$/.test(x.textContent)) x.remove(); }); title = clean(c.textContent); }
-    let detail = item.getAttribute('data-detail') || '';
-    if (!detail) { const p = Array.from(item.querySelectorAll('p')).find(x => !x.classList.contains('details') && clean(x.textContent) !== title); if (p) detail = clean(p.textContent); }
-    title = title.slice(0, 90); detail = detail.slice(0, 170);
-    return title + (detail ? ': ' + detail : '');
-  }
-  // Keep what Packy is talking about on screen and out from under his bubble.
-  const headerH = () => (header ? header.getBoundingClientRect().height : 0);
-  let userMovedBubble = false;
-  function setDock(top) { document.body.style.setProperty('--hrg-header-h', Math.round(headerH()) + 'px'); tp.classList.toggle('hrg-dock-top', !!top); }
-  function placeDock(target) {
-    if (!target || userMovedBubble || document.body.classList.contains('hrg-design-tour') || tp.hidden) return;
-    const r = target.getBoundingClientRect(), c = tp.getBoundingClientRect(), h = c.height, hh = headerH();
-    if (!(r.left < c.right && c.left < r.right)) { setDock(false); return; }
-    const ov = (a1, a2, b1, b2) => Math.max(0, Math.min(a2, b2) - Math.max(a1, b1));
-    const low = ov(r.top, r.bottom, window.innerHeight - h - 16, window.innerHeight);
-    const high = ov(r.top, r.bottom, hh + 8, hh + 8 + h);
-    setDock(low > 0 && high < low);
-  }
-  function showItem(target) {
-    if (!target || document.body.classList.contains('hrg-design-tour')) return;
-    const hh = headerH(), dockH = tp.getBoundingClientRect().height || 0, mobile = window.innerWidth <= 700;
-    const top = hh + 10, bottom = window.innerHeight - (mobile ? dockH + 14 : 16);
-    const r = target.getBoundingClientRect();
-    if (r.top >= top && r.bottom <= bottom) { placeDock(target); return; }
-    const room = Math.max(120, bottom - top);
-    if (r.height > room && mobile) {
-      // Taller than the free space (e.g. a product card): Packy's bubble goes to the top
-      // and the bottom of the item, where its text is, stays in view.
-      setDock(true);
-      const y = r.bottom + window.scrollY - window.innerHeight + 12;
-      window.scrollTo({ top: Math.max(0, y), behavior: reduce ? 'auto' : 'smooth' });
-      return;
-    }
-    const y = r.height <= room ? r.top + window.scrollY - top - (room - r.height) / 2 : r.top + window.scrollY - top;
-    window.scrollTo({ top: Math.max(0, y), behavior: reduce ? 'auto' : 'smooth' });
-    later(reduce ? 0 : 520, () => placeDock(target));
-  }
-  function setSelect(sel, value) {
-    if (!sel || !Array.from(sel.options).some(o => o.value === value)) return;
-    sel.value = value;
-    sel.dispatchEvent(new Event('input', { bubbles: true }));
-    sel.dispatchEvent(new Event('change', { bubbles: true }));
-  }
+  const tt = TT[lang] || TT.en;
+  const fmt = (s, o) => s.replace(/\{(\w)\}/g, (_, k) => (o[k] != null ? o[k] : ''));
 
-  // What Packy does at each stop. Every action works on the page's own elements. Returns its length in ms.
-  const ACT = {
-    company(s) { const c = lightTitle(s); if (c.textEl) later(2100, () => showItem(c.textEl)); const cta = $('.text-link, .button', s); if (cta) later(3400, () => { spot(cta); showItem(cta); later(480, () => fireWaves(cta)); }); return 6400; },
-    products(s) { lightTitle(s); return sequence($$('#product-grid .product-card'), 2600, 3200); },
-    industries(s) { lightTitle(s); return sequence($$('#industry-list button'), 2400, 3200, b => b.click()); },
-    configurator(s) {
-      lightTitle(s);
-      const style = byId('box-style'), print = byId('printing'), preview = $('.config-preview');
-      later(1900, () => { const f = window.innerWidth > 700 ? $('.config-layout') || style : preview; if (f) showItem(f); });
-      const optName = sel => sel && sel.selectedOptions[0] ? clean(sel.selectedOptions[0].textContent) : '';
-      later(2300, () => { setSelect(style, 'pizza'); spot(style, true); fireWaves(style); setNote(optName(style)); });
-      later(3900, () => { setSelect(print, 'mark'); spot(print, true); fireWaves(print); setNote(optName(style) + ' · ' + optName(print)); });
-      later(5500, () => { setSelect(style, 'gift'); spot(style, true); fireWaves(style); setNote(optName(style) + ' · ' + optName(print)); });
-      later(7000, () => { if (preview) { spot(preview, true); fireWaves(preview); } tpBubble.appendChild(btn(t.tryIt, 'hrg-send', () => startDesign())); });
-      return 9000;
-    },
-    'printing-section'(s) { lightTitle(s); const img = $('.printing-image', s); later(2600, () => { spot(img); showItem(img); later(480, () => fireWaves(img)); }); return 6000; },
-    manufacturing(s) {
-      lightTitle(s);
-      // Packy rides the line; his bubble names each stage as he passes it (names come from the page).
-      const stages = $$('.mfg-steps li', s).map(li => clean(Array.from(li.children).map(c => c.textContent).join(' ') || li.textContent));
-      later(1300, () => showItem(s)); // on phones the stairs are low in the section: the bubble moves to the top
-      const per = 1300;
-      later(1500, () => { if (window.HRManufacturing) window.HRManufacturing.ride(reduce ? 0 : per * Math.max(1, stages.length)); });
-      stages.forEach((name, k) => later(1500 + k * per, () => setNote(name)));
-      return 1500 + per * stages.length + 1200;
-    },
-    quality(s) { lightTitle(s); return sequence($$('.quality-list > div', s), 2200, 3200); },
-    technology(s) { lightTitle(s); const layers = $$('.tl-label', s); if (layers.length) return sequence(layers, 2400, 3000); return sequence($$('.board-diagram .board-liner, .board-diagram .board-flute', s), 2200, 3200); },
-    location(s) {
-      lightTitle(s);
-      const map = $('.map-panel', s), open = $('.map-open', s);
-      later(2300, () => { if (map) { spot(map); map.classList.add('hrg-pin'); showItem(map); later(480, () => fireWaves(map)); const adr = $('.footer-map'); if (adr) setNote(clean(adr.textContent).replace(/\s*↗\s*$/, '')); } });
-      later(4400, () => { if (open) { spot(open); showItem(open); later(480, () => fireWaves(open)); } });
-      return 6500;
-    },
-    contact(s) { lightTitle(s); return sequence($$('.section-heading .button', s), 2200, 1200); }
+  // ---------- targets ----------
+  const STOPS = {
+    company: s => $('h2', s) || s,
+    products: s => { const c = $('#product-grid .product-card', s); return (c && mobileNow() && $('.product-content', c)) || c || s; },
+    industries: s => $('#industry-list', s) || s,
+    configurator: s => $('.config-preview', s) || s,
+    'printing-section': s => $('.printing-image', s) || $('.section-heading', s) || s,
+    manufacturing: s => $('.mfg-content', s) || $('h2', s) || s,
+    quality: s => $('.quality-list', s) || s,
+    technology: s => $('.board-diagram', s) || s,
+    location: s => $('.map-panel', s) || s,
+    contact: s => (mobileNow() ? $('h2', s) : $('.section-heading', s)) || s
   };
-
-  // "Design your box with me": Packy demonstrates on the live preview, then hands control back to the visitor.
-  const views = () => $$('.config-views button');
-  let designInitialView = null;
-  let userChangedView = false;
-  // Programmatic demonstrations must not overwrite a view the visitor chose.
-  document.addEventListener('click', e => {
-    if (idx >= 0 && steps[idx] && steps[idx].design && e.isTrusted && e.target.closest('.config-views button')) userChangedView = true;
-  });
-  const boxStage = () => $('.box-stage');
-  function glide(ms) { // the preview eases between Packy's moves instead of jumping
-    const st = boxStage(); if (!st || reduce) return;
-    st.classList.add('hrg-glide');
-    clearTimeout(glide.t); glide.t = setTimeout(() => st.classList.remove('hrg-glide'), ms);
-    cleanups.push(() => st.classList.remove('hrg-glide'));
-  }
-  function turn(deg, stepMs) { // rotates the live 3D preview through the site's own keyboard control
-    const st = boxStage(); if (!st) return;
-    const n = Math.round(Math.abs(deg) / 10), key = deg > 0 ? 'ArrowRight' : 'ArrowLeft', gap = stepMs || 45;
-    later(0, () => glide(n * gap + 1200));
-    for (let i = 0; i < n; i++) later(i * gap, () => st.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true })));
-  }
-  function tilt(steps) { const st = boxStage(); if (!st) return; later(0, () => glide(Math.abs(steps) * 260 + 1200)); for (let i = 0; i < Math.abs(steps); i++) later(i * 260, () => st.dispatchEvent(new KeyboardEvent('keydown', { key: steps > 0 ? 'ArrowDown' : 'ArrowUp', bubbles: true }))); }
-  function showView(flat) { const v = views(); const b = flat ? v[1] : v[0]; if (b) b.click(); }
-  function resetView() { const r = $('.config-views__reset'); if (r) r.click(); }
-  // try an option on the preview, then give the visitor's own choice back
-  let cleanups = [];
-  function swap() { const st = boxStage(); if (!st || reduce) return; st.classList.remove('hrg-swap'); void st.offsetWidth; st.classList.add('hrg-swap'); }
-  function runCleanups() { const c = cleanups; cleanups = []; c.forEach(fn => fn()); }
-  function tryOption(sel, values, start, gap) {
-    const e = byId(sel); if (!e) return start;
-    const mine = e.value;
-    let changed = false;
-    const restore = () => { if (changed) { changed = false; setSelect(e, mine); } };
-    cleanups.push(restore); // the visitor's own choice always comes back, even if they skip ahead
-    values.forEach((v, i) => later(start + i * gap, () => { changed = true; swap(); setSelect(e, v); spot(e, true); fireWaves(e); }));
-    later(start + values.length * gap, restore);
-    return start + values.length * gap + 300;
-  }
-  function focusPreview() {
-    const p = $('.config-preview');
-    if (p && window.innerWidth <= 700 && !document.body.classList.contains('hrg-design-tour')) scrollToEl(p, 'center');
-    return p;
-  }
   const DESIGN = [
-    { line: 'd1', run() {
-      if (!userChangedView) showView(false);
-      const style = byId('box-style'); if (style) { scrollToEl(style, 'center'); later(500, () => { spot(style); fireWaves(style); }); }
-      later(1300, focusPreview);
-      const shown = tryOption('box-style', ['dates', 'cosmetics', 'produce'], 1700, 3400);
-      later(shown, () => { if (style) spot(style, true); });
-    } },
-    { line: 'd2', run() {
-      const dims = $('.dimension-fields'); if (dims) { scrollToEl(dims, 'center'); later(500, () => { spot(dims); fireWaves(dims); }); }
-      later(1400, () => { focusPreview(); if (!userChangedView) showView(false); spot($('.config-preview')); });
-      later(1900, () => turn(360, 190));
-      later(9000, () => tilt(-2));
-      later(10400, () => { glide(1400); resetView(); if (dims) spot(dims, true); });
-    } },
-    { line: 'd3', run() {
-      const board = byId('board'); if (board) { scrollToEl(board, 'center'); later(500, () => { spot(board); fireWaves(board); }); }
-      later(1200, focusPreview);
-      const n = tryOption('board', ['white'], 1600, 2600);
-      tryOption('flute', ['double'], n + 200, 2800);
-      later(n + 2400, () => { if (board) spot(board, true); });
-    } },
-    { line: 'd4', run() {
-      const pr = byId('printing'); if (pr) { scrollToEl(pr, 'center'); later(500, () => { spot(pr); fireWaves(pr); }); }
-      later(1200, focusPreview);
-      const n = tryOption('printing', ['mark', 'graphic'], 1600, 2800);
-      later(n + 300, () => { spot(byId('finishing')); });
-    } },
-    { line: 'd5', run() {
-      const p = $('.config-preview'); if (p) { scrollToEl(p, 'center'); later(500, () => { spot(p); fireWaves(p); }); }
-      later(1200, () => { if (!userChangedView) { swap(); showView(true); } });
-      later(5600, () => { if (!userChangedView) { swap(); showView(false); } });
-    } },
-    { line: 'd6', run() {
-      const cta = byId('config-cta');
-      if (cta) cta.click(); // the site's own button writes the specification summary
-      const box = $('.config-export');
-      later(300, () => { if (box && !box.hidden) { scrollToEl(box, 'center'); spot(box); fireWaves(box); } else { const err = $('.config-error'); if (err) scrollToEl(err, 'center'); } });
-      later(700, () => {
-        const copy = btn(t.copyDetails, 'hrg-copy', () => {
-          const b = $('.config-export button');
-          if (b) { b.click(); copy.textContent = t.copied; }
-        });
-        tpBubble.append(btn(t.sendDesign, 'hrg-send', sendDesign), copy, el('small', 'hrg-note', t.sendNote));
-      });
-    } }
+    { key:'d1', anchor: () => byId('box-style'), after: () => byId('box-style'), demo: 'models' },
+    { key:'d2', anchor: () => $('.dimension-fields'), after: () => $('.dimension-fields'), demo: 'turn' },
+    { key:'d3', anchor: () => byId('board'), after: () => byId('flute'), demo: 'board' },
+    { key:'d4', anchor: () => byId('printing'), after: () => byId('finishing') || byId('printing'), demo: 'print' },
+    { key:'d5', anchor: () => $('.config-views'), float: true, demo: 'flat' },
+    { key:'d6', anchor: () => byId('config-cta'), after: () => byId('config-cta') }
   ];
-  const DESIGN_MS = { d1: 13000, d2: 12500, d3: 9000, d4: 8500, d5: 7000, d6: 9000 };
-  function designStep(d) { d.run(); return DESIGN_MS[d.line] || 8000; }
+  const mobileNow = () => window.innerWidth <= 700;
+  const headerH = () => (header ? header.getBoundingClientRect().height : 0);
+
+  // ---------- the card: mascot, explanation and controls in one unit ----------
+  const card = el('section', 'hrg-card'); card.hidden = true;
+  card.setAttribute('role', 'region'); card.setAttribute('aria-label', t.name);
+  if (rtl) card.dir = 'rtl';
+  const cHead = el('div', 'hrg-card-head');
+  const grip = el('button', 'hrg-grip'); grip.type = 'button'; grip.setAttribute('aria-label', tt.ui.move);
+  grip.innerHTML = '<svg width="14" height="20" viewBox="0 0 14 20" aria-hidden="true"><g fill="currentColor"><circle cx="4" cy="4" r="1.6"/><circle cx="10" cy="4" r="1.6"/><circle cx="4" cy="10" r="1.6"/><circle cx="10" cy="10" r="1.6"/><circle cx="4" cy="16" r="1.6"/><circle cx="10" cy="16" r="1.6"/></g></svg>';
+  const cAvatar = bot('hrg-card-bot');
+  const cWho = el('div', 'hrg-card-who');
+  const cMeta = el('span', 'hrg-card-meta');
+  const cTitle = el('strong', 'hrg-card-title');
+  cWho.append(cMeta, cTitle);
+  const cClose = el('button', 'hrg-card-x', '×'); cClose.type = 'button'; cClose.setAttribute('aria-label', tt.ui.close);
+  cHead.append(grip, cAvatar, cWho, cClose);
+  const cBody = el('div', 'hrg-card-body');
+  const cText = el('p', 'hrg-card-text');
+  const cTry = el('p', 'hrg-card-try');
+  const cNow = el('p', 'hrg-card-now'); cNow.hidden = true;
+  const cActions = el('div', 'hrg-card-actions');
+  const cDetails = el('div', 'hrg-card-details'); cDetails.hidden = true; cDetails.id = 'hrg-card-details';
+  cBody.append(cText, cTry, cNow, cActions, cDetails);
+  const cFoot = el('div', 'hrg-card-foot');
+  const bMore = el('button', 'hrg-link-btn', tt.ui.more); bMore.type = 'button'; bMore.setAttribute('aria-expanded', 'false'); bMore.setAttribute('aria-controls', 'hrg-card-details');
+  const cNav = el('div', 'hrg-card-nav');
+  const bPrev = el('button', 'hrg-round'); bPrev.type = 'button'; bPrev.setAttribute('aria-label', tt.ui.prev);
+  bPrev.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="' + (rtl ? 'M6 3l5 5-5 5' : 'M10 3L5 8l5 5') + '" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>';
+  const bMenu = el('button', 'hrg-round'); bMenu.type = 'button'; bMenu.setAttribute('aria-label', tt.ui.options); bMenu.setAttribute('aria-expanded', 'false'); bMenu.setAttribute('aria-haspopup', 'true');
+  bMenu.innerHTML = '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><g fill="currentColor"><circle cx="4" cy="9" r="1.6"/><circle cx="9" cy="9" r="1.6"/><circle cx="14" cy="9" r="1.6"/></g></svg>';
+  const bNext = el('button', 'hrg-next', tt.ui.next); bNext.type = 'button';
+  cNav.append(bPrev, bMenu, bNext);
+  const menu = el('div', 'hrg-menu'); menu.hidden = true;
+  const mPlay = el('button', 'hrg-menu-item', tt.ui.play); mPlay.type = 'button';
+  const mRepeat = el('button', 'hrg-menu-item', tt.ui.repeatOff); mRepeat.type = 'button'; mRepeat.setAttribute('aria-pressed', 'false');
+  const mReset = el('button', 'hrg-menu-item', tt.ui.reset); mReset.type = 'button';
+  menu.append(mPlay, mRepeat, mReset);
+  cFoot.append(bMore, cNav, menu);
+  card.append(cHead, cBody, cFoot);
+  const showMe = el('button', 'hrg-showme'); showMe.type = 'button'; showMe.hidden = true;
+  document.body.append(card, showMe);
+
+  // ---------- controller state ----------
+  let steps = [], idx = -1, playing = false, looping = false, lastTour = null, tourKind = null;
+  let target = null, timers = new Set(), demo = null, detailsOpen = false, hover = false, lastTyping = 0;
+  let userPos = null; try { userPos = JSON.parse(sessionStorage.getItem('hrg-card-pos') || 'null'); } catch (e) { userPos = null; }
+  let autoScrolling = false, autoTimer = 0, followRaf = 0, inlineHost = null;
+  function sched(ms, fn) { const id = setTimeout(() => { timers.delete(id); fn(); }, reduce ? Math.min(ms, 40) : ms); timers.add(id); return id; }
+  function cancelAll() { timers.forEach(clearTimeout); timers.clear(); }
+
+  // ---------- configuration snapshot (demonstrations only) ----------
+  const form = byId('config-form');
+  const views = () => $$('.config-views button');
+  function snapshot() {
+    const vals = {};
+    if (form) $$('select, input', form).forEach(e => { if (e.id) vals[e.id] = e.value; });
+    return { vals, view: views().findIndex(b => b.getAttribute('aria-pressed') === 'true') };
+  }
+  function setField(e, v) {
+    if (!e || e.value === v) return;
+    e.value = v;
+    e.dispatchEvent(new Event('input', { bubbles: true }));
+    e.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  function restore(s) {
+    if (!s) return;
+    // model first (it resets size options), then size, then everything else
+    const order = ['box-style', 'box-size'];
+    order.forEach(id => setField(byId(id), s.vals[id]));
+    Object.keys(s.vals).forEach(id => { if (!order.includes(id)) setField(byId(id), s.vals[id]); });
+    const v = views(); if (s.view >= 0 && v[s.view] && v[s.view].getAttribute('aria-pressed') !== 'true') v[s.view].click();
+  }
+  function endDemo(keepVisitorChoices) {
+    if (!demo) return;
+    const d = demo; demo = null;
+    d.timers.forEach(clearTimeout);
+    if (!keepVisitorChoices) restore(d.snap);
+    const st = $('.box-stage'); if (st) st.classList.remove('hrg-glide');
+    renderActions();
+  }
+  // any real change by the visitor stops a demonstration and keeps their latest choice
+  ['input', 'change', 'pointerdown'].forEach(type => document.addEventListener(type, e => {
+    if (!e.isTrusted) return;
+    if (type !== 'pointerdown') lastTyping = Date.now();
+    if (demo && e.target.closest && e.target.closest('#config-form, .config-preview-col')) endDemo(true);
+  }, true));
+  function runDemo(kind) {
+    endDemo(false);
+    const d = demo = { snap: snapshot(), timers: [] };
+    const at = (ms, fn) => d.timers.push(setTimeout(() => { if (demo === d) fn(); }, reduce ? Math.min(ms, 40) : ms));
+    const stage = $('.box-stage');
+    if (stage && !reduce) stage.classList.add('hrg-glide');
+    let end = 0;
+    if (kind === 'models') { ['dates', 'cosmetics', 'produce'].forEach((v, i) => at(400 + i * 3200, () => setField(byId('box-style'), v))); end = 400 + 3 * 3200; }
+    if (kind === 'board') { at(400, () => setField(byId('board'), 'white')); at(3200, () => setField(byId('flute'), 'double')); end = 6200; }
+    if (kind === 'print') { at(400, () => setField(byId('printing'), 'mark')); at(3400, () => setField(byId('printing'), 'graphic')); end = 6400; }
+    if (kind === 'flat') { at(400, () => { const v = views(); if (v[1]) v[1].click(); }); end = 4600; }
+    if (kind === 'turn' && stage) { for (let i = 0; i < 36; i++) at(400 + i * 190, () => stage.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))); end = 400 + 36 * 190 + 900; }
+    at(end, () => endDemo(false));
+    renderActions();
+  }
+
+  // ---------- rendering one step ----------
+  function stepInfo(st) {
+    if (st.design) { const c = tt.design[st.design.key]; return { title: c[0], text: c[1], tryIt: c[2] }; }
+    return { title: tt.titles[st.id] || '', text: (t.lines && t.lines[st.id]) || '', tryIt: tt.tries[st.id] || '' };
+  }
+  function renderActions() {
+    cActions.replaceChildren();
+    const st = steps[idx]; if (!st) return;
+    const add = (label, cls, fn) => { const b = el('button', 'hrg-action ' + (cls || ''), label); b.type = 'button'; b.addEventListener('click', fn); cActions.appendChild(b); return b; };
+    if (st.id === 'configurator') add(tt.ui.design, 'is-primary', () => startDesign());
+    if (st.design) {
+      const dd = st.design;
+      if (dd.key === 'd6') {
+        add(tt.ui.showSpec, 'is-primary', () => {
+          const cta = byId('config-cta'); if (cta) cta.click();
+          sched(350, () => { const box = $('.config-export'); if (box && !box.hidden) { setTarget(box); bringIntoView(box); } renderSpecActions(); });
+        });
+      }
+      if (mobileNow() && dd.key !== 'd5' && dd.key !== 'd6') {
+        const seeing = card.dataset.seeing === '1';
+        add(seeing ? tt.ui.back : tt.ui.seeResult, '', () => {
+          const p = $('.config-preview');
+          if (card.dataset.seeing === '1') { card.dataset.seeing = ''; bringIntoView(dd.anchor()); }
+          else { card.dataset.seeing = '1'; if (p) bringIntoView(p); }
+          renderActions();
+        });
+      }
+    }
+    // demonstrations are optional and live in the details
+    cDetails.replaceChildren();
+    const info = steps[idx] ? stepInfo(steps[idx]) : null;
+    const extra = st.id ? stopContent(byId(st.id)) : null;
+    if (extra && extra.textEl) cDetails.appendChild(el('p', '', clean(extra.textEl.textContent)));
+    if (st.design && st.design.demo) {
+      if (demo) { const b = el('button', 'hrg-action', tt.ui.stopDemo); b.type = 'button'; b.addEventListener('click', () => endDemo(false)); cDetails.appendChild(b); }
+      else { const b = el('button', 'hrg-action', tt.ui.demo); b.type = 'button'; b.addEventListener('click', () => runDemo(st.design.demo)); cDetails.appendChild(b); }
+      cDetails.appendChild(el('small', 'hrg-card-note', tt.ui.demoNote));
+    }
+    bMore.hidden = !cDetails.childNodes.length;
+    if (bMore.hidden) setDetails(false);
+    void info;
+  }
+  function renderSpecActions() {
+    const add = (label, cls, fn) => { const b = el('button', 'hrg-action ' + (cls || ''), label); b.type = 'button'; b.addEventListener('click', fn); cActions.appendChild(b); return b; };
+    cActions.replaceChildren();
+    add(t.sendDesign, 'is-primary', sendDesign);
+    const copy = add(t.copyDetails, '', () => { const b = $('.config-export button'); if (b) { b.click(); copy.textContent = t.copied; } });
+    cActions.appendChild(el('small', 'hrg-card-note', t.sendNote));
+  }
   function sendDesign() {
-    const cta = byId('config-cta');
-    if (cta) cta.click();
-    const box = $('.config-export textarea');
-    const spec = box ? box.value : '';
-    if (!spec) { const err = $('.config-error'); if (err) scrollToEl(err, 'center'); return; }
+    const cta = byId('config-cta'); if (cta) cta.click();
+    const box = $('.config-export textarea'); const spec = box ? box.value : '';
+    if (!spec) { const err = $('.config-error'); if (err) bringIntoView(err); return; }
     const model = byId('box-style');
     const subject = t.subject + (model ? ' · ' + clean(model.selectedOptions[0].textContent) : '');
     window.location.href = 'mailto:' + email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(spec + '\n\n');
   }
+  function setDetails(open) {
+    detailsOpen = !!open;
+    cDetails.hidden = !detailsOpen;
+    bMore.textContent = detailsOpen ? tt.ui.less : tt.ui.more;
+    bMore.setAttribute('aria-expanded', detailsOpen ? 'true' : 'false');
+    card.classList.toggle('is-expanded', detailsOpen);
+    reschedule();
+  }
 
+  // ---------- where things are, and where the card goes ----------
+  function freeArea() {
+    let top = headerH() + 12, bottom = window.innerHeight - 12;
+    const vv = window.visualViewport; if (vv) bottom = Math.min(bottom, vv.offsetTop + vv.height - 12);
+    if (mobileNow() && !card.hidden && !card.classList.contains('is-inline')) bottom -= card.getBoundingClientRect().height + 8;
+    if (document.body.classList.contains('hrg-guided-design') && window.innerWidth <= 850) {
+      const col = $('.config-preview-col');
+      if (col && card.dataset.seeing !== '1') top = Math.max(top, headerH() + 6 + col.getBoundingClientRect().height + 10);
+    }
+    return { top, bottom };
+  }
+  function scrollRoom() { const a = freeArea(); return a.bottom - a.top; }
+  function unionRect(list) {
+    const rs = list.filter(Boolean).map(e => e.getBoundingClientRect());
+    return { top: Math.min(...rs.map(r => r.top)), bottom: Math.max(...rs.map(r => r.bottom)), get height() { return this.bottom - this.top; } };
+  }
+  function bringIntoView(el2, then, withEl) {
+    if (!el2) { if (then) then(); return; }
+    const a = freeArea(), r = withEl ? unionRect([el2, withEl]) : el2.getBoundingClientRect();
+    let y = null;
+    if (r.top < a.top || r.bottom > a.bottom) {
+      const room = a.bottom - a.top;
+      // wide targets go to the top of the free area, leaving the lower corner free for the card
+      const wide = !mobileNow() && (el2.getBoundingClientRect().width > window.innerWidth * 0.6);
+      y = (r.height <= room && !wide) ? r.top + window.scrollY - a.top - (room - r.height) / 2 : r.top + window.scrollY - a.top;
+    }
+    if (y === null) { placeCard(); if (then) then(); return; }
+    autoScrolling = true; clearTimeout(autoTimer);
+    window.scrollTo({ top: Math.max(0, y), behavior: reduce ? 'auto' : 'smooth' });
+    // wait until movement settles (scrollend, or the position stops changing)
+    let last = -1, still = 0, done = false;
+    const finish = () => { if (done) return; done = true; autoTimer = setTimeout(() => { autoScrolling = false; }, 120); placeCard(); if (then) then(); };
+    if ('onscrollend' in window) window.addEventListener('scrollend', finish, { once: true });
+    const check = () => { if (done) return; const s = window.scrollY; still = s === last ? still + 1 : 0; last = s; if (still > 4) finish(); else requestAnimationFrame(check); };
+    requestAnimationFrame(check);
+    sched(1500, finish);
+  }
+  // for text blocks, use where the text actually is (a full-width heading block leaves room beside its words)
+  function targetRect(elx) {
+    if (elx && elx.matches && elx.matches('h2, .section-heading, .mfg-content') && document.createRange) {
+      const rg = document.createRange(); rg.selectNodeContents(elx);
+      const r = rg.getBoundingClientRect(); if (r.width && r.height) return r;
+    }
+    return elx.getBoundingClientRect();
+  }
+  function setCardXY(x, y) { card.style.setProperty('--hrg-x', Math.round(x) + 'px'); card.style.setProperty('--hrg-y', Math.round(y) + 'px'); }
+  function overlap(a, b) { return a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom; }
+  function placeCard() {
+    if (card.hidden) return;
+    document.body.style.setProperty('--hrg-header-h', Math.round(headerH()) + 'px');
+    if (mobileNow() || card.classList.contains('is-inline')) { checkFollow(); return; }
+    const W = window.innerWidth, H = window.innerHeight, m = 14, top = headerH() + m;
+    const cw = card.offsetWidth, ch = card.offsetHeight;
+    const r = target ? targetRect(target) : null;
+    const rect = (x, y) => ({ left: x, top: y, right: x + cw, bottom: y + ch });
+    const fits = (x, y) => x >= m && y >= top && x + cw <= W - m && y + ch <= H - m && !(r && overlap(rect(x, y), r));
+    if (userPos) {
+      const x = Math.min(Math.max(m, userPos.x), W - cw - m), y = Math.min(Math.max(top, userPos.y), H - ch - m);
+      if (!r || !overlap(rect(x, y), r)) { setCardXY(x, y); card.dataset.docked = ''; checkFollow(); return; }
+    }
+    let chosen = null;
+    if (r && r.bottom > top && r.top < H) {
+      const clampY = y => Math.min(Math.max(top, y), H - ch - m), clampX = x => Math.min(Math.max(m, x), W - cw - m);
+      const opts = { right: [r.right + m, clampY(r.top)], left: [r.left - cw - m, clampY(r.top)], below: [clampX(r.left), r.bottom + m], above: [clampX(r.left), r.top - ch - m] };
+      const order = rtl ? ['left', 'right', 'below', 'above'] : ['right', 'left', 'below', 'above'];
+      // prefer the side with the most room
+      order.sort((p, q) => {
+        const room = s => (s === 'right' ? W - r.right : s === 'left' ? r.left : s === 'below' ? H - r.bottom : r.top - top);
+        return (room(q) >= cw ? 1 : 0) - (room(p) >= cw ? 1 : 0);
+      });
+      for (const s of order) { const [x, y] = opts[s]; if (fits(x, y)) { chosen = [x, y]; break; } }
+    }
+    if (!chosen) { // docked: a corner that does not cover the target
+      const x = rtl ? m : W - cw - m;
+      chosen = [x, H - ch - m];
+      if (r && overlap(rect(chosen[0], chosen[1]), r)) chosen = [x, top];
+      card.dataset.docked = '1';
+    } else card.dataset.docked = '';
+    setCardXY(chosen[0], chosen[1]);
+    checkFollow();
+  }
+  // "Show me": appears when the visitor has scrolled the target away themselves
+  function checkFollow() {
+    if (card.hidden || !target) { showMe.hidden = true; return; }
+    const a = freeArea(), r = target.getBoundingClientRect();
+    const visible = r.bottom > a.top + 24 && r.top < a.bottom - 24;
+    showMe.hidden = visible || autoScrolling;
+  }
+  window.addEventListener('scroll', () => {
+    if (card.hidden || followRaf) return;
+    followRaf = requestAnimationFrame(() => { followRaf = 0; card.classList.add('no-anim'); placeCard(); clearTimeout(card._na); card._na = setTimeout(() => card.classList.remove('no-anim'), 160); });
+  }, { passive: true });
+  ['wheel', 'touchstart', 'keydown'].forEach(type => window.addEventListener(type, e => { if (autoScrolling && e.isTrusted && !(type === 'keydown' && !/Page|Arrow|Home|End|Space/.test(e.key))) autoScrolling = false; }, { passive: true }));
+  showMe.addEventListener('click', () => { showMe.hidden = true; bringIntoView(target); });
+  const relayout = () => { if (!card.hidden) { card.classList.toggle('is-sheet', mobileNow() && !card.classList.contains('is-inline')); keyboardMode(); placeCard(); } };
+  window.addEventListener('resize', relayout, { passive: true });
+  window.addEventListener('orientationchange', relayout);
+  if ('ResizeObserver' in window) new ResizeObserver(() => { if (!card.hidden) placeCard(); }).observe(card);
+
+  // mobile keyboard: keep the input visible and collapse the guide to one line
+  function keyboardMode() {
+    const vv = window.visualViewport; if (!vv) return;
+    const kb = mobileNow() && vv.height < window.innerHeight - 140 && /INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || '');
+    document.body.classList.toggle('hrg-kb', kb);
+    card.style.setProperty('--hrg-kb', kb ? Math.max(0, window.innerHeight - (vv.offsetTop + vv.height)) + 'px' : '0px');
+    if (kb) { const a = document.activeElement; setTimeout(() => { const r = a.getBoundingClientRect(), f = freeArea(); if (r.top < f.top || r.bottom > f.bottom) window.scrollBy({ top: r.top - f.top - 12, behavior: 'auto' }); }, 60); }
+  }
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', () => { if (!card.hidden) { keyboardMode(); placeCard(); } });
+
+  // ---------- drag (grip only), keyboard nudge, reset ----------
+  let drag = null;
+  grip.addEventListener('pointerdown', e => {
+    if (mobileNow() || card.classList.contains('is-inline') || e.button !== 0) return;
+    const r = card.getBoundingClientRect();
+    drag = { id: e.pointerId, dx: e.clientX - r.left, dy: e.clientY - r.top, moved: false };
+    grip.setPointerCapture(e.pointerId); card.classList.add('is-dragging');
+  });
+  grip.addEventListener('pointermove', e => {
+    if (!drag || drag.id !== e.pointerId) return;
+    drag.moved = true;
+    userPos = { x: e.clientX - drag.dx, y: e.clientY - drag.dy };
+    const m = 14, cw = card.offsetWidth, ch = card.offsetHeight;
+    userPos.x = Math.min(Math.max(m, userPos.x), window.innerWidth - cw - m);
+    userPos.y = Math.min(Math.max(headerH() + m, userPos.y), window.innerHeight - ch - m);
+    setCardXY(userPos.x, userPos.y);
+  });
+  const endDrag = e => { if (!drag || drag.id !== e.pointerId) return; const moved = drag.moved; drag = null; card.classList.remove('is-dragging'); if (moved) { try { sessionStorage.setItem('hrg-card-pos', JSON.stringify(userPos)); } catch (x) {} } };
+  grip.addEventListener('pointerup', endDrag); grip.addEventListener('pointercancel', endDrag);
+  grip.addEventListener('keydown', e => {
+    if (mobileNow() || card.classList.contains('is-inline')) return;
+    const d = { ArrowLeft: [-16, 0], ArrowRight: [16, 0], ArrowUp: [0, -16], ArrowDown: [0, 16] }[e.key];
+    if (!d) return;
+    e.preventDefault(); e.stopPropagation();
+    const r = card.getBoundingClientRect();
+    userPos = { x: r.left + d[0], y: r.top + d[1] };
+    try { sessionStorage.setItem('hrg-card-pos', JSON.stringify(userPos)); } catch (x) {}
+    placeCard();
+  });
+  function resetPosition() { userPos = null; try { sessionStorage.removeItem('hrg-card-pos'); } catch (x) {} placeCard(); }
+
+  // ---------- highlight, inline placement for the configurator ----------
+  function setTarget(elx) {
+    if (target) target.classList.remove('hrg-target', 'hrg-ping');
+    target = elx || null;
+    if (target) { target.classList.add('hrg-target'); if (!reduce) { void target.offsetWidth; target.classList.add('hrg-ping'); } }
+  }
+  function mountCard(inlineAfter) {
+    const wantInline = !!inlineAfter && !mobileNow();
+    if (wantInline) {
+      if (card.parentNode !== inlineAfter.parentNode || card.previousElementSibling !== inlineAfter) inlineAfter.after(card);
+      card.classList.add('is-inline'); card.classList.remove('is-sheet');
+      if (!reduce && card.animate) card.animate([{ opacity: 0, transform: 'translateY(-6px)' }, { opacity: 1, transform: 'none' }], { duration: 320, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    } else {
+      if (card.parentNode !== document.body) document.body.appendChild(card);
+      card.classList.remove('is-inline');
+      card.classList.toggle('is-sheet', mobileNow());
+    }
+  }
+
+  // ---------- autoplay: reading time, held while the visitor reads or works ----------
+  let playTimer = 0;
+  function readingMs() {
+    const st = steps[idx]; if (!st) return 7000;
+    const i = stepInfo(st); const words = (i.text + ' ' + i.tryIt).split(/\s+/).length;
+    return Math.max(7000, words * 330 + 2600) + (st.id === 'manufacturing' ? 9000 : 0);
+  }
+  function held() { return detailsOpen || hover || !!demo || Date.now() - lastTyping < 5000 || !menu.hidden; }
+  function reschedule() {
+    clearTimeout(playTimer); playTimer = 0;
+    if (!playing || idx < 0) return;
+    playTimer = setTimeout(function tick() {
+      if (!playing) return;
+      if (held()) { playTimer = setTimeout(tick, 1500); return; }
+      go(idx + 1, true);
+    }, readingMs());
+  }
   function setPlay(on) {
     playing = !!on;
-    if (!playing && looping) setLoop(false);
-    clearTimeout(playTimer);
-    pPlay.textContent = playing ? '❚❚' : '▶';
-    pPlay.setAttribute('aria-label', playing ? t.pause : t.play);
-    pPlay.setAttribute('aria-pressed', playing ? 'true' : 'false');
-    if (playing && idx >= 0) scheduleNext(steps[idx].len || 6000);
-  }
-  function scheduleNext(ms) {
-    clearTimeout(playTimer);
-    const current = tpBubble.textContent.length;
-    if (playing) playTimer = setTimeout(() => go(idx + 1), Math.max(8000, ms + 1400, current * 80));
+    mPlay.textContent = playing ? tt.ui.pause : tt.ui.play;
+    card.classList.toggle('is-playing', playing);
+    if (!playing) { cancelAll(); endDemo(false); if (window.HRManufacturing) window.HRManufacturing.ride(-1); }
+    reschedule();
   }
   function setLoop(on) {
     looping = !!on;
-    pRepeat.classList.toggle('is-on', looping);
-    pRepeat.setAttribute('aria-pressed', looping ? 'true' : 'false');
+    mRepeat.textContent = looping ? tt.ui.repeatOn : tt.ui.repeatOff;
+    mRepeat.setAttribute('aria-pressed', looping ? 'true' : 'false');
   }
-  // Repeat all: Packy plays the whole tour automatically and starts it again at the end, until the visitor stops him.
-  function repeatAll() {
-    if (idx >= 0) { const on = !looping; setLoop(on); setPlay(on || playing); if (on && !playing) setPlay(true); return; }
-    if (!lastTour) return;
-    if (lastTour.kind === 'design') startDesign(true); else startTour(lastTour.kind, true);
-    setLoop(true);
+  card.addEventListener('pointerenter', () => { hover = true; });
+  card.addEventListener('pointerleave', () => { hover = false; });
+
+  // ---------- the state machine ----------
+  function go(i, auto) {
+    if (i < 0) return;
+    if (i >= steps.length) { if (looping) i = 0; else { endTour(true); return; } }
+    cancelAll(); endDemo(false); clearTimeout(playTimer);
+    if (window.HRManufacturing) window.HRManufacturing.ride(-1);
+    idx = i;
+    const st = steps[i], info = stepInfo(st);
+    card.dataset.state = 'positioning'; card.dataset.seeing = '';
+    card.hidden = false; showMe.hidden = true;
+    document.body.classList.add('hrg-touring-mode');
+    document.body.classList.toggle('hrg-guided-design', !!st.design);
+    setDetails(false); menu.hidden = true; bMenu.setAttribute('aria-expanded', 'false');
+    cMeta.textContent = fmt(tt.ui.of, { n: i + 1, t: steps.length });
+    cTitle.textContent = info.title;
+    showMe.textContent = fmt(tt.ui.showMe, { x: info.title });
+    cText.textContent = info.text;
+    cTry.textContent = info.tryIt;
+    cNow.hidden = true;
+    const last = i === steps.length - 1 && !looping;
+    bNext.textContent = last ? tt.ui.finish : (mobileNow() ? tt.ui.next : tt.ui.next + ' ›');
+    bPrev.disabled = i === 0;
+    renderActions();
+    let tgt, after = null;
+    if (st.design) { tgt = st.design.anchor(); after = st.design.float ? null : (st.design.after ? st.design.after() : null); }
+    else { const s = byId(st.id); tgt = (STOPS[st.id] || (x => x))(s); }
+    mountCard(after);
+    setTarget(null);
+    announce(info.title + '. ' + info.text + ' ' + info.tryIt);
+    const settle = () => {
+      card.dataset.state = 'explaining';
+      setTarget(tgt);
+      placeCard();
+      if (!reduce) { cAvatar.classList.remove('is-waving'); void cAvatar.offsetWidth; cAvatar.classList.add('is-waving'); }
+      if (st.id === 'manufacturing') {
+        const s = byId('manufacturing');
+        const stages = $$('.mfg-steps li', s).map(li => clean(Array.from(li.children).map(c => c.textContent).join(' ') || li.textContent));
+        const per = 1300;
+        if (window.HRManufacturing) window.HRManufacturing.ride(reduce ? 0 : per * Math.max(1, stages.length));
+        stages.forEach((name, k) => sched(k * per, () => { cNow.hidden = false; cNow.textContent = fmt(tt.ui.now, { x: name }); }));
+      }
+    };
+    bringIntoView(tgt, settle, card.classList.contains('is-inline') ? card : null);
+    reschedule();
+    if (!auto && document.activeElement && card.contains(document.activeElement) === false && idx === 0) bNext.focus({ preventScroll: true });
+  }
+  function begin(list, kind, auto) {
+    close(false);
+    steps = list; tourKind = kind; lastTour = { kind };
+    setLoop(false);
+    go(0);
+    setPlay(!!auto);
+    bNext.focus({ preventScroll: true });
+  }
+  function startTour(key, auto = false) { begin(PATHS[key].map(id => ({ id })), key, auto); }
+  function startDesign(auto = false) { begin(DESIGN.map(d => ({ design: d })), 'design', auto); }
+  function repeatAll() { if (!lastTour) return; if (lastTour.kind === 'design') startDesign(true); else startTour(lastTour.kind, true); setLoop(true); }
+  function endTour(finished) {
+    cancelAll(); endDemo(false); clearTimeout(playTimer);
+    playing = false; setLoop(false);
+    if (window.HRManufacturing) window.HRManufacturing.ride(-1);
+    setTarget(null); idx = -1;
+    card.hidden = true; showMe.hidden = true; menu.hidden = true;
+    if (card.parentNode !== document.body) document.body.appendChild(card);
+    card.classList.remove('is-inline');
+    document.body.classList.remove('hrg-touring-mode', 'hrg-guided-design', 'hrg-kb');
+    if (finished) open(null, 'end');
+    else {
+      const heroShown = stage && document.body.classList.contains('hrg-hero-visible');
+      (heroShown ? stage : launch).focus({ preventScroll: true });
+    }
   }
 
-  function go(i) {
-    if (i < 0) { endTour(false); return; }
-    if (i >= steps.length) { if (looping && playing) { i = 0; } else { endTour(true); return; } }
-    runCleanups(); token++; idx = i;
-    unlight(); waves.classList.remove('go');
-    const st = steps[i];
-    tp.hidden = false; document.body.classList.add('hrg-touring-mode');
-    document.body.classList.toggle('hrg-design-tour', !!st.design);
-    document.body.classList.toggle('hrg-design-summary', st.line === 'd6');
-    if (st.design) requestAnimationFrame(() => {
-      const r = tpBubble.getBoundingClientRect();
-      if (r.height) document.body.style.setProperty('--hrg-dock', Math.round(r.bottom + 8) + 'px');
-    });
-    pCount.textContent = (i + 1) + '/' + steps.length;
-    pCount.setAttribute('aria-label', t.step.replace('{n}', i + 1).replace('{t}', steps.length));
-    const last = i === steps.length - 1;
-    pNext.textContent = last ? '✓' : (rtl ? '‹' : '›');
-    pNext.setAttribute('aria-label', last ? t.finish : t.next);
-    tbText = el('div', 'hrg-tb-text');
-    tbText.appendChild(el('span', 'hrg-tb-line', t.lines[st.line] || ''));
-    tpBubble.classList.remove('is-open'); tbMore.textContent = t.more; tbMore.setAttribute('aria-expanded', 'false');
-    tpBubble.replaceChildren(tbText, tbMore);
-    fitText();
-    if (!st.design) setDock(false);
-    moveBubble(bubbleX, bubbleY);
-    tpBubble.classList.remove('pop'); void tpBubble.offsetWidth; tpBubble.classList.add('pop');
-    let len;
-    if (st.design) { highlight(null); len = designStep(st.design); }
-    else { const s = byId(st.id); highlight(s); scrollToEl(s); len = (ACT[st.id] || (sec => { lightTitle(sec); return 4500; }))(s); }
-    st.len = len;
-    const c = st.id ? stopContent(byId(st.id)) : null;
-    announce(t.step.replace('{n}', i + 1).replace('{t}', steps.length) + '. ' + (t.lines[st.line] || '') + (c ? ' ' + c.title : ''));
-    if (playing) scheduleNext(len);
-  }
-  function begin(list, canPlay, auto) {
-    close(false);
-    steps = list; pPlay.hidden = !canPlay; setPlay(false);
-    go(0);
-    if (auto) setPlay(true);
-    pNext.focus({ preventScroll: true });
-  }
-  function startTour(key, auto = false) { lastTour = { kind:key }; begin(PATHS[key].map(id => ({ id, line:id })), true, auto); }
-  function startDesign(auto = false) {
-    lastTour = { kind:'design' };
-    designInitialView = views().findIndex(b => b.getAttribute('aria-pressed') === 'true');
-    userChangedView = false;
-    begin(DESIGN.map(d => ({ design:d, line:d.line })), true, auto);
-  }
-  function endTour(finished) {
-    runCleanups(); token++; setLoop(false); setPlay(false);
-    if (designInitialView >= 0 && !userChangedView) showView(designInitialView === 1);
-    designInitialView = null;
-    userChangedView = false;
-    idx = -1; unlight(); highlight(null);
-    tp.hidden = true; document.body.classList.remove('hrg-touring-mode', 'hrg-design-tour', 'hrg-design-summary');
-    waves.classList.remove('go');
-    if (window.HRManufacturing) window.HRManufacturing.ride(-1);
-    if (finished) open(null, 'end'); else launch.focus({ preventScroll: true });
-  }
+  // ---------- controls ----------
+  bNext.addEventListener('click', () => go(idx + 1));
+  bPrev.addEventListener('click', () => go(idx - 1));
+  cClose.addEventListener('click', () => endTour(false));
+  bMore.addEventListener('click', () => setDetails(!detailsOpen));
+  bMenu.addEventListener('click', () => { const open2 = menu.hidden; menu.hidden = !open2; bMenu.setAttribute('aria-expanded', open2 ? 'true' : 'false'); if (open2) mPlay.focus(); });
+  mPlay.addEventListener('click', () => { setPlay(!playing); menu.hidden = true; bMenu.setAttribute('aria-expanded', 'false'); bMenu.focus(); });
+  mRepeat.addEventListener('click', () => { setLoop(!looping); if (looping && !playing) setPlay(true); const st = steps[idx]; if (st) bNext.textContent = (idx === steps.length - 1 && !looping) ? tt.ui.finish : (mobileNow() ? tt.ui.next : tt.ui.next + ' ›'); });
+  mReset.addEventListener('click', () => { resetPosition(); menu.hidden = true; bMenu.setAttribute('aria-expanded', 'false'); });
+  document.addEventListener('pointerdown', e => { if (!menu.hidden && !menu.contains(e.target) && e.target !== bMenu && !bMenu.contains(e.target)) { menu.hidden = true; bMenu.setAttribute('aria-expanded', 'false'); } });
   document.addEventListener('keydown', e => {
     if (idx < 0 || !e.isTrusted || e.altKey || e.ctrlKey || e.metaKey) return;
-    if (e.target && e.target.closest && e.target.closest('.box-stage, .config-controls')) return; // arrows there rotate the box or edit the form
+    if (e.key === 'Escape') {
+      if (!menu.hidden) { menu.hidden = true; bMenu.setAttribute('aria-expanded', 'false'); bMenu.focus(); }
+      else if (detailsOpen) setDetails(false);
+      else endTour(false);
+      e.preventDefault(); e.stopPropagation(); return;
+    }
     if (/INPUT|TEXTAREA|SELECT/.test((e.target && e.target.tagName) || '')) return;
+    if (e.target && e.target.closest && e.target.closest('.box-stage, .config-controls, .hrg-grip')) return;
     const fwd = rtl ? 'ArrowLeft' : 'ArrowRight', bwd = rtl ? 'ArrowRight' : 'ArrowLeft';
-    if (e.key === fwd) { e.preventDefault(); go(idx + 1); }
-    else if (e.key === bwd) { e.preventDefault(); go(idx - 1); }
-    else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); endTour(false); }
+    if (e.key === fwd && card.contains(document.activeElement)) { e.preventDefault(); go(idx + 1); }
+    else if (e.key === bwd && card.contains(document.activeElement)) { e.preventDefault(); go(idx - 1); }
   });
+  document.addEventListener('focusin', e => { if (idx >= 0 && e.target && /INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) setTimeout(keyboardMode, 250); });
+  document.addEventListener('focusout', () => { if (idx >= 0) setTimeout(keyboardMode, 250); });
   document.addEventListener('click', e => {
-    if (idx >= 0 && playing && e.isTrusted && !e.target.closest('.hrg-tour, .hrg-panel')) setPlay(false);
+    if (idx >= 0 && playing && e.isTrusted && !e.target.closest('.hrg-card, .hrg-panel, .hrg-showme')) setPlay(false);
   });
+
 
   // ---------- open / close ----------
   function place(anchor) {
