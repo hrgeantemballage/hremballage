@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="240" viewBox="0 0 800 240" role="img" aria-label="VirusTotal">
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="240" viewBox="0 0 800 240" role="img" aria-label="Google Safe Browsing">
   <rect width="800" height="240" rx="32" fill="#20242a"/>
   <circle cx="120" cy="120" r="62" fill="none" stroke="#8aa89a" stroke-width="8"/>
   <path d="M120 78 L160 95 L154 137 C148 166 120 178 120 178 C120 178 92 166 86 137 L80 95 Z" fill="none" stroke="#8aa89a" stroke-width="7"/>
-  <text x="215" y="137" font-family="Arial, Helvetica, sans-serif" font-size="42" fill="#f2f4f5">VirusTotal</text>
+  <text x="215" y="137" font-family="Arial, Helvetica, sans-serif" font-size="42" fill="#f2f4f5">Google Safe Browsing</text>
 </svg>
