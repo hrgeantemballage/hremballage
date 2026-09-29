@@ -293,3 +293,17 @@
 @media(max-width:1450px){.brand{font-size:.9rem}.brand img{width:56px;height:56px}.brand small{font-size:.74rem}}
 @media(max-width:600px){.brand{font-size:.8rem;gap:10px}.brand img{width:50px;height:50px}.brand small{font-size:.66rem}}
 .contact-grid>*{min-width:0}@media(max-width:600px){.contact h2{font-size:clamp(2.2rem,11vw,3rem);overflow-wrap:break-word}}
+
+/* 2026-09-29 accessibility: WCAG AA contrast for blue text and buttons, larger menu text, comfortable tap targets */
+:root{--blue-ink:#3f8fe3;--blue-btn:#1d6cc0}
+.eyebrow,.phase-list b,.quality-list span,.industry-list button.selected span,.project-grid small,.transform-arrow{color:var(--blue-ink)}
+.button.primary,.header-quote{background:var(--blue-btn);border-color:var(--blue-btn)}
+.nav a{font-size:.75rem}
+@media(max-width:1450px){.nav a{font-size:.72rem}}
+.lang{font-size:.75rem;min-width:24px;min-height:24px;display:inline-flex;align-items:center;justify-content:center;padding:6px 6px}
+.footer-bottom{font-size:.75rem}
+.footer-links a,.footer-links button{display:inline-flex;align-items:center;min-height:24px}
+@media(min-width:1181px){.nav a{padding-block:5px}}
+.footer-bottom a,.map-open{display:inline-flex;align-items:center;min-height:24px}
+.map-open,.footer-bottom a{display:inline-flex;align-items:center;min-height:24px}
+.hero-bottom a,.scroll-link{display:inline-flex;align-items:center;min-height:24px}
