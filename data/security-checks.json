@@ -1,1 +1,25 @@
-
+{
+  "providers": [
+    { "id": "google-safe-browsing", "name": "Google Safe Browsing", "logo": "assets/security/logos/google-safe-browsing.svg",
+      "check": { "en": "Unsafe-site status", "fr": "Statut site dangereux", "ar": "حالة المواقع غير الآمنة" },
+      "result": "", "reported": "", "checked": "", "report": "", "via": "" },
+    { "id": "virustotal", "name": "VirusTotal", "logo": "assets/security/logos/virustotal.svg",
+      "check": { "en": "Multi-engine URL scan", "fr": "Analyse d’URL multi-moteurs", "ar": "فحص الرابط بعدة محركات" },
+      "result": "", "reported": "", "checked": "", "report": "", "via": "" },
+    { "id": "microsoft-defender-smartscreen", "name": "Microsoft Defender SmartScreen", "logo": "assets/security/logos/microsoft-defender-smartscreen.svg",
+      "check": { "en": "Phishing and malware reputation", "fr": "Réputation hameçonnage et logiciels malveillants", "ar": "سمعة التصيّد والبرمجيات الخبيثة" },
+      "result": "", "reported": "", "checked": "", "report": "", "via": "" },
+    { "id": "norton-safe-web", "name": "Norton Safe Web", "logo": "assets/security/logos/norton-safe-web.svg",
+      "check": { "en": "Site safety rating", "fr": "Évaluation de sécurité du site", "ar": "تقييم أمان الموقع" },
+      "result": "", "reported": "", "checked": "", "report": "", "via": "" },
+    { "id": "bitdefender", "name": "Bitdefender", "logo": "assets/security/logos/bitdefender.svg",
+      "check": { "en": "URL threat check", "fr": "Vérification des menaces d’URL", "ar": "فحص تهديدات الرابط" },
+      "result": "", "reported": "", "checked": "", "report": "", "via": "" },
+    { "id": "eset", "name": "ESET", "logo": "assets/security/logos/eset.svg",
+      "check": { "en": "URL reputation check", "fr": "Vérification de réputation d’URL", "ar": "فحص سمعة الرابط" },
+      "result": "", "reported": "", "checked": "", "report": "", "via": "" },
+    { "id": "sucuri-sitecheck", "name": "Sucuri SiteCheck", "logo": "assets/security/logos/sucuri-sitecheck.svg",
+      "check": { "en": "Remote malware and blocklist scan", "fr": "Analyse à distance : logiciels malveillants et listes noires", "ar": "فحص عن بُعد للبرمجيات الخبيثة والقوائم السوداء" },
+      "result": "", "reported": "", "checked": "", "report": "", "via": "" }
+  ]
+}
