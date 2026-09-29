@@ -19,7 +19,7 @@
       intents:{ boxes:'📦 I need boxes for my products', print:'🎨 I want printed boxes with my brand', work:'🏭 I want to see how you work', look:'👀 Just looking around' },
       design:'✏️ Design your box with me', designNote:'Build it live in 3D, then copy or email the details to us.', copyDetails:'Copy details', copied:'Copied!', tryIt:'✏️ Design your box with me', goto:'Or go straight to', contact:'Talk to our team',
       email:'Email our sales team', emailNote:'Opens your email app. You send the message yourself.', call:'Call', whatsapp:'WhatsApp',
-      subject:'Packaging enquiry', next:'Next', back:'Back', finish:'Finish', menu:'Main menu', close:'Close', contactAsk:'How would you like to reach us?', follow:'Follow us', repeat:'Repeat all', viewSection:'View this section', move:'Drag this message to move it; use Alt and arrow keys to adjust its position.',
+      subject:'Packaging enquiry', next:'Next', back:'Back', finish:'Finish', menu:'Main menu', close:'Close', more:'More', less:'Less', contactAsk:'How would you like to reach us?', follow:'Follow us', repeat:'Repeat all', viewSection:'View this section', move:'Drag this message to move it; use Alt and arrow keys to adjust its position.',
       step:'Stop {n} of {t}', play:'Play automatically', pause:'Pause', endTour:'End the tour',
       end:'That’s it! Ready to talk about your packaging?', restart:'Choose another tour',
       sendDesign:'Email my design', sendNote:'Your email app opens with your box details. You send it yourself.',
@@ -45,7 +45,7 @@
       intents:{ boxes:'📦 J’ai besoin de caisses pour mes produits', print:'🎨 Je veux des emballages imprimés à mon image', work:'🏭 Je veux voir comment vous travaillez', look:'👀 Je jette juste un œil' },
       design:'✏️ Concevez votre caisse avec moi', designNote:'Créez-la en 3D en direct, puis copiez ou envoyez-nous les détails.', copyDetails:'Copier les détails', copied:'Copié !', tryIt:'✏️ Concevez votre caisse avec moi', goto:'Ou allez directement à', contact:'Parler à notre équipe',
       email:'Écrire au service commercial', emailNote:'Ouvre votre messagerie. C’est vous qui envoyez le message.', call:'Appeler', whatsapp:'WhatsApp',
-      subject:'Demande d’emballage', next:'Suivant', back:'Précédent', finish:'Terminer', menu:'Menu principal', close:'Fermer', contactAsk:'Comment souhaitez-vous nous contacter ?', follow:'Suivez-nous', repeat:'Revoir toute la visite', viewSection:'Voir cette section', move:'Faites glisser ce message pour le déplacer ; utilisez Alt et les flèches pour ajuster sa position.',
+      subject:'Demande d’emballage', next:'Suivant', back:'Précédent', finish:'Terminer', menu:'Menu principal', close:'Fermer', more:'Plus', less:'Moins', contactAsk:'Comment souhaitez-vous nous contacter ?', follow:'Suivez-nous', repeat:'Revoir toute la visite', viewSection:'Voir cette section', move:'Faites glisser ce message pour le déplacer ; utilisez Alt et les flèches pour ajuster sa position.',
       step:'Étape {n} sur {t}', play:'Lecture automatique', pause:'Pause', endTour:'Quitter la visite',
       end:'Et voilà ! Parlons de votre projet d’emballage ?', restart:'Choisir une autre visite',
       sendDesign:'Envoyer mon design par e-mail', sendNote:'Votre messagerie s’ouvre avec les détails de votre caisse. C’est vous qui l’envoyez.',
@@ -71,7 +71,7 @@
       intents:{ boxes:'📦 أحتاج صناديق لمنتجاتي', print:'🎨 أريد عبوات مطبوعة بعلامتي', work:'🏭 أريد أن أرى طريقة عملكم', look:'👀 أتصفح فقط' },
       design:'✏️ صمّم عبوتك معي', designNote:'اصنعها مباشرة بتقنية ثلاثية الأبعاد، ثم انسخ التفاصيل أو أرسلها إلينا.', copyDetails:'انسخ التفاصيل', copied:'تم النسخ!', tryIt:'✏️ صمّم عبوتك معي', goto:'أو انتقل مباشرة إلى', contact:'تحدث مع فريقنا',
       email:'راسل فريق المبيعات', emailNote:'يفتح تطبيق البريد لديك، وأنت من يرسل الرسالة.', call:'اتصل', whatsapp:'واتساب',
-      subject:'استفسار عن التغليف', next:'التالي', back:'السابق', finish:'إنهاء', menu:'القائمة الرئيسية', close:'إغلاق', contactAsk:'كيف تفضّل التواصل معنا؟', follow:'تابعنا', repeat:'إعادة الجولة كاملة', viewSection:'عرض هذا القسم', move:'اسحب هذه الرسالة لتحريكها، أو استخدم Alt مع مفاتيح الأسهم لضبط موضعها.',
+      subject:'استفسار عن التغليف', next:'التالي', back:'السابق', finish:'إنهاء', menu:'القائمة الرئيسية', close:'إغلاق', more:'المزيد', less:'أقل', contactAsk:'كيف تفضّل التواصل معنا؟', follow:'تابعنا', repeat:'إعادة الجولة كاملة', viewSection:'عرض هذا القسم', move:'اسحب هذه الرسالة لتحريكها، أو استخدم Alt مع مفاتيح الأسهم لضبط موضعها.',
       step:'المحطة {n} من {t}', play:'تشغيل تلقائي', pause:'إيقاف مؤقت', endTour:'إنهاء الجولة',
       end:'هذا كل شيء! هل نناقش مشروع التغليف الخاص بك؟', restart:'اختر جولة أخرى',
       sendDesign:'أرسل تصميمي بالبريد', sendNote:'يفتح تطبيق البريد مع تفاصيل عبوتك، وأنت من يرسلها.',
@@ -406,6 +406,30 @@
   tpBubble.tabIndex = 0;
   tpBubble.setAttribute('aria-label', t.move);
   const tpRow = el('div', 'hrg-tour-row');
+  // Bubble text lives in its own area so it can be shortened on phones ("More" / "Less").
+  let tbText = el('div', 'hrg-tb-text');
+  const tbMore = el('button', 'hrg-tb-more', t.more); tbMore.type = 'button'; tbMore.hidden = true;
+  tbMore.addEventListener('click', () => {
+    const open = !tpBubble.classList.contains('is-open');
+    tpBubble.classList.toggle('is-open', open);
+    tbMore.textContent = open ? t.less : t.more;
+    tbMore.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  function fitText() {
+    requestAnimationFrame(() => {
+      if (tpBubble.classList.contains('is-open')) { tbMore.hidden = false; return; }
+      tbMore.hidden = !(tbText.scrollHeight > tbText.clientHeight + 2);
+    });
+  }
+  function setNote(text) {
+    const prev = $('.hrg-item-note', tbText); if (prev) prev.remove();
+    if (text) {
+      // on phones the item being shown comes first; Packy's introduction stays one tap away ("More")
+      const n = el('span', 'hrg-item-note', text);
+      if (window.innerWidth <= 700 && !document.body.classList.contains('hrg-design-tour')) { n.classList.add('is-first'); tbText.prepend(n); } else tbText.appendChild(n);
+    }
+    fitText();
+  }
   const tpBot = bot('hrg-tour-bot');
   const pill = el('div', 'hrg-pill'); pill.setAttribute('role', 'toolbar'); pill.setAttribute('aria-label', t.name);
   const pBack = btn(rtl ? '›' : '‹', 'hrg-pbtn hrg-arrow', () => go(idx - 1)); pBack.setAttribute('aria-label', t.back);
@@ -442,6 +466,7 @@
   });
   tpBubble.addEventListener('pointermove', e => {
     if (!drag || drag.id !== e.pointerId) return;
+    userMovedBubble = true;
     moveBubble(drag.bx + e.clientX - drag.x, drag.by + e.clientY - drag.y);
   });
   const stopDrag = e => { if (drag && drag.id === e.pointerId) { drag = null; tpBubble.classList.remove('hrg-dragging'); } };
@@ -449,7 +474,7 @@
   tpBubble.addEventListener('pointercancel', stopDrag);
   tpBubble.addEventListener('keydown', e => {
     if (e.target !== tpBubble || !e.altKey || !/^Arrow(Left|Right|Up|Down)$/.test(e.key)) return;
-    e.preventDefault(); e.stopPropagation();
+    e.preventDefault(); e.stopPropagation(); userMovedBubble = true;
     moveBubble(bubbleX + (e.key === 'ArrowLeft' ? -24 : e.key === 'ArrowRight' ? 24 : 0),
       bubbleY + (e.key === 'ArrowUp' ? -24 : e.key === 'ArrowDown' ? 24 : 0));
   });
@@ -493,20 +518,53 @@
   // step through a list: light each item in turn, with a wave, optionally doing something to it
   function sequence(items, start, gap, fn) {
     items.forEach((item, i) => later(start + i * gap, () => {
-      spot(item, true); fireWaves(item);
+      spot(item, true); showItem(item); later(reduce ? 0 : 480, () => fireWaves(item));
       if (fn) fn(item, i);
-      const heading = item.querySelector('h3, h4, strong, b') || item;
-      const title = clean(heading.textContent).slice(0, 85);
-      const detail = item.querySelector('p, small');
-      const sentence = detail && clean(detail.textContent) !== title ? clean(detail.textContent).slice(0, 160) : '';
-      if (title) {
-        const note = el('span', 'hrg-item-note', title + (sentence ? ' — ' + sentence : ''));
-        const prev = $('.hrg-item-note', tpBubble); if (prev) prev.remove();
-        tpBubble.appendChild(note);
-      }
-      if (window.innerWidth <= 700) { const r = item.getBoundingClientRect(); if (r.top < 90 || r.bottom > window.innerHeight - 140) scrollToEl(item, 'center'); }
+      setNote(noteFor(item));
     }));
     return start + items.length * gap + 600;
+  }
+  function noteFor(item) {
+    const head = item.querySelector('h3, h4, strong');
+    let title;
+    if (head) title = clean(head.textContent);
+    else { const c = item.cloneNode(true); $$('span', c).forEach(x => { if (/^[\s↗→←]*$/.test(x.textContent)) x.remove(); }); title = clean(c.textContent); }
+    let detail = item.getAttribute('data-detail') || '';
+    if (!detail) { const p = Array.from(item.querySelectorAll('p')).find(x => !x.classList.contains('details') && clean(x.textContent) !== title); if (p) detail = clean(p.textContent); }
+    title = title.slice(0, 90); detail = detail.slice(0, 170);
+    return title + (detail ? ': ' + detail : '');
+  }
+  // Keep what Packy is talking about on screen and out from under his bubble.
+  const headerH = () => (header ? header.getBoundingClientRect().height : 0);
+  let userMovedBubble = false;
+  function setDock(top) { document.body.style.setProperty('--hrg-header-h', Math.round(headerH()) + 'px'); tp.classList.toggle('hrg-dock-top', !!top); }
+  function placeDock(target) {
+    if (!target || userMovedBubble || document.body.classList.contains('hrg-design-tour') || tp.hidden) return;
+    const r = target.getBoundingClientRect(), c = tp.getBoundingClientRect(), h = c.height, hh = headerH();
+    if (!(r.left < c.right && c.left < r.right)) { setDock(false); return; }
+    const ov = (a1, a2, b1, b2) => Math.max(0, Math.min(a2, b2) - Math.max(a1, b1));
+    const low = ov(r.top, r.bottom, window.innerHeight - h - 16, window.innerHeight);
+    const high = ov(r.top, r.bottom, hh + 8, hh + 8 + h);
+    setDock(low > 0 && high < low);
+  }
+  function showItem(target) {
+    if (!target || document.body.classList.contains('hrg-design-tour')) return;
+    const hh = headerH(), dockH = tp.getBoundingClientRect().height || 0, mobile = window.innerWidth <= 700;
+    const top = hh + 10, bottom = window.innerHeight - (mobile ? dockH + 14 : 16);
+    const r = target.getBoundingClientRect();
+    if (r.top >= top && r.bottom <= bottom) { placeDock(target); return; }
+    const room = Math.max(120, bottom - top);
+    if (r.height > room && mobile) {
+      // Taller than the free space (e.g. a product card): Packy's bubble goes to the top
+      // and the bottom of the item, where its text is, stays in view.
+      setDock(true);
+      const y = r.bottom + window.scrollY - window.innerHeight + 12;
+      window.scrollTo({ top: Math.max(0, y), behavior: reduce ? 'auto' : 'smooth' });
+      return;
+    }
+    const y = r.height <= room ? r.top + window.scrollY - top - (room - r.height) / 2 : r.top + window.scrollY - top;
+    window.scrollTo({ top: Math.max(0, y), behavior: reduce ? 'auto' : 'smooth' });
+    later(reduce ? 0 : 520, () => placeDock(target));
   }
   function setSelect(sel, value) {
     if (!sel || !Array.from(sel.options).some(o => o.value === value)) return;
@@ -517,32 +575,38 @@
 
   // What Packy does at each stop. Every action works on the page's own elements. Returns its length in ms.
   const ACT = {
-    company(s) { lightTitle(s); const cta = $('.text-link, .button', s); if (cta) later(2600, () => { spot(cta); fireWaves(cta); }); return 5200; },
+    company(s) { const c = lightTitle(s); if (c.textEl) later(2100, () => showItem(c.textEl)); const cta = $('.text-link, .button', s); if (cta) later(3400, () => { spot(cta); showItem(cta); later(480, () => fireWaves(cta)); }); return 6400; },
     products(s) { lightTitle(s); return sequence($$('#product-grid .product-card'), 2600, 3200); },
     industries(s) { lightTitle(s); return sequence($$('#industry-list button'), 2400, 3200, b => b.click()); },
     configurator(s) {
       lightTitle(s);
       const style = byId('box-style'), print = byId('printing'), preview = $('.config-preview');
-      later(1900, () => { if (window.innerWidth <= 700 && preview) scrollToEl(preview, 'center'); });
-      later(2300, () => { setSelect(style, 'pizza'); spot(style, true); fireWaves(style); });
-      later(3900, () => { setSelect(print, 'mark'); spot(print, true); fireWaves(print); });
-      later(5500, () => { setSelect(style, 'gift'); spot(style, true); fireWaves(style); });
+      later(1900, () => { const f = window.innerWidth > 700 ? $('.config-layout') || style : preview; if (f) showItem(f); });
+      const optName = sel => sel && sel.selectedOptions[0] ? clean(sel.selectedOptions[0].textContent) : '';
+      later(2300, () => { setSelect(style, 'pizza'); spot(style, true); fireWaves(style); setNote(optName(style)); });
+      later(3900, () => { setSelect(print, 'mark'); spot(print, true); fireWaves(print); setNote(optName(style) + ' · ' + optName(print)); });
+      later(5500, () => { setSelect(style, 'gift'); spot(style, true); fireWaves(style); setNote(optName(style) + ' · ' + optName(print)); });
       later(7000, () => { if (preview) { spot(preview, true); fireWaves(preview); } tpBubble.appendChild(btn(t.tryIt, 'hrg-send', () => startDesign())); });
       return 9000;
     },
-    'printing-section'(s) { lightTitle(s); const img = $('.printing-image', s); later(2600, () => { spot(img); fireWaves(img); }); return 5600; },
+    'printing-section'(s) { lightTitle(s); const img = $('.printing-image', s); later(2600, () => { spot(img); showItem(img); later(480, () => fireWaves(img)); }); return 6000; },
     manufacturing(s) {
       lightTitle(s);
-      later(1500, () => { if (window.HRManufacturing) window.HRManufacturing.ride(reduce ? 0 : 7000); });
-      return 9000;
+      // Packy rides the line; his bubble names each stage as he passes it (names come from the page).
+      const stages = $$('.mfg-steps li', s).map(li => clean(Array.from(li.children).map(c => c.textContent).join(' ') || li.textContent));
+      later(1300, () => showItem(s)); // on phones the stairs are low in the section: the bubble moves to the top
+      const per = 1300;
+      later(1500, () => { if (window.HRManufacturing) window.HRManufacturing.ride(reduce ? 0 : per * Math.max(1, stages.length)); });
+      stages.forEach((name, k) => later(1500 + k * per, () => setNote(name)));
+      return 1500 + per * stages.length + 1200;
     },
     quality(s) { lightTitle(s); return sequence($$('.quality-list > div', s), 2200, 3200); },
     technology(s) { lightTitle(s); const layers = $$('.tl-label', s); if (layers.length) return sequence(layers, 2400, 3000); return sequence($$('.board-diagram .board-liner, .board-diagram .board-flute', s), 2200, 3200); },
     location(s) {
       lightTitle(s);
       const map = $('.map-panel', s), open = $('.map-open', s);
-      later(2300, () => { if (map) { if (window.innerWidth <= 700) scrollToEl(map, 'center'); spot(map); map.classList.add('hrg-pin'); fireWaves(map); } });
-      later(4200, () => { if (open) { spot(open); fireWaves(open); } });
+      later(2300, () => { if (map) { spot(map); map.classList.add('hrg-pin'); showItem(map); later(480, () => fireWaves(map)); const adr = $('.footer-map'); if (adr) setNote(clean(adr.textContent).replace(/\s*↗\s*$/, '')); } });
+      later(4400, () => { if (open) { spot(open); showItem(open); later(480, () => fireWaves(open)); } });
       return 6500;
     },
     contact(s) { lightTitle(s); return sequence($$('.section-heading .button', s), 2200, 1200); }
@@ -696,7 +760,12 @@
     const last = i === steps.length - 1;
     pNext.textContent = last ? '✓' : (rtl ? '‹' : '›');
     pNext.setAttribute('aria-label', last ? t.finish : t.next);
-    tpBubble.replaceChildren(el('span', '', t.lines[st.line] || ''));
+    tbText = el('div', 'hrg-tb-text');
+    tbText.appendChild(el('span', 'hrg-tb-line', t.lines[st.line] || ''));
+    tpBubble.classList.remove('is-open'); tbMore.textContent = t.more; tbMore.setAttribute('aria-expanded', 'false');
+    tpBubble.replaceChildren(tbText, tbMore);
+    fitText();
+    if (!st.design) setDock(false);
     moveBubble(bubbleX, bubbleY);
     tpBubble.classList.remove('pop'); void tpBubble.offsetWidth; tpBubble.classList.add('pop');
     let len;
