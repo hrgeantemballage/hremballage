@@ -605,7 +605,7 @@
       designIntro(() => {
         const style = byId('box-style'); if (style) { scrollToEl(style, 'center'); later(500, () => { spot(style); fireWaves(style); }); }
         later(1300, focusPreview);
-        const shown = tryOption('box-style', ['beverage', 'burger', 'takeaway', 'dates'], 1700, 2300, true);
+        const shown = tryOption('box-style', ['shipping', 'beverage', 'burger', 'takeaway', 'dates', 'cake'], 1700, 2300, true);
         later(shown, () => { if (style) spot(style, true); });
       });
     } },
@@ -656,7 +656,7 @@
       });
     } }
   ];
-  const DESIGN_MS = { d1: 12500 + DESIGN_INTRO_MS, d2: 12500, d3: 5500, d4: 7500, d5: 8500, d6: 7500, d7: 7000, d8: 9000 };
+  const DESIGN_MS = { d1: 17000 + DESIGN_INTRO_MS, d2: 12500, d3: 5500, d4: 7500, d5: 8500, d6: 7500, d7: 7000, d8: 9000 };
   // Every (re)start of the design tour begins from the builder's default state.
   function resetDesigner() {
     const form = byId('config-form'); if (!form) return;
@@ -702,9 +702,13 @@
   }
   // Repeat all: Packy plays the whole tour automatically and starts it again at the end, until the visitor stops him.
   function repeatAll() {
-    if (idx >= 0) { const on = !looping; setLoop(on); setPlay(on || playing); if (on && !playing) setPlay(true); return; }
+    if (idx >= 0) {
+      const on = !looping;
+      if (on && steps[idx] && steps[idx].design && idx === steps.length - 1) { runCleanups(); token++; resetDesigner(); setLoop(true); setPlay(true); go(0); return; }
+      setLoop(on); setPlay(on || playing); if (on && !playing) setPlay(true); return;
+    }
     if (!lastTour) return;
-    if (lastTour.kind === 'design') startDesign(true); else startTour(lastTour.kind, true);
+    if (lastTour.kind === 'design') startDesign(true, true); else startTour(lastTour.kind, true);
     setLoop(true);
   }
 
@@ -751,11 +755,11 @@
     pNext.focus({ preventScroll: true });
   }
   function startTour(key, auto = false) { lastTour = { kind:key }; begin(PATHS[key].map(id => ({ id, line:id })), true, auto); }
-  function startDesign(auto = false) {
+  function startDesign(auto = false, fresh = false) {
     lastTour = { kind:'design' };
     designInitialView = views().findIndex(b => b.getAttribute('aria-pressed') === 'true');
     userChangedView = false;
-    runCleanups(); token++; resetDesigner();
+    if (fresh) { runCleanups(); token++; resetDesigner(); }
     begin(DESIGN.map(d => ({ design:d, line:d.line })), true, auto);
   }
   function endTour(finished) {
