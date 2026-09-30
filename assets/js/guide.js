@@ -13,7 +13,7 @@
   const T = {
     en: { launcher:'Packy', name:'Packy', sub:'Your website assistant',
       bubble:'Hey, I’m Packy, your assistant. Let me help you!', hi:'Welcome.',
-      ask:'Welcome. Excellence in structural packaging begins here',
+      ask:'Welcome. Excellence in structural packaging begins here.',
       disclosure:'I’m an automated assistant, not AI. I only show information published on this site.',
       intents:{ boxes:'📦 I need boxes for my products', print:'🎨 I want printed boxes with my brand', work:'🏭 I want to see how you work', look:'👀 Just looking around' },
       design:'✏️ Design your box with me', designNote:'Build it live in 3D, then copy or email the details to us.', copyDetails:'Copy details', copied:'Copied!', tryIt:'✏️ Design your box with me', goto:'Or go straight to', contact:'Talk to our team',
@@ -33,9 +33,11 @@
         technology:'See how the outer liners and the fluted middle layer form corrugated board.',
         location:'Find us in Béni Tamou, Blida. Open the map when you want directions.',
         contact:'Describe your project by email, or call our commercial team directly.',
+        d0:'Let’s design your box together! This is our live box builder. I’ll show you every choice.',
         d1:'Step 1: choose your box model. Watch the live preview change!', d2:'Step 2: type your size in millimetres. I’ll turn the box so you see every side.',
-        d3:'Step 3: kraft or white? Single or double wall? See the difference live.', d4:'Step 4: add your print and finish. Your box, your brand.',
-        d5:'Step 5: here’s your box unfolded, the flat blank.', d6:'Your box is ready! Copy the details or email them to our team.' },
+        d3:'Step 3: see natural kraft change to white kraft. We’ll keep the white surface for the next steps.', d4:'Step 4: compare single and double wall. We’ll continue with double wall.',
+        d5:'Step 5: add your print. Your box, your brand.', d6:'Step 6: compare natural, matte and smooth finishing. We’ll keep smooth.',
+        d7:'Step 7: here’s your box unfolded, the flat blank.', d8:'Your box is ready! Copy the details or email them to our team.' },
       dest:{products:'Products', configurator:'Box configurator', manufacturing:'Manufacturing', location:'Our location', contact:'Contact sales'} },
     fr: { launcher:'Packy', name:'Packy', sub:'Votre assistant sur le site',
       bubble:'Salut, je suis Packy, votre assistant. Laissez-moi vous aider !', hi:'Bienvenue.',
@@ -59,9 +61,11 @@
         technology:'Découvrez les deux couvertures et la cannelure qui composent le carton ondulé.',
         location:'Retrouvez-nous à Béni Tamou, Blida. Ouvrez la carte pour obtenir l’itinéraire.',
         contact:'Décrivez votre projet par e-mail ou appelez directement notre équipe commerciale.',
+        d0:'Concevons votre caisse ensemble ! Voici notre configurateur en direct. Je vous montre chaque choix.',
         d1:'Étape 1 : choisissez votre modèle. Regardez l’aperçu changer en direct !', d2:'Étape 2 : indiquez vos dimensions en millimètres. Je fais tourner la caisse pour voir chaque face.',
-        d3:'Étape 3 : kraft ou blanc ? Simple ou double cannelure ? Voyez la différence en direct.', d4:'Étape 4 : ajoutez impression et finition. Votre caisse, votre marque.',
-        d5:'Étape 5 : voici votre caisse à plat, le flan découpé.', d6:'Votre caisse est prête ! Copiez les détails ou envoyez-les à notre équipe.' },
+        d3:'Étape 3 : passez du kraft naturel au kraft blanc. Nous gardons le blanc pour la suite.', d4:'Étape 4 : comparez la simple et la double cannelure. Nous continuons en double cannelure.',
+        d5:'Étape 5 : ajoutez votre impression. Votre caisse, votre marque.', d6:'Étape 6 : comparez les finitions naturelle, mate et lisse. Nous gardons la finition lisse.',
+        d7:'Étape 7 : voici votre caisse à plat, le flan découpé.', d8:'Votre caisse est prête ! Copiez les détails ou envoyez-les à notre équipe.' },
       dest:{products:'Produits', configurator:'Configurateur', manufacturing:'Fabrication', location:'Notre implantation', contact:'Service commercial'} },
     ar: { launcher:'Packy', name:'Packy', sub:'مساعدك في الموقع',
       bubble:'مرحباً، أنا باكي، مساعدك. دعني أساعدك!', hi:'أهلاً بكم.',
@@ -85,9 +89,11 @@
         technology:'تعرّف على الطبقتين الخارجيتين والطبقة المموجة بينهما.',
         location:'تجدنا في بني تامو بالبليدة. افتح الخريطة لمعرفة الطريق.',
         contact:'صف مشروعك عبر البريد الإلكتروني أو اتصل بفريق المبيعات مباشرة.',
+        d0:'لنصمّم عبوتك معاً! هذه أداة التصميم المباشر. سأريك كل خيار.',
         d1:'الخطوة 1: اختر نموذج عبوتك. شاهد المعاينة تتغير مباشرة!', d2:'الخطوة 2: أدخل المقاسات بالمليمتر. سأدير العبوة لترى كل جوانبها.',
-        d3:'الخطوة 3: كرافت أم أبيض؟ طبقة واحدة أم طبقتان؟ شاهد الفرق مباشرة.', d4:'الخطوة 4: أضف الطباعة والتشطيب. عبوتك بعلامتك.',
-        d5:'الخطوة 5: هذه عبوتك مفرودة، أي القطعة المسطحة قبل الطي.', d6:'عبوتك جاهزة! انسخ التفاصيل أو أرسلها إلى فريقنا.' },
+        d3:'الخطوة 3: شاهد الانتقال من الكرافت الطبيعي إلى الكرافت الأبيض. سنحتفظ بالأبيض للخطوات التالية.', d4:'الخطوة 4: قارن الجدار الواحد بالجدار المزدوج. سنكمل بالجدار المزدوج.',
+        d5:'الخطوة 5: أضف الطباعة. عبوتك بعلامتك.', d6:'الخطوة 6: قارن التشطيب الطبيعي والمطفي والناعم. سنحتفظ بالتشطيب الناعم.',
+        d7:'الخطوة 7: هذه عبوتك مفرودة، أي القطعة المسطحة قبل الطي.', d8:'عبوتك جاهزة! انسخ التفاصيل أو أرسلها إلى فريقنا.' },
       dest:{products:'المنتجات', configurator:'أداة التصميم', manufacturing:'التصنيع', location:'موقعنا', contact:'فريق المبيعات'} }
   };
   const t = T[lang] || T.en;
@@ -127,7 +133,14 @@
     w.innerHTML = '<span class="hrg-scene-shadow"></span>' + window.PackyCharacter.render({ size:'hero' });
     return w;
   }
-  function tapPacky(host, then) { window.PackyCharacter.tap(host); if (then) then(); }
+  function tapPacky(host, then) {
+    const expression=window.PackyCharacter.tap(host);
+    if (then) {
+      then();
+      // Carry the reaction into the assistant that replaces the tapped mascot.
+      if (!panel.hidden && expression) window.PackyCharacter.set(panel, expression, 1600);
+    }
+  }
 
   // ---------- DOM helpers ----------
   function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -530,18 +543,24 @@
   function tilt(steps) { const st = boxStage(); if (!st) return; later(0, () => glide(Math.abs(steps) * 260 + 1200)); for (let i = 0; i < Math.abs(steps); i++) later(i * 260, () => st.dispatchEvent(new KeyboardEvent('keydown', { key: steps > 0 ? 'ArrowDown' : 'ArrowUp', bubbles: true }))); }
   function showView(flat) { const v = views(); const b = flat ? v[1] : v[0]; if (b) b.click(); }
   function resetView() { const r = $('.config-views__reset'); if (r) r.click(); }
-  // try an option on the preview, then give the visitor's own choice back
+  // Demonstrate options; selected tour steps carry their final choice forward.
   let cleanups = [];
   function swap() { const st = boxStage(); if (!st || reduce) return; st.classList.remove('hrg-swap'); void st.offsetWidth; st.classList.add('hrg-swap'); }
   function runCleanups() { const c = cleanups; cleanups = []; c.forEach(fn => fn()); }
-  function tryOption(sel, values, start, gap) {
+  function tryOption(sel, values, start, gap, keepFinal = false) {
     const e = byId(sel); if (!e) return start;
     const mine = e.value;
-    let changed = false;
-    const restore = () => { if (changed) { changed = false; setSelect(e, mine); } };
-    cleanups.push(restore); // the visitor's own choice always comes back, even if they skip ahead
-    values.forEach((v, i) => later(start + i * gap, () => { changed = true; swap(); setSelect(e, v); spot(e, true); fireWaves(e); }));
-    later(start + values.length * gap, restore);
+    let changed = false, visitorChanged = false;
+    const onChange = event => { if (event.isTrusted) visitorChanged = true; };
+    e.addEventListener('change', onChange);
+    const settle = () => {
+      const finalValue = keepFinal ? values[values.length - 1] : mine;
+      if (!visitorChanged && (changed || keepFinal) && e.value !== finalValue) setSelect(e, finalValue);
+      changed = false;
+    };
+    cleanups.push(() => { settle(); e.removeEventListener('change', onChange); });
+    values.forEach((v, i) => later(start + i * gap, () => { if (visitorChanged) return; changed = true; swap(); setSelect(e, v); spot(e, true); fireWaves(e); }));
+    later(start + values.length * gap, settle);
     return start + values.length * gap + 300;
   }
   function focusPreview() {
@@ -549,13 +568,46 @@
     if (p && window.innerWidth <= 700 && !document.body.classList.contains('hrg-design-tour')) scrollToEl(p, 'center');
     return p;
   }
+  // The design tour opens on the configurator's own title before the first control.
+  // A real timer is used so the title stays readable with reduced motion too.
+  const DESIGN_INTRO_MS = 4200;
+  const wait = (ms, fn) => { const tk = token; setTimeout(() => { if (tk === token) fn(); }, ms); };
+  function designIntro(done) {
+    const sec = byId('configurator');
+    if (!sec) { done(); return; }
+    const c = stopContent(sec);
+    const line = $('.hrg-tb-line', tbText);
+    if (line) { line.textContent = t.lines.d0; fitText(); }
+    later(120, () => announce(t.lines.d0));
+    highlight(sec);
+    const top = $('.eyebrow', sec) || c.titleEl || sec;
+    // Keep the title just below Packy's docked bubble. Measured from layout, not the animated
+    // size (the bubble's pop-in scale under-measures it), and checked again once scrolling ends.
+    const place = smooth => {
+      const bTop = getComputedStyle(tpBubble).position === 'fixed' ? parseFloat(getComputedStyle(tpBubble).top) || 0 : 0;
+      const clear = Math.max(headerH(), bTop ? bTop + tpBubble.offsetHeight : 0) + 16;
+      const off = top.getBoundingClientRect().top - clear;
+      if (Math.abs(off) > 4) window.scrollTo({ top: Math.max(0, window.scrollY + off), behavior: smooth && !reduce ? 'smooth' : 'auto' });
+    };
+    place(true);
+    wait(reduce ? 60 : 900, () => place(true));
+    lightTitle(sec);
+    wait(DESIGN_INTRO_MS, () => {
+      unlight(); highlight(null);
+      if (line) { line.textContent = t.lines.d1; fitText(); }
+      announce(t.lines.d1);
+      done();
+    });
+  }
   const DESIGN = [
     { line: 'd1', run() {
       if (!userChangedView) showView(false);
-      const style = byId('box-style'); if (style) { scrollToEl(style, 'center'); later(500, () => { spot(style); fireWaves(style); }); }
-      later(1300, focusPreview);
-      const shown = tryOption('box-style', ['dates', 'cosmetics', 'produce'], 1700, 3400);
-      later(shown, () => { if (style) spot(style, true); });
+      designIntro(() => {
+        const style = byId('box-style'); if (style) { scrollToEl(style, 'center'); later(500, () => { spot(style); fireWaves(style); }); }
+        later(1300, focusPreview);
+        const shown = tryOption('box-style', ['dates', 'cosmetics', 'produce', 'beverage', 'burger', 'cake', 'takeaway', 'industrial'], 1700, 2300, true);
+        later(shown, () => { if (style) spot(style, true); });
+      });
     } },
     { line: 'd2', run() {
       const dims = $('.dimension-fields'); if (dims) { scrollToEl(dims, 'center'); later(500, () => { spot(dims); fireWaves(dims); }); }
@@ -567,22 +619,30 @@
     { line: 'd3', run() {
       const board = byId('board'); if (board) { scrollToEl(board, 'center'); later(500, () => { spot(board); fireWaves(board); }); }
       later(1200, focusPreview);
-      const n = tryOption('board', ['white'], 1600, 2600);
-      tryOption('flute', ['double'], n + 200, 2800);
-      later(n + 2400, () => { if (board) spot(board, true); });
+      tryOption('board', ['kraft', 'white'], 1600, 2600, true);
     } },
     { line: 'd4', run() {
+      const flute = byId('flute'); if (flute) { scrollToEl(flute, 'center'); later(500, () => { spot(flute); fireWaves(flute); }); }
+      later(1200, focusPreview);
+      tryOption('flute', ['single', 'double'], 1600, 2600, true);
+    } },
+    { line: 'd5', run() {
       const pr = byId('printing'); if (pr) { scrollToEl(pr, 'center'); later(500, () => { spot(pr); fireWaves(pr); }); }
       later(1200, focusPreview);
       const n = tryOption('printing', ['mark', 'graphic'], 1600, 2800);
-      later(n + 300, () => { spot(byId('finishing')); });
+      later(n + 300, () => { if (pr) spot(pr, true); });
     } },
-    { line: 'd5', run() {
+    { line: 'd6', run() {
+      const finish = byId('finishing'); if (finish) { scrollToEl(finish, 'center'); later(500, () => { spot(finish); fireWaves(finish); }); }
+      later(1200, focusPreview);
+      tryOption('finishing', ['natural', 'matte', 'smooth'], 1600, 2600, true);
+    } },
+    { line: 'd7', run() {
       const p = $('.config-preview'); if (p) { scrollToEl(p, 'center'); later(500, () => { spot(p); fireWaves(p); }); }
       later(1200, () => { if (!userChangedView) { swap(); showView(true); } });
       later(5600, () => { if (!userChangedView) { swap(); showView(false); } });
     } },
-    { line: 'd6', run() {
+    { line: 'd8', run() {
       const cta = byId('config-cta');
       if (cta) cta.click(); // the site's own button writes the specification summary
       const box = $('.config-export');
@@ -596,7 +656,7 @@
       });
     } }
   ];
-  const DESIGN_MS = { d1: 13000, d2: 12500, d3: 9000, d4: 8500, d5: 7000, d6: 9000 };
+  const DESIGN_MS = { d1: 21500 + DESIGN_INTRO_MS, d2: 12500, d3: 7500, d4: 7500, d5: 8500, d6: 10000, d7: 7000, d8: 9000 };
   function designStep(d) { d.run(); return DESIGN_MS[d.line] || 8000; }
   function sendDesign() {
     const cta = byId('config-cta');
@@ -642,10 +702,10 @@
     runCleanups(); token++; idx = i;
     unlight(); waves.classList.remove('go');
     const st = steps[i];
-    window.PackyCharacter.set(tpBot, st.line === 'd6' ? 'reassuring' : st.design ? 'thinking' : 'focused');
+    window.PackyCharacter.set(tpBot, st.line === 'd8' ? 'reassuring' : st.design ? 'thinking' : 'focused');
     tp.hidden = false; document.body.classList.add('hrg-touring-mode');
     document.body.classList.toggle('hrg-design-tour', !!st.design);
-    document.body.classList.toggle('hrg-design-summary', st.line === 'd6');
+    document.body.classList.toggle('hrg-design-summary', st.line === 'd8');
     if (st.design) requestAnimationFrame(() => {
       const r = tpBubble.getBoundingClientRect();
       if (r.height) document.body.style.setProperty('--hrg-dock', Math.round(r.bottom + 8) + 'px');
