@@ -94,3 +94,5 @@
   .sec-panel,.sec-backdrop,.sec-slot,.sec-badge{transition:none}
   .sec-slot{opacity:1;transform:none}
 }
+
+.sec-today{display:block;font-size:.8rem;color:#aebbb6;margin-block:0 8px}
