@@ -389,3 +389,10 @@
   .hrg-mascot,.hrg-mascot.is-tapped,.hrg-tour-bot,.hrg-tour:not([hidden]) .hrg-tour-bot{animation:none!important;transition:none!important}
   .hrg-hero:hover .hrg-mascot:not(.is-tapped){transform:none}
 }
+
+/* 2026-09-30: no light rectangle during tours; Packy never shows a tap/focus square */
+.hrg-lit-title:after,.hrg-lit-text:after{content:none;display:none}
+.hrg-lit-text{text-shadow:0 0 14px rgba(255,205,120,.35)}
+.hrg-tour-bot,.hrg-launch,.hrg-scene,.hrg-mascot{-webkit-tap-highlight-color:transparent}
+.hrg-tour-bot:focus:not(:focus-visible),.hrg-launch:focus:not(:focus-visible){outline:none}
+.hrg-tour-bot,.hrg-tour-bot:hover,.hrg-tour-bot:active,.hrg-tour-bot:focus{background:transparent;box-shadow:none;-webkit-appearance:none;appearance:none}
