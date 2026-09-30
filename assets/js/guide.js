@@ -605,7 +605,7 @@
       designIntro(() => {
         const style = byId('box-style'); if (style) { scrollToEl(style, 'center'); later(500, () => { spot(style); fireWaves(style); }); }
         later(1300, focusPreview);
-        const shown = tryOption('box-style', ['dates', 'cosmetics', 'produce', 'beverage', 'burger', 'cake', 'takeaway', 'industrial'], 1700, 2300, true);
+        const shown = tryOption('box-style', ['beverage', 'burger', 'takeaway', 'dates'], 1700, 2300, true);
         later(shown, () => { if (style) spot(style, true); });
       });
     } },
@@ -619,7 +619,7 @@
     { line: 'd3', run() {
       const board = byId('board'); if (board) { scrollToEl(board, 'center'); later(500, () => { spot(board); fireWaves(board); }); }
       later(1200, focusPreview);
-      tryOption('board', ['kraft', 'white'], 1600, 2600, true);
+      tryOption('board', ['white'], 1600, 2600, true);
     } },
     { line: 'd4', run() {
       const flute = byId('flute'); if (flute) { scrollToEl(flute, 'center'); later(500, () => { spot(flute); fireWaves(flute); }); }
@@ -635,7 +635,7 @@
     { line: 'd6', run() {
       const finish = byId('finishing'); if (finish) { scrollToEl(finish, 'center'); later(500, () => { spot(finish); fireWaves(finish); }); }
       later(1200, focusPreview);
-      tryOption('finishing', ['natural', 'matte', 'smooth'], 1600, 2600, true);
+      tryOption('finishing', ['matte', 'smooth'], 1600, 2600, true);
     } },
     { line: 'd7', run() {
       const p = $('.config-preview'); if (p) { scrollToEl(p, 'center'); later(500, () => { spot(p); fireWaves(p); }); }
@@ -656,7 +656,19 @@
       });
     } }
   ];
-  const DESIGN_MS = { d1: 21500 + DESIGN_INTRO_MS, d2: 12500, d3: 7500, d4: 7500, d5: 8500, d6: 10000, d7: 7000, d8: 9000 };
+  const DESIGN_MS = { d1: 12500 + DESIGN_INTRO_MS, d2: 12500, d3: 5500, d4: 7500, d5: 8500, d6: 7500, d7: 7000, d8: 9000 };
+  // Every (re)start of the design tour begins from the builder's default state.
+  function resetDesigner() {
+    const form = byId('config-form'); if (!form) return;
+    const def = sel => { const o = Array.from(sel.options).find(x => x.defaultSelected) || sel.options[0]; return o ? o.value : sel.value; };
+    ['box-style', 'board', 'flute', 'printing', 'finishing'].forEach(id => {
+      const e = byId(id); if (e && e.value !== def(e)) setSelect(e, def(e));
+    });
+    const style = byId('box-style'); if (style) style.dispatchEvent(new Event('change', { bubbles: true })); // default size and dimensions
+    const qty = byId('config-qty'); if (qty && qty.value) { qty.value = ''; qty.dispatchEvent(new Event('input', { bubbles: true })); }
+    const exp = $('.config-export'); if (exp) exp.hidden = true;
+    showView(false); resetView();
+  }
   function designStep(d) { d.run(); return DESIGN_MS[d.line] || 8000; }
   function sendDesign() {
     const cta = byId('config-cta');
@@ -698,7 +710,7 @@
 
   function go(i) {
     if (i < 0) { endTour(false); return; }
-    if (i >= steps.length) { if (looping && playing) { i = 0; } else { endTour(true); return; } }
+    if (i >= steps.length) { if (looping && playing) { i = 0; if (steps[0] && steps[0].design) { runCleanups(); token++; resetDesigner(); } } else { endTour(true); return; } }
     runCleanups(); token++; idx = i;
     unlight(); waves.classList.remove('go');
     const st = steps[i];
@@ -743,6 +755,7 @@
     lastTour = { kind:'design' };
     designInitialView = views().findIndex(b => b.getAttribute('aria-pressed') === 'true');
     userChangedView = false;
+    runCleanups(); token++; resetDesigner();
     begin(DESIGN.map(d => ({ design:d, line:d.line })), true, auto);
   }
   function endTour(finished) {
