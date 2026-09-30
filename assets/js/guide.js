@@ -704,7 +704,8 @@
   function repeatAll() {
     if (idx >= 0) {
       const on = !looping;
-      if (on && steps[idx] && steps[idx].design && idx === steps.length - 1) { runCleanups(); token++; resetDesigner(); setLoop(true); setPlay(true); go(0); return; }
+      // On the last design step, ↺ always means "start again from step 1 with default settings".
+      if (steps[idx] && steps[idx].design && idx === steps.length - 1) { runCleanups(); token++; resetDesigner(); setLoop(true); setPlay(true); go(0); return; }
       setLoop(on); setPlay(on || playing); if (on && !playing) setPlay(true); return;
     }
     if (!lastTour) return;
