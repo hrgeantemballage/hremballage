@@ -113,104 +113,34 @@
   const phone = tel ? tel.getAttribute('href').replace(/^tel:/, '') : '';
   const phoneShown = tel ? clean(tel.textContent).replace(/[^\d+ ]/g, '').trim() || phone : '';
 
-  // ---------- Packy portrait: head + the top of his carton with the HR logo ----------
-  const HEX = '<polygon points="138,297 510,85 578,125 205,338 205,605 138,570" fill="#1470ae"/><polygon points="580,202 648,162 880,297 880,727 812,765 812,335" fill="#62a843"/><polygon points="138,648 510,860 745,730 745,805 510,940 138,727" fill="#f8e21a"/>';
-  const HRL = '<path d="M248,362 H305 V482 H500 V540 H305 V660 L248,640 Z" fill="#e62e7b"/><path d="M500,362 L680,362 A89,89 0 0 1 680,540 L560,540 L560,660 L500,660 L500,482 L680,482 A31,31 0 0 0 680,420 L518,420 Z" fill="#e62e7b"/><path d="M600,540 L672,540 L770,660 L695,660 Z" fill="#e62e7b"/>';
-  let uid = 0;
+  // ---------- Packy: a small folded-cardboard rhombicuboctahedron (static SVG, no ids, safe to repeat) ----------
+  const MASCOT_FULL = "<svg class=\"hrg-mascot\" viewBox=\"0 0 200 200\" aria-hidden=\"true\" focusable=\"false\"><polygon points=\"29.0,49.2 12.9,68.2 52.1,31.2 68.2,12.3\" fill=\"#cea169\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"30.7,48.0 16.8,64.3 50.5,32.5 64.4,16.2\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.26\" stroke-width=\"1\"/><polygon points=\"187.1,56.8 171.0,75.8 171.0,154.8 187.1,135.8\" fill=\"#7f6340\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"186.0,63.7 172.1,80.0 172.1,147.9 186.0,131.6\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.10\" stroke-width=\"1\"/><polygon points=\"52.1,31.2 131.8,35.1 147.9,16.1 68.2,12.3\" fill=\"#cda168\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"58.8,30.2 127.3,33.5 141.2,17.2 72.7,13.9\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.26\" stroke-width=\"1\"/><polygon points=\"131.8,35.1 171.0,75.8 187.1,56.8 147.9,16.1\" fill=\"#9f7c51\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"135.6,36.6 169.3,71.6 183.2,55.3 149.5,20.3\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.17\" stroke-width=\"1\"/><polygon points=\"44.1,158.4 12.9,147.2 52.1,187.9\" fill=\"#b28e1a\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"43.0,159.2 16.2,149.6 49.9,184.6\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.12\" stroke-width=\"1\"/><polygon points=\"52.1,187.9 131.8,191.7 123.8,162.2 44.1,158.4\" fill=\"#7f6340\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"57.1,186.1 125.6,189.4 118.8,164.0 50.3,160.7\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.10\" stroke-width=\"1\"/><polygon points=\"44.1,79.4 12.9,68.2 12.9,147.2 44.1,158.4\" fill=\"#c39863\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"41.9,84.1 15.1,74.5 15.1,142.4 41.9,152.0\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.24\" stroke-width=\"1\"/><polygon points=\"131.8,191.7 171.0,154.8 123.8,162.2\" fill=\"#9b2457\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"133.2,188.6 166.9,156.8 126.4,163.2\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.10\" stroke-width=\"1\"/><polygon points=\"52.1,31.2 12.9,68.2 44.1,79.4\" fill=\"#3884f8\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"49.9,35.2 16.2,67.0 43.0,76.6\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.31\" stroke-width=\"1\"/><polygon points=\"171.0,154.8 171.0,75.8 123.8,83.2 123.8,162.2\" fill=\"#94744b\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"167.7,149.8 167.7,81.8 127.1,88.2 127.1,156.1\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.14\" stroke-width=\"1\"/><polygon points=\"123.8,83.2 131.8,35.1 52.1,31.2 44.1,79.4\" fill=\"#e3b173\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"118.8,79.6 125.6,38.2 57.1,34.9 50.3,76.3\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.31\" stroke-width=\"1\"/><polygon points=\"123.8,83.2 171.0,75.8 131.8,35.1\" fill=\"#3f9c48\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"126.4,80.6 166.9,74.2 133.2,39.2\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.23\" stroke-width=\"1\"/><polygon points=\"123.8,162.2 123.8,83.2 44.1,79.4 44.1,158.4\" fill=\"#0e1114\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><g transform=\"matrix(79.691,3.840,0.000,78.981,44.13,79.38)\"><rect x=\".05\" y=\".05\" width=\".9\" height=\".9\" rx=\".2\" fill=\"#12171b\"/><ellipse cx=\".5\" cy=\".42\" rx=\".42\" ry=\".3\" fill=\"#1b2328\" opacity=\".7\"/></g><g class=\"p-look\"><g transform=\"matrix(79.691,3.840,0.000,78.981,44.13,79.38)\"><g class=\"p-eyes\"><path d=\"M.2 .52 Q.31 .22 .42 .52 Q.31 .38 .2 .52Z\" fill=\"#f7e7c6\"/><path d=\"M.58 .52 Q.69 .22 .8 .52 Q.69 .38 .58 .52Z\" fill=\"#f7e7c6\"/></g><path class=\"p-mouth\" d=\"M.43 .7 Q.5 .77 .57 .7\" fill=\"none\" stroke=\"#f7e7c6\" stroke-width=\".035\" stroke-linecap=\"round\"/></g></g><g transform=\"matrix(79.691,3.840,-7.945,48.159,52.08,31.22)\"><g transform=\"translate(.5 .5) scale(0.000795 0.000955) translate(-510 -512)\"><polygon points=\"138,297 510,85 578,125 205,338 205,605 138,570\" fill=\"#1470ae\"/><polygon points=\"580,202 648,162 880,297 880,727 812,765 812,335\" fill=\"#62a843\"/><polygon points=\"138,648 510,860 745,730 745,805 510,940 138,727\" fill=\"#f8e21a\"/><path d=\"M248,362 H305 V482 H500 V540 H305 V660 L248,640 Z M500,362 L680,362 A89,89 0 0 1 680,540 L560,540 L560,660 L500,660 L500,482 L680,482 A31,31 0 0 0 680,420 L518,420 Z M600,540 L672,540 L770,660 L695,660 Z\" fill=\"#e62e7b\"/></g></g></svg>";
+  const MASCOT_SMALL = "<svg class=\"hrg-mascot\" viewBox=\"0 0 200 200\" aria-hidden=\"true\" focusable=\"false\"><polygon points=\"29.0,49.2 12.9,68.2 52.1,31.2 68.2,12.3\" fill=\"#cea169\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"30.7,48.0 16.8,64.3 50.5,32.5 64.4,16.2\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.26\" stroke-width=\"1\"/><polygon points=\"187.1,56.8 171.0,75.8 171.0,154.8 187.1,135.8\" fill=\"#7f6340\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"186.0,63.7 172.1,80.0 172.1,147.9 186.0,131.6\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.10\" stroke-width=\"1\"/><polygon points=\"52.1,31.2 131.8,35.1 147.9,16.1 68.2,12.3\" fill=\"#cda168\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"58.8,30.2 127.3,33.5 141.2,17.2 72.7,13.9\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.26\" stroke-width=\"1\"/><polygon points=\"131.8,35.1 171.0,75.8 187.1,56.8 147.9,16.1\" fill=\"#9f7c51\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"135.6,36.6 169.3,71.6 183.2,55.3 149.5,20.3\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.17\" stroke-width=\"1\"/><polygon points=\"44.1,158.4 12.9,147.2 52.1,187.9\" fill=\"#b28e1a\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"43.0,159.2 16.2,149.6 49.9,184.6\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.12\" stroke-width=\"1\"/><polygon points=\"52.1,187.9 131.8,191.7 123.8,162.2 44.1,158.4\" fill=\"#7f6340\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"57.1,186.1 125.6,189.4 118.8,164.0 50.3,160.7\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.10\" stroke-width=\"1\"/><polygon points=\"44.1,79.4 12.9,68.2 12.9,147.2 44.1,158.4\" fill=\"#c39863\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"41.9,84.1 15.1,74.5 15.1,142.4 41.9,152.0\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.24\" stroke-width=\"1\"/><polygon points=\"131.8,191.7 171.0,154.8 123.8,162.2\" fill=\"#9b2457\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"133.2,188.6 166.9,156.8 126.4,163.2\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.10\" stroke-width=\"1\"/><polygon points=\"52.1,31.2 12.9,68.2 44.1,79.4\" fill=\"#3884f8\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"49.9,35.2 16.2,67.0 43.0,76.6\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.31\" stroke-width=\"1\"/><polygon points=\"171.0,154.8 171.0,75.8 123.8,83.2 123.8,162.2\" fill=\"#94744b\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"167.7,149.8 167.7,81.8 127.1,88.2 127.1,156.1\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.14\" stroke-width=\"1\"/><polygon points=\"123.8,83.2 131.8,35.1 52.1,31.2 44.1,79.4\" fill=\"#e3b173\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"118.8,79.6 125.6,38.2 57.1,34.9 50.3,76.3\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.31\" stroke-width=\"1\"/><polygon points=\"123.8,83.2 171.0,75.8 131.8,35.1\" fill=\"#3f9c48\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"126.4,80.6 166.9,74.2 133.2,39.2\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.23\" stroke-width=\"1\"/><polygon points=\"123.8,162.2 123.8,83.2 44.1,79.4 44.1,158.4\" fill=\"#0e1114\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><g transform=\"matrix(79.691,3.840,0.000,78.981,44.13,79.38)\"><rect x=\".05\" y=\".05\" width=\".9\" height=\".9\" rx=\".2\" fill=\"#12171b\"/><ellipse cx=\".5\" cy=\".42\" rx=\".42\" ry=\".3\" fill=\"#1b2328\" opacity=\".7\"/></g><g class=\"p-look\"><g transform=\"matrix(79.691,3.840,0.000,78.981,44.13,79.38)\"><g class=\"p-eyes\"><path d=\"M.2 .52 Q.31 .22 .42 .52 Q.31 .38 .2 .52Z\" fill=\"#f7e7c6\"/><path d=\"M.58 .52 Q.69 .22 .8 .52 Q.69 .38 .58 .52Z\" fill=\"#f7e7c6\"/></g><path class=\"p-mouth\" d=\"M.43 .7 Q.5 .77 .57 .7\" fill=\"none\" stroke=\"#f7e7c6\" stroke-width=\".035\" stroke-linecap=\"round\"/></g></g></svg>";
   function bot(cls) {
-    const id = 'hrg' + (++uid);
     const s = document.createElement('span');
     s.className = 'hrg-bot ' + (cls || '');
     s.setAttribute('aria-hidden', 'true');
-    s.innerHTML =
-      '<svg viewBox="0 0 120 120" focusable="false"><defs>' +
-      '<linearGradient id="' + id + 's" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdf8ef"/><stop offset="1" stop-color="#ddcfb7"/></linearGradient>' +
-      '<linearGradient id="' + id + 'g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7e2b0"/><stop offset=".5" stop-color="#c9994b"/><stop offset="1" stop-color="#a8792f"/></linearGradient>' +
-      '<linearGradient id="' + id + 'b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3220"/><stop offset="1" stop-color="#22160c"/></linearGradient>' +
-      '<clipPath id="' + id + 'c"><circle cx="60" cy="60" r="60"/></clipPath></defs>' +
-      '<g clip-path="url(#' + id + 'c)">' +
-      '<rect x="14" y="86" width="92" height="44" rx="7" fill="url(#' + id + 'b)"/>' +
-      '<rect x="14" y="94" width="92" height="2.2" fill="url(#' + id + 'g)"/>' +
-      '<g transform="translate(60 109) scale(.028) translate(-510 -512)">' + HEX + HRL + '</g>' +
-      '<rect x="52" y="78" width="16" height="10" rx="3" fill="#1d2226"/>' +
-      '</g>' +
-      '<line x1="60" y1="17" x2="60" y2="8" stroke="#cfb07a" stroke-width="2.6" stroke-linecap="round"/>' +
-      '<g transform="translate(60 5.5) scale(.017) translate(-510 -512)">' + HEX + '</g>' +
-      '<circle cx="21" cy="48" r="7" fill="url(#' + id + 'g)"/><circle cx="99" cy="48" r="7" fill="url(#' + id + 'g)"/>' +
-      '<rect x="23" y="16" width="74" height="64" rx="25" fill="url(#' + id + 's)"/>' +
-      '<rect x="30" y="25" width="60" height="44" rx="18" fill="#101417"/>' +
-      '<g class="hrg-eyes"><rect x="46" y="36" width="9" height="14" rx="4.5" fill="#ffc766"/><rect x="65" y="36" width="9" height="14" rx="4.5" fill="#ffc766"/></g>' +
-      '<ellipse cx="39" cy="58" rx="4.5" ry="2.6" fill="#ff8f7a" opacity=".55"/><ellipse cx="81" cy="58" rx="4.5" ry="2.6" fill="#ff8f7a" opacity=".55"/>' +
-      '<path d="M54 59 Q60 64 66 59" stroke="#ffc766" stroke-width="2.4" stroke-linecap="round" fill="none"/>' +
-      '</svg>';
+    s.innerHTML = MASCOT_SMALL;
     return s;
   }
-  // ---------- Packy in his box (hero, replaces the decorative 3D box) ----------
   function packyScene() {
-    const id = 'hrp' + (++uid);
     const w = document.createElement('span');
     w.className = 'hrg-scene';
     w.setAttribute('aria-hidden', 'true');
-    const hex = '<polygon points="138,297 510,85 578,125 205,338 205,605 138,570" fill="#1470ae"/><polygon points="580,202 648,162 880,297 880,727 812,765 812,335" fill="#62a843"/><polygon points="138,648 510,860 745,730 745,805 510,940 138,727" fill="#f8e21a"/>';
-    const hr = '<path d="M248,362 H305 V482 H500 V540 H305 V660 L248,640 Z" fill="#e62e7b"/><path d="M500,362 L680,362 A89,89 0 0 1 680,540 L560,540 L560,660 L500,660 L500,482 L680,482 A31,31 0 0 0 680,420 L518,420 Z" fill="#e62e7b"/><path d="M600,540 L672,540 L770,660 L695,660 Z" fill="#e62e7b"/>';
-    const fingers = x => [0, 6, 12, 18].map(d => '<rect x="' + (x + d) + '" y="143" width="5" height="12" rx="2.5" fill="#f4ecdf" stroke="#cdbb9c" stroke-width=".6"/>').join('');
-    w.innerHTML =
-      '<svg viewBox="0 -34 240 280" focusable="false"><defs>' +
-      '<linearGradient id="' + id + 'k" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8ad78"/><stop offset="1" stop-color="#b3864f"/></linearGradient>' +
-      '<linearGradient id="' + id + 'd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9c7445"/><stop offset="1" stop-color="#7b5a33"/></linearGradient>' +
-      '<linearGradient id="' + id + 's" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdf8ef"/><stop offset="1" stop-color="#ddcfb7"/></linearGradient>' +
-      '<linearGradient id="' + id + 'g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7e2b0"/><stop offset=".5" stop-color="#c9994b"/><stop offset="1" stop-color="#a8792f"/></linearGradient>' +
-      '<linearGradient id="' + id + 'b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3220"/><stop offset="1" stop-color="#22160c"/></linearGradient>' +
-      '</defs>' +
-      '<ellipse cx="128" cy="244" rx="104" ry="9" fill="#000" opacity=".45"/>' +
-      // back flap + inside of the box
-      '<path d="M82 130 L212 130 L200 94 L96 94 Z" fill="url(#' + id + 'd)"/>' +
-      '<path d="M40 150 L170 150 L212 130 L82 130 Z" fill="#1c120a"/>' +
-      // Packy (moves up when he comes out)
-      '<g class="p-packy"><g transform="translate(84 96)">' +
-        '<g class="p-arms">' +
-          '<path d="M10 94 C-4 104 -8 118 -6 128" stroke="#cfb07a" stroke-width="7" stroke-linecap="round" fill="none"/>' +
-          '<circle cx="-6" cy="133" r="7" fill="url(#' + id + 's)"/>' +
-          '<g transform="translate(74 94)"><g class="p-wave">' +
-            '<path d="M0 0 L22 -30" stroke="#cfb07a" stroke-width="7" stroke-linecap="round"/>' +
-            '<circle cx="26" cy="-38" r="8.5" fill="url(#' + id + 's)"/>' +
-            '<rect x="18.5" y="-58" width="4.6" height="14" rx="2.3" fill="#f4ecdf" transform="rotate(-14 21 -46)"/>' +
-            '<rect x="23.5" y="-61" width="4.6" height="15" rx="2.3" fill="#f4ecdf"/>' +
-            '<rect x="28.5" y="-60" width="4.6" height="14" rx="2.3" fill="#f4ecdf" transform="rotate(12 31 -47)"/>' +
-            '<rect x="33" y="-55" width="4.4" height="12" rx="2.2" fill="#f4ecdf" transform="rotate(26 35 -44)"/>' +
-            '<rect x="12" y="-42" width="4.6" height="11" rx="2.3" fill="#f4ecdf" transform="rotate(-55 15 -37)"/>' +
-          '</g></g>' +
-        '</g>' +
-        '<rect x="34" y="72" width="16" height="12" rx="4" fill="#1d2226"/>' +
-        '<rect x="8" y="80" width="68" height="56" rx="5" fill="url(#' + id + 'b)"/>' +
-        '<rect x="8" y="94" width="68" height="2" fill="url(#' + id + 'g)"/>' +
-        '<g transform="translate(42 114) scale(.03) translate(-510 -512)">' + hex + hr + '</g>' +
-        '<g class="p-head">' +
-          '<g class="p-ant"><line x1="42" y1="2" x2="42" y2="-12" stroke="#cfb07a" stroke-width="3" stroke-linecap="round"/>' +
-          '<g transform="translate(42 -18) scale(.026) translate(-510 -512)">' + hex + '</g></g>' +
-          '<circle cx="-3" cy="38" r="9" fill="url(#' + id + 'g)"/><circle cx="87" cy="38" r="9" fill="url(#' + id + 'g)"/>' +
-          '<rect x="0" y="0" width="84" height="74" rx="28" fill="url(#' + id + 's)"/>' +
-          '<rect x="8" y="10" width="68" height="50" rx="20" fill="#101417"/>' +
-          '<g class="p-look"><g class="p-eyes"><rect x="26" y="22" width="10" height="16" rx="5" fill="#ffc766"/><rect x="48" y="22" width="10" height="16" rx="5" fill="#ffc766"/></g>' +
-          '<circle cx="33" cy="26" r="2" fill="#fff6de"/><circle cx="55" cy="26" r="2" fill="#fff6de"/></g>' +
-          '<ellipse cx="19" cy="46" rx="5" ry="3" fill="#ff8f7a" opacity=".55"/><ellipse cx="65" cy="46" rx="5" ry="3" fill="#ff8f7a" opacity=".55"/>' +
-          '<path class="p-mouth" d="M35 47 Q42 53 49 47" stroke="#ffc766" stroke-width="2.6" stroke-linecap="round" fill="none"/>' +
-          '<path d="M14 7 Q26 2 40 3" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none" opacity=".7"/>' +
-        '</g>' +
-      '</g></g>' +
-      // box: front, side, flaps, logo (drawn over Packy)
-      '<g class="p-box">' +
-        '<path d="M40 150 L82 130 L52 110 L8 132 Z" fill="url(#' + id + 'd)"/>' +
-        '<path d="M170 150 L212 130 L234 150 L192 172 Z" fill="#a47a48"/>' +
-        '<path d="M170 150 L212 130 L212 218 L170 240 Z" fill="#9a7244"/>' +
-        '<rect x="40" y="150" width="130" height="90" fill="url(#' + id + 'k)"/>' +
-        '<path d="M40 150 H170" stroke="#e8c897" stroke-width="1.5"/>' +
-        '<g transform="translate(105 197) scale(.075) translate(-510 -512)">' + hex + hr + '</g>' +
-      '</g>' +
-      // fingers holding the front edge while he waits inside
-      '<g class="p-grip">' + fingers(74) + fingers(128) + '</g>' +
-      '</svg>';
+    w.innerHTML = '<span class="hrg-scene-shadow"></span>' + MASCOT_FULL;
     return w;
+  }
+  // Tap / click / keyboard response: anticipation tilt, small turn and bounce, a blink, back to rest.
+  // Repeated taps during the animation are ignored so it never jitters.
+  function tapPacky(host, then) {
+    const m = host && host.querySelector('.hrg-mascot');
+    if (!m) { if (then) then(); return; }
+    if (m.classList.contains('is-tapped')) return;
+    m.classList.add('is-tapped');
+    const done = () => { m.classList.remove('is-tapped'); };
+    m.addEventListener('animationend', function h(e) { if (e.target === m) { m.removeEventListener('animationend', h); done(); } });
+    setTimeout(done, reduce ? 420 : 900); // safety net if animations are disabled
+    if (then) setTimeout(then, reduce ? 0 : 420);
   }
 
   // ---------- DOM helpers ----------
@@ -271,10 +201,11 @@
     }
     stage.addEventListener('click', () => {
       if (!panel.hidden) { close(); return; }
+      if (stage.querySelector('.hrg-mascot.is-tapped')) return;
       stage.classList.add('is-out');
       if (look) look.style.transform = '';
       bubbleText.textContent = t.hi;
-      setTimeout(() => open(stage), reduce ? 0 : 750);
+      tapPacky(stage, () => open(stage));
     });
 
     // His eyes follow the visitor: the mouse on desktop, the scroll direction on phones. He stays in his box.
@@ -852,7 +783,7 @@
       (heroShown ? stage : launch).focus({ preventScroll: true });
     }
   }
-  launch.addEventListener('click', () => (panel.hidden ? open(null) : close()));
+  launch.addEventListener('click', () => { if (!panel.hidden) { close(); return; } tapPacky(launch, () => open(null)); });
   document.addEventListener('click', e => {
     const opener = e.target.closest && e.target.closest('[data-hrg-open]');
     if (!opener) return;
