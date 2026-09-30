@@ -1,4 +1,4 @@
-/* HR Géant Emballage — website guide ("Karto"). Scoped with the hrg- prefix. */
+/* HR Géant Emballage — website guide ("Packy"). Scoped with the hrg- prefix. */
 .hrg-ready .whatsapp{display:none!important} /* WhatsApp now lives inside the guide panel */
 
 .hrg-launch{position:fixed;z-index:900;inset-block-end:calc(20px + env(safe-area-inset-bottom,0px));inset-inline-end:20px;
@@ -77,12 +77,12 @@
   .hrg-panel,.hrg-spot{transition:none}
 }
 
-/* ---------- Packy in his box (hero) ---------- */
+/* ---------- Packy on the homepage ---------- */
 .hrg-has-hero .hero-object{display:none}
 .hrg-hero-visible .hrg-launch{opacity:0;pointer-events:none;visibility:hidden}
 .hrg-hero{position:absolute;z-index:3;inset-inline-end:7%;bottom:10%;width:230px;padding:0;border:0;background:none;cursor:pointer;color:#f3ece0;
   display:flex;flex-direction:column;align-items:center;-webkit-tap-highlight-color:transparent;pointer-events:none}
-/* only Packy, his box and the bubble take taps; empty space lets taps reach the page underneath */
+/* only Packy and the bubble take taps; empty space lets taps reach the page underneath */
 .hrg-bubble{pointer-events:auto}
 .hrg-hero:focus-visible{outline:2px solid #e6c587;outline-offset:6px;border-radius:16px}
 .hrg-scene{display:block;width:100%}
@@ -356,3 +356,36 @@
   .hrg-mascot.is-tapped{filter:drop-shadow(0 0 10px rgba(230,197,135,.85))}
 }
 .hrg-hero .hrg-scene,.hrg-hero .hrg-mascot{pointer-events:auto;cursor:pointer}
+
+/* Expressive face: eye motion, blink and mouth never share transforms. */
+.hrg-tour-bot{min-width:44px;min-height:44px;padding:0;border:0;background:transparent;cursor:pointer;border-radius:12px}
+.hrg-tour-bot>.hrg-bot{width:100%;height:100%}
+.hrg-tour-bot:focus-visible{outline:2px solid var(--yellow);outline-offset:3px}
+.hrg-mascot .p-mouth{transition:opacity .12s ease}
+.hrg-panel .hrg-bot-sm{width:52px;height:52px}
+@media(max-width:700px){
+  .hrg-has-hero .hero{height:auto;min-height:100svh;max-height:none;flex-direction:column;align-items:stretch;justify-content:center;padding-block-start:110px}
+  .hrg-has-hero .hero-content{padding-top:0}
+  .hrg-hero{position:relative;inset:auto;width:fit-content;max-width:calc(100% - 16px);align-self:flex-end;margin:24px 8px calc(12px + env(safe-area-inset-bottom,0px))}
+  .hrg-scene{width:clamp(96px,27vw,108px);height:clamp(96px,27vw,108px)}
+  .hrg-bubble,.hrg-hero.is-out .hrg-bubble{max-width:min(176px,calc(100vw - 166px));font-size:.8rem}
+  .hrg-launch .hrg-bot{width:clamp(58px,15vw,64px);height:clamp(58px,15vw,64px)}
+  .hrg-launch,[dir=rtl] .hrg-launch{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;min-width:44px;min-height:44px}
+  .hrg-launch:hover{background:transparent;border-color:transparent}
+  .hero h1{font-size:clamp(2.4rem,10.4vw,3.4rem);overflow-wrap:anywhere}
+  h2{overflow-wrap:anywhere;hyphens:auto}
+  .company-grid>*{min-width:0}
+}
+@media(max-width:360px){
+  .header-inner{padding-inline:12px;gap:8px}
+  .brand{gap:6px;font-size:.6rem}
+  .brand img{width:36px;height:36px}
+  .brand small{font-size:.5rem}
+  .header-actions{gap:6px}
+  .language{gap:0}
+  .menu-toggle{width:44px;flex:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .hrg-mascot,.hrg-mascot.is-tapped,.hrg-tour-bot,.hrg-tour:not([hidden]) .hrg-tour-bot{animation:none!important;transition:none!important}
+  .hrg-hero:hover .hrg-mascot:not(.is-tapped){transform:none}
+}
