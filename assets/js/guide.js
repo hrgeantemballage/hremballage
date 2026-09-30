@@ -9,12 +9,11 @@
   const lang = (html.lang || 'en').slice(0, 2);
   const rtl = (html.dir || '').toLowerCase() === 'rtl';
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const finePointer = window.matchMedia && matchMedia('(pointer: fine)').matches;
 
   const T = {
     en: { launcher:'Packy', name:'Packy', sub:'Your website assistant',
-      bubble:'Hey, I’m Packy, your assistant. Let me help you!', hi:'Hello!',
-      ask:'Hello! What brings you here?',
+      bubble:'Hey, I’m Packy, your assistant. Let me help you!', hi:'Welcome.',
+      ask:'Welcome. Excellence in structural packaging begins here',
       disclosure:'I’m an automated assistant, not AI. I only show information published on this site.',
       intents:{ boxes:'📦 I need boxes for my products', print:'🎨 I want printed boxes with my brand', work:'🏭 I want to see how you work', look:'👀 Just looking around' },
       design:'✏️ Design your box with me', designNote:'Build it live in 3D, then copy or email the details to us.', copyDetails:'Copy details', copied:'Copied!', tryIt:'✏️ Design your box with me', goto:'Or go straight to', contact:'Talk to our team',
@@ -39,8 +38,8 @@
         d5:'Step 5: here’s your box unfolded, the flat blank.', d6:'Your box is ready! Copy the details or email them to our team.' },
       dest:{products:'Products', configurator:'Box configurator', manufacturing:'Manufacturing', location:'Our location', contact:'Contact sales'} },
     fr: { launcher:'Packy', name:'Packy', sub:'Votre assistant sur le site',
-      bubble:'Salut, je suis Packy, votre assistant. Laissez-moi vous aider !', hi:'Bonjour !',
-      ask:'Bonjour ! Qu’est-ce qui vous amène ?',
+      bubble:'Salut, je suis Packy, votre assistant. Laissez-moi vous aider !', hi:'Bienvenue.',
+      ask:'Bienvenue. L’excellence dans la conception structurelle des emballages commence ici.',
       disclosure:'Je suis un assistant automatique, pas une IA. Je montre uniquement les informations publiées sur ce site.',
       intents:{ boxes:'📦 J’ai besoin de caisses pour mes produits', print:'🎨 Je veux des emballages imprimés à mon image', work:'🏭 Je veux voir comment vous travaillez', look:'👀 Je jette juste un œil' },
       design:'✏️ Concevez votre caisse avec moi', designNote:'Créez-la en 3D en direct, puis copiez ou envoyez-nous les détails.', copyDetails:'Copier les détails', copied:'Copié !', tryIt:'✏️ Concevez votre caisse avec moi', goto:'Ou allez directement à', contact:'Parler à notre équipe',
@@ -65,8 +64,8 @@
         d5:'Étape 5 : voici votre caisse à plat, le flan découpé.', d6:'Votre caisse est prête ! Copiez les détails ou envoyez-les à notre équipe.' },
       dest:{products:'Produits', configurator:'Configurateur', manufacturing:'Fabrication', location:'Notre implantation', contact:'Service commercial'} },
     ar: { launcher:'Packy', name:'Packy', sub:'مساعدك في الموقع',
-      bubble:'مرحباً، أنا باكي، مساعدك. دعني أساعدك!', hi:'مرحباً!',
-      ask:'مرحباً! ما الذي أتى بك إلى هنا؟',
+      bubble:'مرحباً، أنا باكي، مساعدك. دعني أساعدك!', hi:'أهلاً بكم.',
+      ask:'أهلاً بكم. التميّز في التصميم الهيكلي للتغليف يبدأ هنا.',
       disclosure:'أنا مساعد آلي ولست ذكاءً اصطناعياً. أعرض فقط المعلومات المنشورة على هذا الموقع.',
       intents:{ boxes:'📦 أحتاج صناديق لمنتجاتي', print:'🎨 أريد عبوات مطبوعة بعلامتي', work:'🏭 أريد أن أرى طريقة عملكم', look:'👀 أتصفح فقط' },
       design:'✏️ صمّم عبوتك معي', designNote:'اصنعها مباشرة بتقنية ثلاثية الأبعاد، ثم انسخ التفاصيل أو أرسلها إلينا.', copyDetails:'انسخ التفاصيل', copied:'تم النسخ!', tryIt:'✏️ صمّم عبوتك معي', goto:'أو انتقل مباشرة إلى', contact:'تحدث مع فريقنا',
@@ -114,34 +113,21 @@
   const phoneShown = tel ? clean(tel.textContent).replace(/[^\d+ ]/g, '').trim() || phone : '';
 
   // ---------- Packy: a small folded-cardboard rhombicuboctahedron (static SVG, no ids, safe to repeat) ----------
-  const MASCOT_FULL = "<svg class=\"hrg-mascot\" viewBox=\"0 0 200 200\" aria-hidden=\"true\" focusable=\"false\"><polygon points=\"29.0,49.2 12.9,68.2 52.1,31.2 68.2,12.3\" fill=\"#cea169\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"30.7,48.0 16.8,64.3 50.5,32.5 64.4,16.2\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.26\" stroke-width=\"1\"/><polygon points=\"187.1,56.8 171.0,75.8 171.0,154.8 187.1,135.8\" fill=\"#7f6340\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"186.0,63.7 172.1,80.0 172.1,147.9 186.0,131.6\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.10\" stroke-width=\"1\"/><polygon points=\"52.1,31.2 131.8,35.1 147.9,16.1 68.2,12.3\" fill=\"#cda168\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"58.8,30.2 127.3,33.5 141.2,17.2 72.7,13.9\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.26\" stroke-width=\"1\"/><polygon points=\"131.8,35.1 171.0,75.8 187.1,56.8 147.9,16.1\" fill=\"#9f7c51\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"135.6,36.6 169.3,71.6 183.2,55.3 149.5,20.3\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.17\" stroke-width=\"1\"/><polygon points=\"44.1,158.4 12.9,147.2 52.1,187.9\" fill=\"#b28e1a\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"43.0,159.2 16.2,149.6 49.9,184.6\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.12\" stroke-width=\"1\"/><polygon points=\"52.1,187.9 131.8,191.7 123.8,162.2 44.1,158.4\" fill=\"#7f6340\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"57.1,186.1 125.6,189.4 118.8,164.0 50.3,160.7\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.10\" stroke-width=\"1\"/><polygon points=\"44.1,79.4 12.9,68.2 12.9,147.2 44.1,158.4\" fill=\"#c39863\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"41.9,84.1 15.1,74.5 15.1,142.4 41.9,152.0\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.24\" stroke-width=\"1\"/><polygon points=\"131.8,191.7 171.0,154.8 123.8,162.2\" fill=\"#9b2457\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"133.2,188.6 166.9,156.8 126.4,163.2\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.10\" stroke-width=\"1\"/><polygon points=\"52.1,31.2 12.9,68.2 44.1,79.4\" fill=\"#3884f8\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"49.9,35.2 16.2,67.0 43.0,76.6\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.31\" stroke-width=\"1\"/><polygon points=\"171.0,154.8 171.0,75.8 123.8,83.2 123.8,162.2\" fill=\"#94744b\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"167.7,149.8 167.7,81.8 127.1,88.2 127.1,156.1\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.14\" stroke-width=\"1\"/><polygon points=\"123.8,83.2 131.8,35.1 52.1,31.2 44.1,79.4\" fill=\"#e3b173\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"118.8,79.6 125.6,38.2 57.1,34.9 50.3,76.3\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.31\" stroke-width=\"1\"/><polygon points=\"123.8,83.2 171.0,75.8 131.8,35.1\" fill=\"#3f9c48\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"126.4,80.6 166.9,74.2 133.2,39.2\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.23\" stroke-width=\"1\"/><polygon points=\"123.8,162.2 123.8,83.2 44.1,79.4 44.1,158.4\" fill=\"#0e1114\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><g transform=\"matrix(79.691,3.840,0.000,78.981,44.13,79.38)\"><rect x=\".05\" y=\".05\" width=\".9\" height=\".9\" rx=\".2\" fill=\"#12171b\"/><ellipse cx=\".5\" cy=\".42\" rx=\".42\" ry=\".3\" fill=\"#1b2328\" opacity=\".7\"/></g><g class=\"p-look\"><g transform=\"matrix(79.691,3.840,0.000,78.981,44.13,79.38)\"><g class=\"p-eyes\"><path d=\"M.2 .52 Q.31 .22 .42 .52 Q.31 .38 .2 .52Z\" fill=\"#f7e7c6\"/><path d=\"M.58 .52 Q.69 .22 .8 .52 Q.69 .38 .58 .52Z\" fill=\"#f7e7c6\"/></g><path class=\"p-mouth\" d=\"M.43 .7 Q.5 .77 .57 .7\" fill=\"none\" stroke=\"#f7e7c6\" stroke-width=\".035\" stroke-linecap=\"round\"/></g></g><g transform=\"matrix(79.691,3.840,-7.945,48.159,52.08,31.22)\"><g transform=\"translate(.5 .5) scale(0.000795 0.000955) translate(-510 -512)\"><polygon points=\"138,297 510,85 578,125 205,338 205,605 138,570\" fill=\"#1470ae\"/><polygon points=\"580,202 648,162 880,297 880,727 812,765 812,335\" fill=\"#62a843\"/><polygon points=\"138,648 510,860 745,730 745,805 510,940 138,727\" fill=\"#f8e21a\"/><path d=\"M248,362 H305 V482 H500 V540 H305 V660 L248,640 Z M500,362 L680,362 A89,89 0 0 1 680,540 L560,540 L560,660 L500,660 L500,482 L680,482 A31,31 0 0 0 680,420 L518,420 Z M600,540 L672,540 L770,660 L695,660 Z\" fill=\"#e62e7b\"/></g></g></svg>";
-  const MASCOT_SMALL = "<svg class=\"hrg-mascot\" viewBox=\"0 0 200 200\" aria-hidden=\"true\" focusable=\"false\"><polygon points=\"29.0,49.2 12.9,68.2 52.1,31.2 68.2,12.3\" fill=\"#cea169\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"30.7,48.0 16.8,64.3 50.5,32.5 64.4,16.2\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.26\" stroke-width=\"1\"/><polygon points=\"187.1,56.8 171.0,75.8 171.0,154.8 187.1,135.8\" fill=\"#7f6340\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"186.0,63.7 172.1,80.0 172.1,147.9 186.0,131.6\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.10\" stroke-width=\"1\"/><polygon points=\"52.1,31.2 131.8,35.1 147.9,16.1 68.2,12.3\" fill=\"#cda168\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"58.8,30.2 127.3,33.5 141.2,17.2 72.7,13.9\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.26\" stroke-width=\"1\"/><polygon points=\"131.8,35.1 171.0,75.8 187.1,56.8 147.9,16.1\" fill=\"#9f7c51\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"135.6,36.6 169.3,71.6 183.2,55.3 149.5,20.3\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.17\" stroke-width=\"1\"/><polygon points=\"44.1,158.4 12.9,147.2 52.1,187.9\" fill=\"#b28e1a\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"43.0,159.2 16.2,149.6 49.9,184.6\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.12\" stroke-width=\"1\"/><polygon points=\"52.1,187.9 131.8,191.7 123.8,162.2 44.1,158.4\" fill=\"#7f6340\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"57.1,186.1 125.6,189.4 118.8,164.0 50.3,160.7\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.10\" stroke-width=\"1\"/><polygon points=\"44.1,79.4 12.9,68.2 12.9,147.2 44.1,158.4\" fill=\"#c39863\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"41.9,84.1 15.1,74.5 15.1,142.4 41.9,152.0\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.24\" stroke-width=\"1\"/><polygon points=\"131.8,191.7 171.0,154.8 123.8,162.2\" fill=\"#9b2457\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"133.2,188.6 166.9,156.8 126.4,163.2\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.10\" stroke-width=\"1\"/><polygon points=\"52.1,31.2 12.9,68.2 44.1,79.4\" fill=\"#3884f8\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"49.9,35.2 16.2,67.0 43.0,76.6\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.31\" stroke-width=\"1\"/><polygon points=\"171.0,154.8 171.0,75.8 123.8,83.2 123.8,162.2\" fill=\"#94744b\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"167.7,149.8 167.7,81.8 127.1,88.2 127.1,156.1\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.14\" stroke-width=\"1\"/><polygon points=\"123.8,83.2 131.8,35.1 52.1,31.2 44.1,79.4\" fill=\"#e3b173\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"118.8,79.6 125.6,38.2 57.1,34.9 50.3,76.3\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.31\" stroke-width=\"1\"/><polygon points=\"123.8,83.2 171.0,75.8 131.8,35.1\" fill=\"#3f9c48\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><polygon points=\"126.4,80.6 166.9,74.2 133.2,39.2\" fill=\"none\" stroke=\"#fff3dc\" stroke-opacity=\"0.23\" stroke-width=\"1\"/><polygon points=\"123.8,162.2 123.8,83.2 44.1,79.4 44.1,158.4\" fill=\"#0e1114\" stroke=\"#4d361f\" stroke-opacity=\".8\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><g transform=\"matrix(79.691,3.840,0.000,78.981,44.13,79.38)\"><rect x=\".05\" y=\".05\" width=\".9\" height=\".9\" rx=\".2\" fill=\"#12171b\"/><ellipse cx=\".5\" cy=\".42\" rx=\".42\" ry=\".3\" fill=\"#1b2328\" opacity=\".7\"/></g><g class=\"p-look\"><g transform=\"matrix(79.691,3.840,0.000,78.981,44.13,79.38)\"><g class=\"p-eyes\"><path d=\"M.2 .52 Q.31 .22 .42 .52 Q.31 .38 .2 .52Z\" fill=\"#f7e7c6\"/><path d=\"M.58 .52 Q.69 .22 .8 .52 Q.69 .38 .58 .52Z\" fill=\"#f7e7c6\"/></g><path class=\"p-mouth\" d=\"M.43 .7 Q.5 .77 .57 .7\" fill=\"none\" stroke=\"#f7e7c6\" stroke-width=\".035\" stroke-linecap=\"round\"/></g></g></svg>";
   function bot(cls) {
     const s = document.createElement('span');
     s.className = 'hrg-bot ' + (cls || '');
     s.setAttribute('aria-hidden', 'true');
-    s.innerHTML = MASCOT_SMALL;
+    s.innerHTML = window.PackyCharacter.render({ size:'compact' });
     return s;
   }
   function packyScene() {
     const w = document.createElement('span');
     w.className = 'hrg-scene';
     w.setAttribute('aria-hidden', 'true');
-    w.innerHTML = '<span class="hrg-scene-shadow"></span>' + MASCOT_FULL;
+    w.innerHTML = '<span class="hrg-scene-shadow"></span>' + window.PackyCharacter.render({ size:'hero' });
     return w;
   }
-  // Tap / click / keyboard response: anticipation tilt, small turn and bounce, a blink, back to rest.
-  // Repeated taps during the animation are ignored so it never jitters.
-  function tapPacky(host, then) {
-    const m = host && host.querySelector('.hrg-mascot');
-    if (!m) { if (then) then(); return; }
-    if (m.classList.contains('is-tapped')) return;
-    m.classList.add('is-tapped');
-    const done = () => { m.classList.remove('is-tapped'); };
-    m.addEventListener('animationend', function h(e) { if (e.target === m) { m.removeEventListener('animationend', h); done(); } });
-    setTimeout(done, reduce ? 420 : 900); // safety net if animations are disabled
-    if (then) setTimeout(then, reduce ? 0 : 420);
-  }
+  function tapPacky(host, then) { window.PackyCharacter.tap(host); if (then) then(); }
 
   // ---------- DOM helpers ----------
   function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -182,7 +168,7 @@
 
   // ---------- Packy in the hero ----------
   const heroSection = byId('home');
-  let stage = null, bubbleText = null, look = null;
+  let stage = null, bubbleText = null;
   if (heroSection) {
     stage = el('button', 'hrg-hero');
     stage.type = 'button';
@@ -193,7 +179,6 @@
     bubble.appendChild(bubbleText);
     stage.append(bubble, packyScene());
     heroSection.appendChild(stage);
-    look = $('.p-look', stage);
     document.body.classList.add('hrg-has-hero');
     let heroVisible = true;
     if ('IntersectionObserver' in window) {
@@ -201,38 +186,11 @@
     }
     stage.addEventListener('click', () => {
       if (!panel.hidden) { close(); return; }
-      if (stage.querySelector('.hrg-mascot.is-tapped')) return;
       stage.classList.add('is-out');
-      if (look) look.style.transform = '';
       bubbleText.textContent = t.hi;
       tapPacky(stage, () => open(stage));
     });
 
-    // His eyes follow the visitor: the mouse on desktop, the scroll direction on phones. He stays in his box.
-    if (!reduce && look) {
-      stage.classList.add('hrg-eyes-live');
-      let raf = 0, px = 0, py = 0;
-      const aim = () => {
-        raf = 0;
-        if (!heroVisible || stage.classList.contains('is-out')) return;
-        const r = stage.querySelector('svg').getBoundingClientRect();
-        const cx = r.left + r.width * 0.525, cy = r.top + r.height * 0.55;
-        const dx = px - cx, dy = py - cy, d = Math.hypot(dx, dy) || 1, k = Math.min(1, d / 260);
-        look.style.transform = 'translate(' + (dx / d * 5 * k).toFixed(2) + 'px,' + (dy / d * 3.2 * k).toFixed(2) + 'px)';
-      };
-      if (finePointer) {
-        window.addEventListener('pointermove', e => { if (e.pointerType !== 'mouse') return; px = e.clientX; py = e.clientY; if (!raf) raf = requestAnimationFrame(aim); }, { passive: true });
-      } else {
-        let lastY = window.scrollY, back = 0;
-        window.addEventListener('scroll', () => {
-          if (!heroVisible || stage.classList.contains('is-out')) return;
-          const dir = Math.sign(window.scrollY - lastY); lastY = window.scrollY;
-          if (!dir) return;
-          look.style.transform = 'translate(0,' + (dir * 3) + 'px)';
-          clearTimeout(back); back = setTimeout(() => { look.style.transform = ''; }, 450);
-        }, { passive: true });
-      }
-    }
   }
 
   // ---------- shared behaviour ----------
@@ -361,7 +319,10 @@
     }
     fitText();
   }
-  const tpBot = bot('hrg-tour-bot');
+  const tpBot = el('button', 'hrg-tour-bot');
+  tpBot.type = 'button'; tpBot.setAttribute('aria-label', ({en:'Animate Packy',fr:'Animer Packy',ar:'تحريك باكي'})[lang] || 'Animate Packy');
+  tpBot.append(bot());
+  tpBot.addEventListener('click', () => tapPacky(tpBot));
   const pill = el('div', 'hrg-pill'); pill.setAttribute('role', 'toolbar'); pill.setAttribute('aria-label', t.name);
   const pBack = btn(rtl ? '›' : '‹', 'hrg-pbtn hrg-arrow', () => go(idx - 1)); pBack.setAttribute('aria-label', t.back);
   const pCount = el('span', 'hrg-pcount');
@@ -420,8 +381,10 @@
     if (!e) return;
     if (only) lit.filter(x => x.classList.contains('hrg-lit-item')).forEach(x => x.classList.remove('hrg-lit-item'));
     mark(e, 'hrg-lit-item');
+    window.PackyCharacter.guide(e);
   }
   function fireWaves(target) {
+    window.PackyCharacter.guide(target);
     if (reduce || !target) return;
     const a = tpBot.getBoundingClientRect(), r = target.getBoundingClientRect();
     const ox = a.left + a.width / 2, oy = a.top + a.height * 0.08;
@@ -679,6 +642,7 @@
     runCleanups(); token++; idx = i;
     unlight(); waves.classList.remove('go');
     const st = steps[i];
+    window.PackyCharacter.set(tpBot, st.line === 'd6' ? 'reassuring' : st.design ? 'thinking' : 'focused');
     tp.hidden = false; document.body.classList.add('hrg-touring-mode');
     document.body.classList.toggle('hrg-design-tour', !!st.design);
     document.body.classList.toggle('hrg-design-summary', st.line === 'd6');
@@ -727,6 +691,7 @@
     designInitialView = null;
     userChangedView = false;
     idx = -1; unlight(); highlight(null);
+    window.PackyCharacter.clearGuide();
     tp.hidden = true; document.body.classList.remove('hrg-touring-mode', 'hrg-design-tour', 'hrg-design-summary');
     waves.classList.remove('go');
     if (window.HRManufacturing) window.HRManufacturing.ride(-1);

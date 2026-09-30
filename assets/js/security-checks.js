@@ -12,27 +12,27 @@
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const MAX = 7, OLD_DAYS = 90, SHOW_MS = 11000, FADE_MS = 600;
   const T = {
-    en: { badge:'Website security checks', title:'Security checks', emblem:'Security checks',
+    en: { today:'Today: {date}', badge:'Website security checks', title:'Security checks', emblem:'Security checks',
       clean:'Clean site', cleanSince:'Checked {date}', datesNote:'Checks made on the dates shown',
       ok:'No threats detected at the last check.', issues:'Issues were reported at the last check.', unknown:'No result was available at the last check.',
       checked:'Checked {date}', old:'Older result', oldHint:'More than {days} days old; may not reflect the current state.',
       reported:'Reported:', via:'Result reported via {name}', view:'View report', newTab:'(opens a new tab)',
       prev:'Previous check', next:'Next check', pause:'Pause', play:'Play', all:'View all checks', radar:'Back to radar', close:'Close',
-      count:'{n} of {t}', note:'Results reflect checks made on the dates shown and do not guarantee complete security.' },
-    fr: { badge:'Contrôles de sécurité du site', title:'Contrôles de sécurité', emblem:'Contrôles de sécurité',
+      count:'{n} of {t}' },
+    fr: { today:'Aujourd’hui : {date}', badge:'Contrôles de sécurité du site', title:'Contrôles de sécurité', emblem:'Contrôles de sécurité',
       clean:'Site sain', cleanSince:'Vérifié le {date}', datesNote:'Vérifications effectuées aux dates indiquées',
       ok:'Aucune menace détectée lors de la dernière vérification.', issues:'Des problèmes ont été signalés lors de la dernière vérification.', unknown:'Aucun résultat n’était disponible lors de la dernière vérification.',
       checked:'Vérifié le {date}', old:'Résultat ancien', oldHint:'Plus de {days} jours ; peut ne pas refléter la situation actuelle.',
       reported:'Résultat communiqué :', via:'Résultat communiqué via {name}', view:'Voir le rapport', newTab:'(nouvel onglet)',
       prev:'Vérification précédente', next:'Vérification suivante', pause:'Pause', play:'Lecture', all:'Voir toutes les vérifications', radar:'Retour au radar', close:'Fermer',
-      count:'{n} sur {t}', note:'Les résultats reflètent les vérifications effectuées aux dates indiquées et ne garantissent pas une sécurité complète.' },
-    ar: { badge:'فحوصات أمان الموقع', title:'فحوصات الأمان', emblem:'فحوصات الأمان',
+      count:'{n} sur {t}' },
+    ar: { today:'اليوم: {date}', badge:'فحوصات أمان الموقع', title:'فحوصات الأمان', emblem:'فحوصات الأمان',
       clean:'موقع سليم', cleanSince:'تاريخ الفحص: {date}', datesNote:'فحوصات أُجريت في التواريخ المبيّنة',
       ok:'لم يتم رصد أي تهديد في آخر فحص.', issues:'تم الإبلاغ عن مشكلات في آخر فحص.', unknown:'لم تتوفر نتيجة في آخر فحص.',
       checked:'تاريخ الفحص: {date}', old:'نتيجة قديمة', oldHint:'مضى عليها أكثر من {days} يوماً وقد لا تعكس الوضع الحالي.',
       reported:'النتيجة المُبلغ عنها:', via:'النتيجة عبر {name}', view:'عرض التقرير', newTab:'(علامة تبويب جديدة)',
       prev:'الفحص السابق', next:'الفحص التالي', pause:'إيقاف مؤقت', play:'تشغيل', all:'عرض كل الفحوصات', radar:'العودة إلى الرادار', close:'إغلاق',
-      count:'{n} من {t}', note:'تعكس النتائج الفحوصات التي أُجريت في التواريخ المبيّنة ولا تضمن أماناً كاملاً.' }
+      count:'{n} من {t}' }
   };
   const t = T[lang] || T.en;
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
@@ -88,7 +88,7 @@
     // footer badge
     const badge = el('button', 'sec-badge'); badge.type = 'button';
     badge.setAttribute('aria-haspopup', 'dialog'); badge.setAttribute('aria-controls', 'sec-panel'); badge.setAttribute('aria-expanded', 'false');
-    badge.innerHTML = SHIELD; badge.appendChild(el('span', '', t.badge));
+    badge.innerHTML = SHIELD; badge.appendChild(el('span','',t.badge));
     footer.insertBefore(badge, footer.firstElementChild ? footer.firstElementChild.nextSibling : null);
 
     // panel
@@ -130,8 +130,29 @@
     const count = el('span', 'sec-count'); count.setAttribute('aria-live', 'polite');
     const bAll = el('button', 'sec-allbtn', t.all); bAll.type = 'button'; bAll.setAttribute('aria-pressed', 'false');
     ctr.append(bPrev, bPlay, bNext, count, bAll);
-    dlg.append(head, stage, all, ctr, el('p', 'sec-note', t.note));
+    const todayDate=el('time','sec-today');
+    dlg.append(head, todayDate, stage, all, ctr);
     document.body.append(backdrop, dlg);
+    // Today's date is separate from the actual security report dates.
+    let dateTimer=0;
+    const dayFormat=new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Algiers',year:'numeric',month:'2-digit',day:'2-digit'});
+    const clockFormat=new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Algiers',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
+    function updateToday() {
+      clearTimeout(dateTimer);dateTimer=0;
+      const now=new Date(),parts=Object.fromEntries(dayFormat.formatToParts(now).map(p=>[p.type,p.value]));
+      const iso=parts.year+'-'+parts.month+'-'+parts.day;
+      [todayDate].forEach(tm=>{tm.dateTime=iso;tm.textContent=t.today.replace('{date}',fmt(iso));});
+      if(!document.hidden){
+        const clock=Object.fromEntries(clockFormat.formatToParts(now).map(p=>[p.type,p.value]));
+        const untilMidnight=(86400-Number(clock.hour)*3600-Number(clock.minute)*60-Number(clock.second))*1000-now.getMilliseconds();
+        dateTimer=setTimeout(updateToday,Math.max(100,Math.min(60000,untilMidnight)));
+      }
+    }
+    document.addEventListener('visibilitychange',updateToday);
+    window.addEventListener('pageshow',updateToday);
+    window.addEventListener('focus',updateToday);
+    window.addEventListener('pagehide',()=>{clearTimeout(dateTimer);dateTimer=0;});
+    updateToday();
 
     // rotation: one card at a time, predefined positions around the emblem on desktop
     const POS = ['p-tl', 'p-tr', 'p-br', 'p-bl'];
@@ -175,6 +196,7 @@
 
     let lastFocus = null;
     function open() {
+      updateToday();
       lastFocus = document.activeElement;
       backdrop.hidden = false; dlg.hidden = false;
       document.body.classList.add('sec-open');
