@@ -208,9 +208,205 @@
 
   // ---------- shared behaviour ----------
   const header = byId('site-header');
+
+  // ---------- Mobile "Stage + Dock" for Design your box ----------
+  // Phones (and short touch screens in landscape) get a full-height layer: the live preview on top,
+  // Packy, his message, the active step's real form fields and the tour buttons underneath.
+  // The real form and preview are MOVED (never copied), so main.js keeps every listener and id.
+  // Nothing is moved unless this media query matches AND a design tour is running; leaving the
+  // query mid-tour (rotation, resize) moves everything back and the desktop layout takes over.
+  const DOCK_MQ = matchMedia('(max-width: 850px), (max-height: 520px) and (pointer: coarse)');
+  const dock = { on:false, shell:null, stage:null, seam:null, scroller:null, msg:null, bar:null, marks:[], inerted:[], scrollY:0, ro:null, fitRaf:0, bubbleAttrs:null };
+  const vpMeta = document.querySelector('meta[name="viewport"]');
+  const vpOrig = vpMeta ? vpMeta.getAttribute('content') : '';
+  const STEP_ANCHORS = [['label[for="box-style"]','d1'],['div.config-label','d2'],['label[for="board"]','d3'],['label[for="flute"]','d4'],
+    ['label[for="printing"]','d5'],['label[for="finishing"]','d6'],['.config-spec','d8']];
+  function buildShell() {
+    const shell = el('div', 'hrg-shell'); shell.hidden = true;
+    if (rtl) shell.dir = 'rtl';
+    const stageEl = el('div', 'hrg-shell-stage');
+    const seam = el('div', 'hrg-shell-seam'); seam.setAttribute('aria-hidden', 'true');
+    stageEl.appendChild(seam);
+    const dockEl = el('div', 'hrg-shell-dock');
+    const progress = el('div', 'hrg-shell-progress'); progress.setAttribute('aria-hidden', 'true');
+    const scroller = el('div', 'hrg-shell-scroll');
+    const msg = el('div', 'hrg-shell-msg hrg-tourui');
+    const bar = el('div', 'hrg-shell-bar hrg-tourui');
+    scroller.appendChild(msg);
+    dockEl.append(progress, scroller, bar);
+    shell.append(stageEl, dockEl);
+    document.body.appendChild(shell);
+    if ((navigator.deviceMemory && navigator.deviceMemory <= 4) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4)) shell.classList.add('hrg-lite');
+    Object.assign(dock, { shell, stage:stageEl, seam, scroller, msg, bar });
+    // Stage resized (keyboard, summary, rotation): main.js refits the box on window "resize".
+    if ('ResizeObserver' in window) dock.ro = new ResizeObserver(() => {
+      cancelAnimationFrame(dock.fitRaf);
+      dock.fitRaf = requestAnimationFrame(() => { if (dock.on) window.dispatchEvent(new Event('resize')); });
+    });
+    // In-page links inside the dock (e.g. the export box's contact link) end the tour first.
+    shell.addEventListener('click', e => {
+      const a = e.target.closest && e.target.closest('a[href^="#"]');
+      if (!a || !e.isTrusted || a.id === 'config-cta') return;
+      const id = a.getAttribute('href').slice(1);
+      if (!id || !byId(id)) return;
+      e.preventDefault(); endTour(false, id);
+    }, true);
+    // Exact dimensions: select on focus, Enter moves Length > Width > Height > Quantity, then closes the keyboard.
+    shell.addEventListener('focusin', e => {
+      if (e.target.matches && e.target.matches('.dimension-fields input, #config-qty')) { try { e.target.select(); } catch (_) {} }
+      setTimeout(onViewport, 60);
+    });
+    shell.addEventListener('focusout', () => setTimeout(onViewport, 60));
+    shell.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' || !e.target.matches || !e.target.matches('.dimension-fields input, #config-qty')) return;
+      e.preventDefault();
+      const order = $$('.dimension-fields input, #config-qty', shell);
+      const nextField = order[order.indexOf(e.target) + 1];
+      if (nextField) nextField.focus(); else e.target.blur();
+    });
+  }
+  function setViewportFit(on) {
+    if (!vpMeta) return;
+    vpMeta.setAttribute('content', on && !/viewport-fit/.test(vpOrig) ? vpOrig + ',viewport-fit=cover' : vpOrig);
+  }
+  function revealInDock(n) {
+    if (!dock.on || !n || !dock.scroller.contains(n)) return;
+    const s = dock.scroller, r = n.getBoundingClientRect(), sr = s.getBoundingClientRect();
+    if (r.top < sr.top + 8) s.scrollTop -= sr.top + 8 - r.top;
+    else if (r.bottom > sr.bottom - 8) s.scrollTop += Math.min(r.bottom - sr.bottom + 8, r.top - sr.top - 8);
+  }
+  // Keyboard and browser toolbars: the layer follows the visual viewport, and the stage shrinks
+  // only while the visitor is typing with an on-screen keyboard.
+  function onViewport() {
+    if (!dock.on) return;
+    const vv = window.visualViewport, h = vv ? vv.height : window.innerHeight, top = vv ? vv.offsetTop : 0;
+    dock.shell.style.setProperty('--hrg-vvh', Math.round(h) + 'px');
+    dock.shell.style.setProperty('--hrg-vvt', Math.round(top) + 'px');
+    const a = document.activeElement;
+    const typing = !!(a && dock.shell.contains(a) && a.matches('input, textarea'));
+    const kb = typing && window.innerHeight - h > 120;
+    const was = html.classList.contains('hrg-kb');
+    html.classList.toggle('hrg-kb', kb);
+    if (kb !== was) syncDockState(false);
+    if (typing) requestAnimationFrame(() => revealInDock(a.closest('label') || a));
+  }
+  function watchViewport(on) {
+    const f = on ? 'addEventListener' : 'removeEventListener';
+    if (window.visualViewport) { visualViewport[f]('resize', onViewport); visualViewport[f]('scroll', onViewport); }
+    window[f]('resize', onViewport);
+  }
+  function tagSteps(form) {
+    let cur = 'd1';
+    Array.from(form.children).forEach(n => {
+      const hit = STEP_ANCHORS.find(([sel]) => n.matches(sel)); if (hit) cur = hit[1];
+      n.setAttribute('data-hrg-for', cur);
+    });
+  }
+  function syncDockState(stepChanged) {
+    if (!dock.on) return;
+    const st = steps[idx], line = st ? st.line : '';
+    const form = byId('config-form');
+    dock.shell.setAttribute('data-step', line);
+    dock.shell.setAttribute('data-stage', html.classList.contains('hrg-kb') ? 'compact' : line === 'd8' ? 'summary' : 'large');
+    dock.shell.style.setProperty('--hrg-progress', steps.length ? ((idx + 1) / steps.length * 100).toFixed(1) + '%' : '0%');
+    if (form) form.setAttribute('data-hrg-step', line);
+    if (stepChanged) dock.scroller.scrollTop = 0;
+  }
+  function mountDock() {
+    if (dock.on) return;
+    const form = byId('config-form'), preview = $('.config-preview');
+    if (!form || !preview) return;
+    if (!dock.shell) buildShell();
+    try {
+      const hadFocus = document.activeElement;
+      dock.scrollY = window.scrollY;
+      dock.marks = [form, preview].map(n => { const c = document.createComment('hrg-dock'); n.before(c); return [n, c]; });
+      dock.stage.insertBefore(preview, dock.seam);
+      dock.bubbleAttrs = [tpBubble.getAttribute('tabindex'), tpBubble.getAttribute('aria-label')];
+      tpBubble.removeAttribute('tabindex'); tpBubble.removeAttribute('aria-label'); // not draggable in the dock
+      dock.msg.append(tpBot, tpBubble);
+      dock.scroller.appendChild(form);
+      dock.bar.appendChild(pill);
+      tagSteps(form);
+      [['length','next'],['width','next'],['height','next']].forEach(([id, k]) => { const i = byId(id); if (i) i.setAttribute('enterkeyhint', k); });
+      const q = byId('config-qty'); if (q) q.setAttribute('enterkeyhint', 'done');
+      dock.inerted = [header, byId('main'), $('footer'), launch, panel, $('.skip')].filter(n => n && !n.inert);
+      dock.inerted.forEach(n => { n.inert = true; });
+      setViewportFit(true);
+      html.classList.add('hrg-docked');
+      dock.shell.hidden = false; dock.on = true;
+      watchViewport(true); onViewport();
+      if (dock.ro) dock.ro.observe(dock.stage);
+      syncDockState(true);
+      window.dispatchEvent(new Event('resize'));
+      if (!dock.shell.contains(hadFocus)) pNext.focus({ preventScroll: true });
+    } catch (err) {
+      unmountDock();
+      if (window.console) console.error('Packy dock:', err);
+    }
+  }
+  function unmountDock() {
+    if (!dock.shell) return false;
+    const focusInside = dock.shell.contains(document.activeElement);
+    watchViewport(false);
+    if (dock.ro) dock.ro.disconnect();
+    cancelAnimationFrame(dock.fitRaf);
+    dock.marks.forEach(([n, c]) => { if (c.parentNode) { c.before(n); c.remove(); } });
+    dock.marks = [];
+    const form = byId('config-form');
+    if (form) { form.removeAttribute('data-hrg-step'); $$('[data-hrg-for]', form).forEach(n => n.removeAttribute('data-hrg-for')); }
+    if (tpBubble.parentNode !== tp) tp.prepend(tpBubble);
+    if (dock.bubbleAttrs) {
+      if (dock.bubbleAttrs[0] != null) tpBubble.setAttribute('tabindex', dock.bubbleAttrs[0]);
+      if (dock.bubbleAttrs[1] != null) tpBubble.setAttribute('aria-label', dock.bubbleAttrs[1]);
+      dock.bubbleAttrs = null;
+    }
+    if (tpBot.parentNode !== tpRow) tpRow.prepend(tpBot);
+    if (pill.parentNode !== tpRow) tpRow.appendChild(pill);
+    dock.inerted.forEach(n => { n.inert = false; }); dock.inerted = [];
+    const wasOn = dock.on;
+    html.classList.remove('hrg-docked', 'hrg-kb');
+    dock.shell.hidden = true; dock.on = false;
+    setViewportFit(false);
+    if (wasOn) {
+      window.scrollTo({ top: dock.scrollY, behavior: 'instant' });
+      window.dispatchEvent(new Event('resize')); // main.js refits the box in its page column
+    }
+    return focusInside;
+  }
+  function wantDock() { return DOCK_MQ.matches && !tp.hidden && idx >= 0 && !!(steps[idx] && steps[idx].design); }
+  function syncDock() {
+    if (wantDock()) { mountDock(); syncDockState(true); return; }
+    if (dock.on) unmountDock();
+  }
+  // Resizing or rotating across the breakpoint during a tour: same step, same values, other layout.
+  DOCK_MQ.addEventListener('change', () => {
+    if (idx < 0 || !steps[idx] || !steps[idx].design) return;
+    const focusInside = dock.on && dock.shell.contains(document.activeElement);
+    syncDock();
+    if (!dock.on) {
+      requestAnimationFrame(() => {
+        const r = tpBubble.getBoundingClientRect();
+        if (r.height) document.body.style.setProperty('--hrg-dock', Math.round(r.bottom + 8) + 'px');
+        const k = DEMO_TARGET[steps[idx].line]; const target = k && (k[0] === '.' ? $(k) : byId(k));
+        if (target) scrollToEl(target, 'center');
+      });
+      if (focusInside) pNext.focus({ preventScroll: true });
+    }
+  });
+  function focusOpener() {
+    const hr = heroSection ? heroSection.getBoundingClientRect() : null;
+    const target = stage && hr && hr.bottom > 0 && hr.top < window.innerHeight ? stage : launch;
+    target.focus({ preventScroll: true });
+    if (document.activeElement !== target) {
+      const h = $('#configurator h2');
+      if (h) { if (!h.hasAttribute('tabindex')) h.tabIndex = -1; h.focus({ preventScroll: true }); }
+    }
+  }
   let spotSection = null;
   function scrollToEl(target, block) {
     if (!target) return;
+    if (dock.on) { if (!target.closest('.config-export')) revealInDock(target); return; }
     const hh = header ? header.getBoundingClientRect().height : 0;
     const designTour = document.body.classList.contains('hrg-design-tour');
     // The live preview stays docked while the visitor reads the relevant control.
@@ -337,9 +533,9 @@
   tpBot.append(bot());
   tpBot.addEventListener('click', () => tapPacky(tpBot));
   const pill = el('div', 'hrg-pill'); pill.setAttribute('role', 'toolbar'); pill.setAttribute('aria-label', t.name);
-  const pBack = btn(rtl ? '›' : '‹', 'hrg-pbtn hrg-arrow', () => go(idx - 1)); pBack.setAttribute('aria-label', t.back);
+  const pBack = btn('‹', 'hrg-pbtn hrg-arrow', () => go(idx - 1)); pBack.setAttribute('aria-label', t.back);
   const pCount = el('span', 'hrg-pcount');
-  const pNext = btn(rtl ? '‹' : '›', 'hrg-pbtn hrg-pnext hrg-arrow', () => go(idx + 1));
+  const pNext = btn('›', 'hrg-pbtn hrg-pnext hrg-arrow', () => go(idx + 1));
   const pPlay = btn('▶', 'hrg-pbtn hrg-play', () => setPlay(!playing));
   const pRepeat = btn('↺', 'hrg-pbtn hrg-repeat', repeatAll); pRepeat.setAttribute('aria-label', t.repeat); pRepeat.title = t.repeat;
   const pEnd = btn('✕', 'hrg-pbtn', () => endTour(false)); pEnd.setAttribute('aria-label', t.endTour);
@@ -364,7 +560,7 @@
     tpBubble.style.setProperty('--hrg-drag-y', bubbleY + 'px');
   };
   tpBubble.addEventListener('pointerdown', e => {
-    if (e.target.closest('button,a,input,textarea,select') || e.button !== 0) return;
+    if (dock.on || e.target.closest('button,a,input,textarea,select') || e.button !== 0) return;
     drag = { id:e.pointerId, x:e.clientX, y:e.clientY, bx:bubbleX, by:bubbleY };
     tpBubble.setPointerCapture(e.pointerId);
     tpBubble.classList.add('hrg-dragging');
@@ -525,7 +721,7 @@
   let userChangedView = false;
   // Programmatic demonstrations must not overwrite a view the visitor chose.
   document.addEventListener('click', e => {
-    if (idx >= 0 && steps[idx] && steps[idx].design && e.isTrusted && e.target.closest('.config-views button')) userChangedView = true;
+    if (idx >= 0 && steps[idx] && steps[idx].design && e.isTrusted && e.target.closest('.config-views button:not(.config-views__reset)')) userChangedView = true;
   });
   const boxStage = () => $('.box-stage');
   function glide(ms) { // the preview eases between Packy's moves instead of jumping
@@ -589,8 +785,7 @@
       const off = top.getBoundingClientRect().top - clear;
       if (Math.abs(off) > 4) window.scrollTo({ top: Math.max(0, window.scrollY + off), behavior: smooth && !reduce ? 'smooth' : 'auto' });
     };
-    place(true);
-    wait(reduce ? 60 : 900, () => place(true));
+    if (!dock.on) { place(true); wait(reduce ? 60 : 900, () => { if (!dock.on) place(true); }); }
     lightTitle(sec);
     wait(DESIGN_INTRO_MS, () => {
       unlight(); highlight(null);
@@ -605,7 +800,7 @@
       designIntro(() => {
         const style = byId('box-style'); if (style) { scrollToEl(style, 'center'); later(500, () => { spot(style); fireWaves(style); }); }
         later(1300, focusPreview);
-        const shown = tryOption('box-style', ['shipping', 'beverage', 'burger', 'takeaway', 'dates', 'cake'], 1700, 2300, true);
+        const shown = tryOption('box-style', ['beverage', 'burger', 'cake', 'takeaway', 'industrial'], 1700, 2300, true);
         later(shown, () => { if (style) spot(style, true); });
       });
     } },
@@ -619,7 +814,7 @@
     { line: 'd3', run() {
       const board = byId('board'); if (board) { scrollToEl(board, 'center'); later(500, () => { spot(board); fireWaves(board); }); }
       later(1200, focusPreview);
-      tryOption('board', ['white'], 1600, 2600, true);
+      tryOption('board', ['kraft', 'white'], 1600, 2600, true);
     } },
     { line: 'd4', run() {
       const flute = byId('flute'); if (flute) { scrollToEl(flute, 'center'); later(500, () => { spot(flute); fireWaves(flute); }); }
@@ -635,10 +830,11 @@
     { line: 'd6', run() {
       const finish = byId('finishing'); if (finish) { scrollToEl(finish, 'center'); later(500, () => { spot(finish); fireWaves(finish); }); }
       later(1200, focusPreview);
-      tryOption('finishing', ['matte', 'smooth'], 1600, 2600, true);
+      tryOption('finishing', ['natural', 'matte', 'smooth'], 1600, 2600, true);
     } },
     { line: 'd7', run() {
       const p = $('.config-preview'); if (p) { scrollToEl(p, 'center'); later(500, () => { spot(p); fireWaves(p); }); }
+      cleanups.push(() => { const v = views(); if (!userChangedView && v[1] && v[1].getAttribute('aria-pressed') === 'true') showView(false); });
       later(1200, () => { if (!userChangedView) { swap(); showView(true); } });
       later(5600, () => { if (!userChangedView) { swap(); showView(false); } });
     } },
@@ -653,10 +849,20 @@
           if (b) { b.click(); copy.textContent = t.copied; }
         });
         tpBubble.append(btn(t.sendDesign, 'hrg-send', sendDesign), copy, el('small', 'hrg-note', t.sendNote));
+        // main.js scrolls its export box into view; in the dock, Packy's summary actions come first.
+        if (dock.on) dock.scroller.scrollTop = 0;
       });
     } }
   ];
-  const DESIGN_MS = { d1: 17000 + DESIGN_INTRO_MS, d2: 12500, d3: 5500, d4: 7500, d5: 8500, d6: 7500, d7: 7000, d8: 9000 };
+  const DESIGN_MS = { d1: 17000 + DESIGN_INTRO_MS, d2: 12500, d3: 7500, d4: 7500, d5: 8500, d6: 10000, d7: 7000, d8: 9000 };
+  // Each demonstration runs once per tour. Coming back to a step (Back, summary rows) shows the
+  // visitor's current values instead of replaying the demo over them.
+  const demoDone = new Set();
+  const DEMO_TARGET = { d1:'box-style', d2:'.dimension-fields', d3:'board', d4:'flute', d5:'printing', d6:'finishing', d7:'.config-preview' };
+  function revisitStep(d) {
+    const k = DEMO_TARGET[d.line], e = k && (k[0] === '.' ? $(k) : byId(k));
+    if (e) { scrollToEl(e, 'center'); later(400, () => spot(e)); }
+  }
   // Every (re)start of the design tour begins from the builder's default state.
   function resetDesigner() {
     const form = byId('config-form'); if (!form) return;
@@ -667,9 +873,19 @@
     const style = byId('box-style'); if (style) style.dispatchEvent(new Event('change', { bubbles: true })); // default size and dimensions
     const qty = byId('config-qty'); if (qty && qty.value) { qty.value = ''; qty.dispatchEvent(new Event('input', { bubbles: true })); }
     const exp = $('.config-export'); if (exp) exp.hidden = true;
+    demoDone.clear(); userChangedView = false;
     showView(false); resetView();
   }
-  function designStep(d) { d.run(); return DESIGN_MS[d.line] || 8000; }
+  function designStep(d) {
+    if (d.line !== 'd8' && demoDone.has(d.line)) { revisitStep(d); return 6000; }
+    if (d.line !== 'd8') demoDone.add(d.line);
+    d.run(); return DESIGN_MS[d.line] || 8000;
+  }
+  // A visitor typing or choosing in the form takes over: automatic progression pauses, values stay theirs.
+  const configForm = byId('config-form');
+  if (configForm) ['input', 'change'].forEach(type => configForm.addEventListener(type, e => {
+    if (e.isTrusted && idx >= 0 && steps[idx] && steps[idx].design && playing) setPlay(false);
+  }));
   function sendDesign() {
     const cta = byId('config-cta');
     if (cta) cta.click();
@@ -723,6 +939,7 @@
     tp.hidden = false; document.body.classList.add('hrg-touring-mode');
     document.body.classList.toggle('hrg-design-tour', !!st.design);
     document.body.classList.toggle('hrg-design-summary', st.line === 'd8');
+    syncDock();
     if (st.design) requestAnimationFrame(() => {
       const r = tpBubble.getBoundingClientRect();
       if (r.height) document.body.style.setProperty('--hrg-dock', Math.round(r.bottom + 8) + 'px');
@@ -730,7 +947,7 @@
     pCount.textContent = (i + 1) + '/' + steps.length;
     pCount.setAttribute('aria-label', t.step.replace('{n}', i + 1).replace('{t}', steps.length));
     const last = i === steps.length - 1;
-    pNext.textContent = last ? '✓' : (rtl ? '‹' : '›');
+    pNext.textContent = last ? '✓' : '›'; // ‹ › are bidi-mirrored: they already point the right way in Arabic
     pNext.setAttribute('aria-label', last ? t.finish : t.next);
     tbText = el('div', 'hrg-tb-text');
     tbText.appendChild(el('span', 'hrg-tb-line', t.lines[st.line] || ''));
@@ -760,10 +977,11 @@
     lastTour = { kind:'design' };
     designInitialView = views().findIndex(b => b.getAttribute('aria-pressed') === 'true');
     userChangedView = false;
+    demoDone.clear();
     if (fresh) { runCleanups(); token++; resetDesigner(); }
     begin(DESIGN.map(d => ({ design:d, line:d.line })), true, auto);
   }
-  function endTour(finished) {
+  function endTour(finished, jumpTo) {
     runCleanups(); token++; setLoop(false); setPlay(false);
     if (designInitialView >= 0 && !userChangedView) showView(designInitialView === 1);
     designInitialView = null;
@@ -771,9 +989,10 @@
     idx = -1; unlight(); highlight(null);
     window.PackyCharacter.clearGuide();
     tp.hidden = true; document.body.classList.remove('hrg-touring-mode', 'hrg-design-tour', 'hrg-design-summary');
+    syncDock(); // moves the form, preview and Packy back and restores scrolling before focus moves
     waves.classList.remove('go');
     if (window.HRManufacturing) window.HRManufacturing.ride(-1);
-    if (finished) open(null, 'end'); else launch.focus({ preventScroll: true });
+    if (jumpTo) jump(jumpTo); else if (finished) open(null, 'end'); else focusOpener();
   }
   document.addEventListener('keydown', e => {
     if (idx < 0 || !e.isTrusted || e.altKey || e.ctrlKey || e.metaKey) return;
@@ -785,7 +1004,7 @@
     else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); endTour(false); }
   });
   document.addEventListener('click', e => {
-    if (idx >= 0 && playing && e.isTrusted && !e.target.closest('.hrg-tour, .hrg-panel')) setPlay(false);
+    if (idx >= 0 && playing && e.isTrusted && !e.target.closest('.hrg-tour, .hrg-panel, .hrg-tourui')) setPlay(false);
   });
 
   // ---------- open / close ----------
@@ -839,3 +1058,4 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) { e.preventDefault(); e.stopPropagation(); close(); } });
   if (rtl) panel.dir = 'rtl';
 })();
+
