@@ -396,3 +396,114 @@
 .hrg-tour-bot,.hrg-launch,.hrg-scene,.hrg-mascot{-webkit-tap-highlight-color:transparent}
 .hrg-tour-bot:focus:not(:focus-visible),.hrg-launch:focus:not(:focus-visible){outline:none}
 .hrg-tour-bot,.hrg-tour-bot:hover,.hrg-tour-bot:active,.hrg-tour-bot:focus{background:transparent;box-shadow:none;-webkit-appearance:none;appearance:none}
+
+
+/* ==========================================================================
+   2026-09-30 Stage + Dock: "Design your box" on phones and short touch screens.
+   Only active while guide.js has mounted the layer (html.hrg-docked).
+   Glass is decorative only: every instruction, label and button sits on a solid surface.
+   ========================================================================== */
+.hrg-shell{--hrg-gold:#e6c587;--hrg-ink:#f3ece0;--hrg-dock-bg:#0b0f12;--hrg-card:#12171b;--hrg-rim:rgba(255,255,255,.1);--hrg-rim-hi:rgba(255,255,255,.3);
+  position:fixed;z-index:950;left:0;right:0;top:var(--hrg-vvt,0px);height:100vh;height:100dvh;height:var(--hrg-vvh,100dvh);
+  display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:var(--hrg-stage-h,46%) minmax(0,1fr);
+  box-sizing:border-box;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) 0 env(safe-area-inset-left,0px);
+  background:var(--hrg-dock-bg);color:var(--hrg-ink);overflow:hidden;
+  font:400 1rem/1.45 system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;letter-spacing:0}
+.hrg-shell[hidden]{display:none!important}
+[dir=rtl] .hrg-shell,.hrg-shell[dir=rtl]{font-family:Tahoma,'Noto Sans Arabic',sans-serif}
+/* Automatic stage sizing: large for every demonstration, smaller only for typing and the summary */
+.hrg-shell[data-stage=large]{--hrg-stage-h:clamp(200px,48%,480px)}
+.hrg-shell[data-stage=summary]{--hrg-stage-h:clamp(150px,30%,240px)}
+.hrg-shell[data-stage=compact]{--hrg-stage-h:clamp(96px,28%,132px)}
+html.hrg-docked,html.hrg-docked body{overflow:hidden;overscroll-behavior:none}
+html.hrg-docked .site-header,html.hrg-docked .hrg-tour,html.hrg-docked .hrg-launch,html.hrg-docked .hrg-waves{visibility:hidden}
+
+/* Stage: the real .config-preview, full size, nothing essential over the box */
+.hrg-shell-stage{position:relative;min-height:0;overflow:hidden}
+html.hrg-docked .hrg-shell .config-preview.is-live{position:absolute;inset:0;height:auto;min-height:0;margin:0;border:0}
+html.hrg-docked .hrg-shell .preview-caption{display:none}
+html.hrg-docked .hrg-shell .config-views{top:10px;inset-inline:10px}
+html.hrg-docked .hrg-shell .config-views button{min-height:40px;padding:8px 12px;background:#0e1316;color:#eef0ee;
+  border:1px solid var(--hrg-rim);border-top-color:var(--hrg-rim-hi);border-radius:10px}
+html.hrg-docked .hrg-shell .config-views button.is-on{background:#1470AE;border-color:#1470AE;border-top-color:rgba(255,255,255,.45);color:#fff}
+html.hrg-docked .hrg-shell .box-stage,html.hrg-docked .hrg-shell .flat-blank{inset:58px 8px 24px}
+html.hrg-docked .hrg-shell .box-stage{scale:1.06}
+html.hrg-docked .hrg-shell .flute-inset{bottom:22px;inset-inline-end:8px;width:88px;padding:4px;background:#0e1316;border-color:var(--hrg-rim)}
+.hrg-shell[data-stage=compact] .config-views,.hrg-shell[data-stage=compact] .flute-inset,.hrg-shell[data-stage=summary] .flute-inset{display:none}
+html.hrg-docked .hrg-shell[data-stage=compact] .box-stage,html.hrg-docked .hrg-shell[data-stage=compact] .flat-blank{inset:6px 6px 18px}
+/* Frosted seam: a decorative 14 px band at the bottom edge of the stage. The box and the flute
+   inset stop above it, so it never covers the box or any text. */
+.hrg-shell-seam{position:absolute;z-index:4;left:0;right:0;bottom:0;height:14px;pointer-events:none;
+  background:rgba(11,15,18,.9);border-top:1px solid rgba(255,255,255,.12)}
+@supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+  .hrg-shell:not(.hrg-lite) .hrg-shell-seam{background:rgba(11,15,18,.5);-webkit-backdrop-filter:blur(10px) saturate(140%);backdrop-filter:blur(10px) saturate(140%)}}
+@media (prefers-reduced-transparency:reduce){.hrg-shell .hrg-shell-seam{background:#0b0f12!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}}
+
+/* Dock: solid surface, progress in the logo colours (decorative; the step count is the text) */
+.hrg-shell-dock{position:relative;display:flex;flex-direction:column;min-height:0;background:var(--hrg-dock-bg);
+  border-top:1px solid rgba(230,197,135,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.hrg-shell-progress{position:absolute;top:-1px;inset-inline-start:0;height:3px;width:var(--hrg-progress,0%);
+  background:linear-gradient(90deg,#1470AE,#62A843,#F8E21A,#E62E7B);transition:width .35s ease}
+[dir=rtl] .hrg-shell-progress,.hrg-shell[dir=rtl] .hrg-shell-progress{background:linear-gradient(270deg,#1470AE,#62A843,#F8E21A,#E62E7B)}
+.hrg-shell-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-bottom:10px}
+.hrg-shell-msg{display:flex;align-items:flex-start;gap:12px;padding:12px 14px 6px}
+
+/* Packy and his message inside the dock (overrides the floating design-tour placement) */
+html.hrg-docked .hrg-shell .hrg-tour-bot{position:static;flex:none;width:52px;height:52px;min-width:44px;min-height:44px;filter:none;animation:none}
+html.hrg-docked .hrg-shell .hrg-tbubble{position:static;flex:1 1 auto;min-width:0;width:auto;max-width:none;max-height:none;overflow:visible;
+  margin:0;padding:10px 12px;translate:none;touch-action:auto;cursor:auto;user-select:text;-webkit-user-select:text;
+  background:var(--hrg-card);border:1px solid var(--hrg-rim);border-radius:14px;box-shadow:none;text-shadow:none;
+  -webkit-backdrop-filter:none;backdrop-filter:none;color:var(--hrg-ink);font-size:.95rem;line-height:1.45;gap:8px}
+html.hrg-docked .hrg-shell .hrg-tbubble .hrg-btn{min-height:48px}
+html.hrg-docked .hrg-shell .hrg-tbubble .hrg-note{color:#c9c0b2}
+
+/* The real configurator form, one step at a time */
+html.hrg-docked .hrg-shell .config-controls{padding:4px 14px 12px;gap:10px}
+html.hrg-docked .hrg-shell .config-label{margin-top:4px;color:#e9ebe8}
+html.hrg-docked .hrg-shell .config-controls select,html.hrg-docked .hrg-shell .config-controls input{min-height:48px;font-size:16px;border-radius:10px}
+html.hrg-docked .hrg-shell .dimension-fields{gap:8px}
+html.hrg-docked .hrg-shell .dimension-fields label,html.hrg-docked .hrg-shell .config-qty{color:#c3c9cb;font-size:.8rem}
+html.hrg-docked .hrg-shell .config-style-note{margin:4px 0 0}
+html.hrg-docked .hrg-shell .config-export textarea{min-height:120px}
+html.hrg-docked .hrg-shell #config-cta{display:none} /* summary buttons call it; guide.js clicks it */
+#config-form[data-hrg-step=d1]>[data-hrg-for]:not([data-hrg-for=d1]),
+#config-form[data-hrg-step=d2]>[data-hrg-for]:not([data-hrg-for=d2]),
+#config-form[data-hrg-step=d3]>[data-hrg-for]:not([data-hrg-for=d3]),
+#config-form[data-hrg-step=d4]>[data-hrg-for]:not([data-hrg-for=d4]),
+#config-form[data-hrg-step=d5]>[data-hrg-for]:not([data-hrg-for=d5]),
+#config-form[data-hrg-step=d6]>[data-hrg-for]:not([data-hrg-for=d6]),
+#config-form[data-hrg-step=d7]>[data-hrg-for],
+#config-form[data-hrg-step=d8]>[data-hrg-for]:not([data-hrg-for=d8]){display:none}
+html.hrg-docked #config-form[data-hrg-step]>.config-error[data-hrg-for]:not([hidden]){display:block}
+html.hrg-docked .hrg-shell .hrg-lit-item{outline-offset:2px;box-shadow:0 0 0 4px rgba(230,197,135,.14)!important}
+
+/* Persistent tour bar: solid, 44-48 px targets, glass rim on the buttons only */
+.hrg-shell-bar{flex:none;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));background:#0d1215;border-top:1px solid rgba(255,255,255,.08)}
+html.hrg-docked .hrg-shell .hrg-pill{display:flex;align-items:center;gap:5px;width:100%;padding:0;margin:0;
+  background:transparent;border:0;border-radius:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+html.hrg-docked .hrg-shell .hrg-pbtn{flex:none;width:48px;height:48px;border-radius:14px;background:#161c20;color:var(--hrg-ink);
+  border:1px solid var(--hrg-rim);border-top-color:var(--hrg-rim-hi)}
+html.hrg-docked .hrg-shell .hrg-pnext{flex:1 1 auto;width:auto;min-width:56px;background:linear-gradient(135deg,#f1d9a4,#c99a4c);color:#1a1208;border-color:transparent}
+html.hrg-docked .hrg-shell .hrg-pbtn[hidden]{display:none}
+html.hrg-docked .hrg-shell .hrg-pcount{flex:none;min-width:36px}
+html.hrg-docked .hrg-shell .hrg-pbtn:focus-visible,html.hrg-docked .hrg-shell :focus-visible{outline:2px solid #F8E21A;outline-offset:2px}
+@media (max-width:359px){html.hrg-docked .hrg-shell .hrg-pbtn{width:44px;height:44px}.hrg-shell-bar{padding-inline:8px}}
+
+/* Landscape phones: preview beside the dock */
+@media (orientation:landscape) and (max-height:520px){
+  .hrg-shell,.hrg-shell[data-stage]{grid-template-rows:minmax(0,1fr);grid-template-columns:minmax(0,1.1fr) minmax(290px,1fr)}
+  .hrg-shell-dock{border-top:0;border-inline-start:1px solid rgba(230,197,135,.3)}
+  .hrg-shell-msg{padding-top:8px}
+  html.hrg-docked .hrg-shell .hrg-tour-bot{width:40px;height:40px}
+}
+@media (prefers-reduced-motion:reduce){.hrg-shell-progress{transition:none}}
+
+/* Desktop and tablet: Packy's floating launcher is just the character (no label, no circle).
+   The label stays for screen readers; the button keeps its focus ring and 44 px minimum. */
+.hrg-launch,[dir=rtl] .hrg-launch{padding:0;gap:0;min-width:44px;min-height:44px;border:0;border-radius:16px;background:transparent;box-shadow:none}
+.hrg-launch:hover{background:transparent;border-color:transparent}
+.hrg-launch .hrg-launch-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.hrg-launch .hrg-bot{width:64px;height:64px;filter:drop-shadow(0 10px 18px rgba(0,0,0,.5));transition:transform .2s ease}
+.hrg-launch:hover .hrg-bot{transform:translateY(-3px)}
+@media (max-width:700px){.hrg-launch .hrg-bot{width:clamp(58px,15vw,64px);height:clamp(58px,15vw,64px)}}
+@media (prefers-reduced-motion:reduce){.hrg-launch .hrg-bot{transition:none}.hrg-launch:hover .hrg-bot{transform:none}}
