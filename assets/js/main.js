@@ -14,7 +14,7 @@
     const frame = printVideo.parentElement;
     const toPhoto = () => {
       const img = printVideo.querySelector('img');
-      if (img && printVideo.isConnected) { printVideo.pause(); frame.classList.remove('printing-image--video'); printVideo.replaceWith(img); }
+      if (img && printVideo.isConnected) { printVideo.pause(); printVideo.replaceWith(img); } // still frame from the animation, shown whole
     };
     if (reducedMotion.matches) toPhoto();
     else {
@@ -115,13 +115,17 @@
     4: { file: 'ecommerce-packaging.mp4', bg: 'linear-gradient(180deg,#0f1316 0%,#101419 50%,#0d1013 100%)', label: { en: 'Animation: a branded mailer box folds around an insert and closes over the product', fr: 'Animation : une boîte d’expédition imprimée se plie autour d’un calage et se referme sur le produit', ar: 'رسم متحرك: علبة شحن مطبوعة تُطوى حول حشوة وتُغلق على المنتج' } },
     5: { file: 'protective-solutions.mp4', bg: 'linear-gradient(180deg,#0f1316 0%,#101519 50%,#0d1013 100%)', label: { en: 'Animation: corner posts, dividers and a cradle are placed around a fragile item inside a carton', fr: 'Animation : cornières, séparateurs et berceau se placent autour d’un objet fragile dans une caisse', ar: 'رسم متحرك: زوايا وفواصل وحامل توضع حول قطعة هشة داخل صندوق' } }
   };
+  const frameOf = (cv, kind) => `${assetRoot}videos/frames/${cv.file.replace('.mp4', '')}-${kind}.webp`;
   const productMedia = (name, image, index) => {
-    const img = `<img src="${assetRoot}images/${image}" loading="lazy" width="1400" height="900" alt="${name} — ${photoLabel}">`;
     const cv = cardVideos[index];
-    if (!cv || reducedMotion.matches) return img;
-    return `<div class="product-media"><video class="product-video" poster="${assetRoot}images/${image}" autoplay muted${cv.once ? '' : ' loop'} playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-label="${cv.label[locale] || cv.label.en}"><source src="${assetRoot}videos/${cv.file}" type="video/mp4">${img}</video></div>`;
+    if (!cv) return `<img src="${assetRoot}images/${image}" loading="lazy" width="1400" height="900" alt="${name} — ${photoLabel}">`;
+    const label = cv.label[locale] || cv.label.en;
+    // A still from the animation itself (never the old stock photo).
+    const still = `<img class="product-still" src="${frameOf(cv, 'still')}" loading="lazy" width="1280" height="960" alt="${label}">`;
+    if (reducedMotion.matches) return `<div class="product-media">${still}</div>`;
+    return `<div class="product-media"><video class="product-video" poster="${frameOf(cv, 'poster')}" autoplay muted${cv.once ? '' : ' loop'} playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-label="${label}"><source src="${assetRoot}videos/${cv.file}" type="video/mp4">${still}</video></div>`;
   };
-  $('#product-grid').innerHTML = productData.map(([name, description, details, image], index) => `<article class="product-card${cardVideos[index] && !reducedMotion.matches ? ' product-card--video' : ''}" data-card="${index}">${productMedia(name, image, index)}<div class="product-content"><small>${String(index + 1).padStart(2, '0')} / ${copy.solution}</small><h3>${name}</h3><p>${description}</p><p class="details">${details}</p><a href="#contact" aria-label="${copy.explore} ${name}">${copy.explore} ↗</a></div></article>`).join('');
+  $('#product-grid').innerHTML = productData.map(([name, description, details, image], index) => `<article class="product-card${cardVideos[index] ? ' product-card--video' : ''}" data-card="${index}">${productMedia(name, image, index)}<div class="product-content"><small>${String(index + 1).padStart(2, '0')} / ${copy.solution}</small><h3>${name}</h3><p>${description}</p><p class="details">${details}</p><a href="#contact" aria-label="${copy.explore} ${name}">${copy.explore} ↗</a></div></article>`).join('');
 
   document.querySelectorAll('.product-card--video').forEach((card) => {
     const video = card.querySelector('video');
@@ -131,9 +135,10 @@
     const fit = () => card.style.setProperty('--copy-h', `${content.offsetHeight + 27 + 18}px`);
     fit();
     if ('ResizeObserver' in window) new ResizeObserver(fit).observe(content); else addEventListener('resize', fit);
+    if (!video) return; // reduced motion: still frame only
     let onScreen = false;
     const syncVideo = (entering = false) => {
-      if (reducedMotion.matches) { video.pause(); video.removeAttribute('autoplay'); video.load(); return; } // back to poster
+      if (reducedMotion.matches) { if (video.isConnected) { video.pause(); const st = video.querySelector('img'); if (st) video.replaceWith(st); } return; } // show the still
       if (onScreen && document.visibilityState === 'visible') {
         if (video.ended && !entering) return; // play-once cards rest on their final frame until scrolled back into view
         const p = video.play(); if (p && p.catch) p.catch(() => {});
@@ -663,11 +668,15 @@
     industryButtons.forEach((el) => { el.classList.toggle('selected', el === button); el.style.removeProperty('--progress'); });
     $('#industry-detail').textContent = button.dataset.detail;
     if (industryLabel) industryLabel.textContent = `${pad2(index + 1)} / ${pad2(industryButtons.length)} — ${appName(button)}`;
-    if (!appVideos.length) return;
+    const stageImg = industryStage && industryStage.querySelector('img');
+    if (!appVideos.length) { // reduced motion: a still from the selected application's animation
+      if (stageImg) { stageImg.src = `${assetRoot}videos/frames/app-${appFiles[index]}-still.webp`; stageImg.alt = appName(button); }
+      return;
+    }
     appVideos.forEach((video, i) => {
       if (i === index) {
         video.loop = !appAuto;
-        if (video.readyState < 2) video.load();
+        if (video.preload === 'none') video.preload = 'auto'; // play() starts loading; no load() so an in-flight request is never aborted
         playActiveApp();
       } else { video.pause(); video.classList.remove('is-active'); }
     });
@@ -689,6 +698,7 @@
       en: 'Animation: packaging for ', fr: 'Animation : emballage pour ', ar: 'رسم متحرك: تغليف لقطاع '
     }[locale] || 'Animation: packaging for ';
     industryStage.classList.add('has-video');
+    const firstFrame = industryStage.querySelector('img'); if (firstFrame) firstFrame.src = `${assetRoot}videos/frames/app-${appFiles[0]}-poster.webp`;
     appFiles.forEach((file, i) => {
       const video = document.createElement('video');
       video.muted = true; video.defaultMuted = true; video.playsInline = true;
@@ -697,6 +707,7 @@
       video.disablePictureInPicture = true; video.setAttribute('disableremoteplayback', '');
       video.setAttribute('aria-label', appLabels + appName(industryButtons[i]));
       video.className = 'industry-video';
+      video.poster = `${assetRoot}videos/frames/app-${file}-poster.webp`;
       video.src = `${assetRoot}videos/applications/${file}.mp4`;
       video.addEventListener('playing', () => { appVideos.forEach((v) => v.classList.toggle('is-active', v === video)); });
       video.addEventListener('timeupdate', () => { if (i === appIndex && video.duration) industryButtons[i].style.setProperty('--progress', (video.currentTime / video.duration).toFixed(3)); });
