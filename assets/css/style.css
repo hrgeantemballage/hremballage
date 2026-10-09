@@ -315,7 +315,7 @@
 /* 2026-10-09: 03 / Packaging Solutions — card 01 animation (full frame, never cropped or covered) */
 .product-card--video{background:#17191a}
 .product-card--video:after{display:none}
-.product-card--video .product-media{position:absolute;inset:0 0 auto 0;height:calc(100% - var(--copy-h,46%));min-height:160px;background:linear-gradient(180deg,#c9c4bc 0%,#cdc8c1 45%,#c7c2ba 100%);overflow:hidden}
+.product-card--video .product-media{position:absolute;inset:0 0 auto 0;height:calc(100% - var(--copy-h,46%));min-height:160px;background:var(--media-bg,#17191a);overflow:hidden}
 .product-card--video .product-video{display:block;width:100%;height:100%;object-fit:contain;background:transparent;pointer-events:none}
 .product-card--video .product-video img{width:100%;height:100%;object-fit:cover}
 
