@@ -307,3 +307,7 @@
 .footer-bottom a,.map-open{display:inline-flex;align-items:center;min-height:24px}
 .map-open,.footer-bottom a{display:inline-flex;align-items:center;min-height:24px}
 .hero-bottom a,.scroll-link{display:inline-flex;align-items:center;min-height:24px}
+
+/* 2026-10-09: section 01 — animated box-forming loop replaces the factory photo */
+.company-video{background:#0a0a0b}
+.company-video video{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none}

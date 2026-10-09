@@ -7,6 +7,20 @@
   const toggle = $('.menu-toggle');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
+  /* Section 01 box-forming loop: honour reduced motion and pause while off screen. */
+  const companyVideo = $('.company-video video');
+  if (companyVideo) {
+    let visible = true;
+    const sync = () => {
+      if (reducedMotion.matches || !visible || document.visibilityState !== 'visible') { companyVideo.pause(); return; }
+      const p = companyVideo.play(); if (p && p.catch) p.catch(() => {});
+    };
+    if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { visible = e.isIntersecting; sync(); }, { threshold: 0.05 }).observe(companyVideo);
+    if (reducedMotion.addEventListener) reducedMotion.addEventListener('change', sync);
+    document.addEventListener('visibilitychange', sync);
+    sync();
+  }
+
   const locale = document.documentElement.lang || 'en';
   const copy = {
     en: { solution: 'SOLUTION', explore: 'EXPLORE', detail: 'Visual demonstration only', dimensions: 'indicative', pending: 'Quotation submissions are being configured. Please contact HR Géant Emballage through its verified contact channels once published.', sending: 'Sending your request…', success: 'Thank you. Your request has been sent.', failure: 'Your request could not be sent. Please try again later or use a verified contact channel.', tooLarge: 'The file is too large. Please choose one under 10 MB.', opening: 'Open menu', closing: 'Close menu' },
