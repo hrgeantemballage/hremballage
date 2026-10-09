@@ -309,5 +309,5 @@
 .hero-bottom a,.scroll-link{display:inline-flex;align-items:center;min-height:24px}
 
 /* 2026-10-09: section 01 — animated box-forming loop replaces the factory photo */
-.company-video{background:#0a0a0b}
+.company-video{background:#e6d5bb}
 .company-video video{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none}
