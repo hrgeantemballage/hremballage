@@ -1,0 +1,143 @@
+[
+ {
+  "mode": "motion",
+  "lang": "en",
+  "oldPhotoRequests": [],
+  "cardPosters": [
+   "corrugated-boxes-poster.webp",
+   "custom-packaging-poster.webp",
+   "printed-packaging-poster.webp",
+   "industrial-packaging-poster.webp",
+   "ecommerce-packaging-poster.webp",
+   "protective-solutions-poster.webp"
+  ],
+  "cardStills": [],
+  "cardsWithVideoClass": 6,
+  "printPoster": "print-brand-poster.webp",
+  "printImg": null,
+  "stageImg": "app-food-beverage-poster.webp",
+  "appPosters": [
+   "app-food-beverage-poster.webp",
+   "app-agriculture-poster.webp",
+   "app-industrial-manufacturing-poster.webp",
+   "app-ecommerce-poster.webp",
+   "app-electronics-poster.webp",
+   "app-retail-poster.webp"
+  ],
+  "errors": []
+ },
+ {
+  "mode": "motion",
+  "lang": "fr",
+  "oldPhotoRequests": [],
+  "cardPosters": [
+   "corrugated-boxes-poster.webp",
+   "custom-packaging-poster.webp",
+   "printed-packaging-poster.webp",
+   "industrial-packaging-poster.webp",
+   "ecommerce-packaging-poster.webp",
+   "protective-solutions-poster.webp"
+  ],
+  "cardStills": [],
+  "cardsWithVideoClass": 6,
+  "printPoster": "print-brand-poster.webp",
+  "printImg": null,
+  "stageImg": "app-food-beverage-poster.webp",
+  "appPosters": [
+   "app-food-beverage-poster.webp",
+   "app-agriculture-poster.webp",
+   "app-industrial-manufacturing-poster.webp",
+   "app-ecommerce-poster.webp",
+   "app-electronics-poster.webp",
+   "app-retail-poster.webp"
+  ],
+  "errors": []
+ },
+ {
+  "mode": "motion",
+  "lang": "ar",
+  "oldPhotoRequests": [],
+  "cardPosters": [
+   "corrugated-boxes-poster.webp",
+   "custom-packaging-poster.webp",
+   "printed-packaging-poster.webp",
+   "industrial-packaging-poster.webp",
+   "ecommerce-packaging-poster.webp",
+   "protective-solutions-poster.webp"
+  ],
+  "cardStills": [],
+  "cardsWithVideoClass": 6,
+  "printPoster": "print-brand-poster.webp",
+  "printImg": null,
+  "stageImg": "app-food-beverage-poster.webp",
+  "appPosters": [
+   "app-food-beverage-poster.webp",
+   "app-agriculture-poster.webp",
+   "app-industrial-manufacturing-poster.webp",
+   "app-ecommerce-poster.webp",
+   "app-electronics-poster.webp",
+   "app-retail-poster.webp"
+  ],
+  "errors": []
+ },
+ {
+  "mode": "reduced",
+  "lang": "en",
+  "oldPhotoRequests": [],
+  "cardPosters": [],
+  "cardStills": [
+   "corrugated-boxes-still.webp",
+   "custom-packaging-still.webp",
+   "printed-packaging-still.webp",
+   "industrial-packaging-still.webp",
+   "ecommerce-packaging-still.webp",
+   "protective-solutions-still.webp"
+  ],
+  "cardsWithVideoClass": 6,
+  "printPoster": null,
+  "printImg": "print-brand-still.webp",
+  "stageImg": "app-food-beverage-still.webp",
+  "appPosters": [],
+  "errors": []
+ },
+ {
+  "mode": "reduced",
+  "lang": "fr",
+  "oldPhotoRequests": [],
+  "cardPosters": [],
+  "cardStills": [
+   "corrugated-boxes-still.webp",
+   "custom-packaging-still.webp",
+   "printed-packaging-still.webp",
+   "industrial-packaging-still.webp",
+   "ecommerce-packaging-still.webp",
+   "protective-solutions-still.webp"
+  ],
+  "cardsWithVideoClass": 6,
+  "printPoster": null,
+  "printImg": "print-brand-still.webp",
+  "stageImg": "app-food-beverage-still.webp",
+  "appPosters": [],
+  "errors": []
+ },
+ {
+  "mode": "reduced",
+  "lang": "ar",
+  "oldPhotoRequests": [],
+  "cardPosters": [],
+  "cardStills": [
+   "corrugated-boxes-still.webp",
+   "custom-packaging-still.webp",
+   "printed-packaging-still.webp",
+   "industrial-packaging-still.webp",
+   "ecommerce-packaging-still.webp",
+   "protective-solutions-still.webp"
+  ],
+  "cardsWithVideoClass": 6,
+  "printPoster": null,
+  "printImg": "print-brand-still.webp",
+  "stageImg": "app-food-beverage-still.webp",
+  "appPosters": [],
+  "errors": []
+ }
+]
