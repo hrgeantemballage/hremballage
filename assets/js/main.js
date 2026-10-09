@@ -78,7 +78,38 @@
   }[locale] || [];
   const assetRoot = locale === 'en' ? 'assets/' : '../assets/';
   const photoLabel = { en: 'illustrative packaging image', fr: 'visuel d’emballage illustratif', ar: 'صورة توضيحية' }[locale];
-  $('#product-grid').innerHTML = productData.map(([name, description, details, image], index) => `<article class="product-card"><img src="${assetRoot}images/${image}" loading="lazy" width="1400" height="900" alt="${name} — ${photoLabel}"><div class="product-content"><small>${String(index + 1).padStart(2, '0')} / ${copy.solution}</small><h3>${name}</h3><p>${description}</p><p class="details">${details}</p><a href="#contact" aria-label="${copy.explore} ${name}">${copy.explore} ↗</a></div></article>`).join('');
+  /* Card 01 (Corrugated Boxes) plays a looping animation; its photo stays as poster and fallback.
+     Reduced-motion visitors get the original photo card unchanged. */
+  const videoLabel = { en: 'Animation: a corrugated blank folds into a sealed HR carton and a stack of three', fr: 'Animation : un flan en carton ondulé se plie en caisse HR scellée, puis en pile de trois', ar: 'رسم متحرك: لوح كرتون مموج يُطوى إلى صندوق HR مغلق ثم كومة من ثلاثة صناديق' }[locale];
+  const productMedia = (name, image, index) => {
+    const img = `<img src="${assetRoot}images/${image}" loading="lazy" width="1400" height="900" alt="${name} — ${photoLabel}">`;
+    if (index !== 0 || reducedMotion.matches) return img;
+    return `<div class="product-media"><video class="product-video" poster="${assetRoot}images/${image}" autoplay muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-label="${videoLabel}"><source src="${assetRoot}videos/corrugated-boxes.mp4" type="video/mp4">${img}</video></div>`;
+  };
+  $('#product-grid').innerHTML = productData.map(([name, description, details, image], index) => `<article class="product-card${index === 0 && !reducedMotion.matches ? ' product-card--video' : ''}">${productMedia(name, image, index)}<div class="product-content"><small>${String(index + 1).padStart(2, '0')} / ${copy.solution}</small><h3>${name}</h3><p>${description}</p><p class="details">${details}</p><a href="#contact" aria-label="${copy.explore} ${name}">${copy.explore} ↗</a></div></article>`).join('');
+
+  const productVideoCard = $('.product-card--video');
+  if (productVideoCard) {
+    const video = productVideoCard.querySelector('video');
+    const content = productVideoCard.querySelector('.product-content');
+    // Reserve the space above the copy for the animation so it is never covered or cropped.
+    const fit = () => productVideoCard.style.setProperty('--copy-h', `${content.offsetHeight + 27 + 18}px`);
+    fit();
+    if ('ResizeObserver' in window) new ResizeObserver(fit).observe(content); else addEventListener('resize', fit);
+    let onScreen = false;
+    const syncVideo = () => {
+      if (reducedMotion.matches) { video.pause(); video.removeAttribute('autoplay'); video.load(); return; } // back to poster
+      if (onScreen && document.visibilityState === 'visible') { const p = video.play(); if (p && p.catch) p.catch(() => {}); }
+      else video.pause();
+    };
+    if ('IntersectionObserver' in window) new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; syncVideo(); }, { threshold: 0.15 }).observe(productVideoCard);
+    else onScreen = true;
+    document.addEventListener('visibilitychange', syncVideo);
+    if (reducedMotion.addEventListener) reducedMotion.addEventListener('change', syncVideo);
+    // Anything that starts playback while the card is hidden (autoplay, a race with scrolling) is stopped.
+    video.addEventListener('play', () => { if (!onScreen || reducedMotion.matches || document.visibilityState !== 'visible') video.pause(); });
+    syncVideo();
+  }
 
   /* ==========================================================================
      04 — PACKAGING CONFIGURATOR
