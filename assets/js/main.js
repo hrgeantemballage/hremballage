@@ -643,8 +643,82 @@
   const hero = $('.hero');
   hero.addEventListener('pointermove', event => { if (event.pointerType === 'mouse' && !reducedMotion.matches && innerWidth > 850) { const x = (event.clientX / innerWidth - .5) * 18; const y = (event.clientY / innerHeight - .5) * 12; $('.box-cube').style.transform = `rotateX(${-22 - y}deg) rotateY(${-32 + x}deg)`; } });
   hero.addEventListener('pointerleave', () => { $('.box-cube').style.transform = ''; });
-  $('#industry-list').addEventListener('click', event => { const button = event.target.closest('button'); if (!button) return; $('#industry-list').querySelectorAll('button').forEach(el => el.classList.toggle('selected', el === button)); $('#industry-detail').textContent = button.dataset.detail; });
-  $('#industry-list').addEventListener('focusin', event => event.target.closest('button')?.click());
+  /* 10 / Applications: one animation per application. The section steps through all six while
+     on screen; any click (visitor or guide tour) takes over and the chosen animation loops.
+     Reduced motion keeps the original photo and never loads the videos. */
+  const industryList = $('#industry-list');
+  const industryButtons = [...industryList.querySelectorAll('button')];
+  const industryStage = $('.industry-stage');
+  const industryLabel = $('.industry-caption small');
+  const appFiles = ['food-beverage', 'agriculture', 'industrial-manufacturing', 'ecommerce', 'electronics', 'retail'];
+  const pad2 = (n) => String(n).padStart(2, '0');
+  const appName = (button) => button.firstChild.textContent.trim();
+  let appIndex = 0;
+  let appAuto = true;
+  let appInView = false;
+  const appVideos = [];
+  const selectIndustry = (index) => {
+    appIndex = index;
+    const button = industryButtons[index];
+    industryButtons.forEach((el) => { el.classList.toggle('selected', el === button); el.style.removeProperty('--progress'); });
+    $('#industry-detail').textContent = button.dataset.detail;
+    if (industryLabel) industryLabel.textContent = `${pad2(index + 1)} / ${pad2(industryButtons.length)} — ${appName(button)}`;
+    if (!appVideos.length) return;
+    appVideos.forEach((video, i) => {
+      if (i === index) {
+        video.loop = !appAuto;
+        if (video.readyState < 2) video.load();
+        playActiveApp();
+      } else { video.pause(); video.classList.remove('is-active'); }
+    });
+  };
+  const playActiveApp = () => {
+    const video = appVideos[appIndex];
+    if (!video || !appInView || document.visibilityState !== 'visible') { if (video) video.pause(); return; }
+    const p = video.play(); if (p && p.catch) p.catch(() => {});
+  };
+  industryList.addEventListener('click', (event) => {
+    const button = event.target.closest('button'); if (!button) return;
+    appAuto = false; // a choice was made: stop stepping through the list
+    selectIndustry(industryButtons.indexOf(button));
+  });
+  industryList.addEventListener('focusin', (event) => { const b = event.target.closest('button'); if (b && !b.classList.contains('selected')) b.click(); });
+
+  if (industryStage && !reducedMotion.matches) {
+    const appLabels = {
+      en: 'Animation: packaging for ', fr: 'Animation : emballage pour ', ar: 'رسم متحرك: تغليف لقطاع '
+    }[locale] || 'Animation: packaging for ';
+    industryStage.classList.add('has-video');
+    appFiles.forEach((file, i) => {
+      const video = document.createElement('video');
+      video.muted = true; video.defaultMuted = true; video.playsInline = true;
+      video.setAttribute('muted', ''); video.setAttribute('playsinline', '');
+      video.preload = i === 0 ? 'metadata' : 'none';
+      video.disablePictureInPicture = true; video.setAttribute('disableremoteplayback', '');
+      video.setAttribute('aria-label', appLabels + appName(industryButtons[i]));
+      video.className = 'industry-video';
+      video.src = `${assetRoot}videos/applications/${file}.mp4`;
+      video.addEventListener('playing', () => { appVideos.forEach((v) => v.classList.toggle('is-active', v === video)); });
+      video.addEventListener('timeupdate', () => { if (i === appIndex && video.duration) industryButtons[i].style.setProperty('--progress', (video.currentTime / video.duration).toFixed(3)); });
+      video.addEventListener('ended', () => { if (appAuto && i === appIndex) selectIndustry((appIndex + 1) % appFiles.length); });
+      video.addEventListener('play', () => { if (i !== appIndex || !appInView || document.visibilityState !== 'visible') video.pause(); });
+      industryStage.append(video);
+      appVideos.push(video);
+    });
+    // Warm up the next clip shortly before it is needed.
+    appVideos.forEach((video, i) => video.addEventListener('timeupdate', () => {
+      const next = appVideos[(i + 1) % appVideos.length];
+      if (i === appIndex && video.currentTime > 6 && next.preload === 'none') { next.preload = 'auto'; next.load(); }
+    }));
+    if ('IntersectionObserver' in window) new IntersectionObserver(([entry]) => { appInView = entry.isIntersecting; playActiveApp(); }, { threshold: 0.2 }).observe(industryStage);
+    else appInView = true;
+    document.addEventListener('visibilitychange', playActiveApp);
+    if (reducedMotion.addEventListener) reducedMotion.addEventListener('change', () => {
+      if (!reducedMotion.matches) return;
+      appVideos.forEach((v) => { v.pause(); v.remove(); }); appVideos.length = 0; industryStage.classList.remove('has-video');
+    });
+  }
+  selectIndustry(0);
 
   // Static GitHub Pages has no form processing. Add a verified HTTPS endpoint, then enable this block.
   const FORM_ENDPOINT = ''; // e.g. your verified Formspree or custom API endpoint

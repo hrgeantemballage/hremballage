@@ -323,3 +323,26 @@
 .printing-image--video{background:linear-gradient(180deg,#191d22 0%,#15191e 50%,#13171c 100%)}
 .printing-image--video .printing-video{display:block;width:100%;height:100%;object-fit:contain;background:transparent;pointer-events:none}
 .printing-image--video .printing-video img{width:100%;height:100%;object-fit:cover}
+
+/* 2026-10-09: 10 / Applications redesign — 4:3 animation stage, caption below, indexed list with progress */
+.industry-list{counter-reset:app}
+.industry-list button{counter-increment:app;position:relative;gap:14px}
+.industry-list button:before{content:counter(app,decimal-leading-zero);font-size:.62rem;letter-spacing:.14em;color:#5f676b;min-width:2.2em;font-variant-numeric:tabular-nums;transition:color .3s}
+.industry-list button.selected:before{color:var(--blue-ink)}
+.industry-list button:after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--blue);transform:scaleX(var(--progress,0));transform-origin:left;opacity:0;transition:opacity .3s}
+.industry-list button.selected:after{opacity:1}
+[dir=rtl] .industry-list button:after{transform-origin:right}
+.industry-list button{justify-content:flex-start}
+.industry-list button span{margin-inline-start:auto}
+.industry-visual{min-height:0;overflow:visible;display:flex;flex-direction:column;gap:22px}
+.industry-visual:after{display:none}
+.industry-visual>.industry-stage{position:relative;inset:auto;z-index:auto;aspect-ratio:4/3;overflow:hidden;background:#0c1116;border:1px solid var(--line)}
+.industry-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.7)}
+.industry-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .6s ease;pointer-events:none;background:transparent}
+.industry-video.is-active{opacity:1}
+.industry-stage.has-video img{opacity:.0;transition:opacity .6s}
+.industry-stage.has-video:not(:has(.is-active)) img{opacity:1}
+.industry-visual>.industry-caption{position:static;inset:auto;z-index:auto}
+.industry-caption small{display:block;font-size:.65rem;letter-spacing:.18em;color:#a5abad;text-transform:uppercase}
+.industry-caption p{font-size:1.15rem;max-width:520px;margin:10px 0 0;color:#e9e6df}
+@media(prefers-reduced-motion:reduce){.industry-video{transition:none}.industry-list button:after{display:none}}
