@@ -1,0 +1,472 @@
+[
+ {
+  "lang": "en",
+  "dev": "desktop",
+  "beforeScroll": {
+   "videos": 6,
+   "sel": 0,
+   "playing": false,
+   "loop": false,
+   "t": 0,
+   "activeClass": -1,
+   "othersPaused": true,
+   "label": "01 / 06 — Food & Beverage",
+   "detail": "Secondary packs and protective transit f",
+   "progress": ""
+  },
+  "inView": {
+   "videos": 6,
+   "sel": 0,
+   "playing": true,
+   "loop": false,
+   "t": 1.96,
+   "activeClass": 0,
+   "othersPaused": true,
+   "label": "01 / 06 — Food & Beverage",
+   "detail": "Secondary packs and protective transit f",
+   "progress": "0.184"
+  },
+  "geo": {
+   "stage": [
+    650,
+    488
+   ],
+   "ratio": 1.333,
+   "captionBelow": true,
+   "videoFills": true
+  },
+  "autoAdvanced": true,
+  "afterAdvance": {
+   "videos": 6,
+   "sel": 1,
+   "playing": true,
+   "loop": false,
+   "t": 1.52,
+   "activeClass": 1,
+   "othersPaused": true,
+   "label": "02 / 06 — Agriculture",
+   "detail": "Packaging concepts for agricultural prod",
+   "progress": "0.130"
+  },
+  "afterClick": {
+   "videos": 6,
+   "sel": 5,
+   "playing": true,
+   "loop": true,
+   "t": 2.47,
+   "activeClass": 5,
+   "othersPaused": true,
+   "label": "06 / 06 — Retail",
+   "detail": "Shelf-ready displays and branded shippin",
+   "progress": "0.224"
+  },
+  "pausedOffscreen": true,
+  "resumed": true,
+  "eyebrows": [
+   "10 / APPLICATIONS",
+   "11 / WHERE WE ARE",
+   "12 / REQUEST A QUOTE"
+  ],
+  "requests": [
+   "food-beverage.mp4",
+   "agriculture.mp4",
+   "retail.mp4"
+  ],
+  "errors": []
+ },
+ {
+  "lang": "en",
+  "dev": "mobile",
+  "beforeScroll": {
+   "videos": 6,
+   "sel": 0,
+   "playing": false,
+   "loop": false,
+   "t": 0,
+   "activeClass": -1,
+   "othersPaused": true,
+   "label": "01 / 06 — Food & Beverage",
+   "detail": "Secondary packs and protective transit f",
+   "progress": ""
+  },
+  "inView": {
+   "videos": 6,
+   "sel": 0,
+   "playing": true,
+   "loop": false,
+   "t": 1.89,
+   "activeClass": 0,
+   "othersPaused": true,
+   "label": "01 / 06 — Food & Beverage",
+   "detail": "Secondary packs and protective transit f",
+   "progress": "0.184"
+  },
+  "geo": {
+   "stage": [
+    348,
+    261
+   ],
+   "ratio": 1.333,
+   "captionBelow": true,
+   "videoFills": true
+  },
+  "autoAdvanced": true,
+  "afterAdvance": {
+   "videos": 6,
+   "sel": 1,
+   "playing": true,
+   "loop": false,
+   "t": 1.55,
+   "activeClass": 1,
+   "othersPaused": true,
+   "label": "02 / 06 — Agriculture",
+   "detail": "Packaging concepts for agricultural prod",
+   "progress": "0.131"
+  },
+  "afterClick": {
+   "videos": 6,
+   "sel": 5,
+   "playing": true,
+   "loop": true,
+   "t": 2.47,
+   "activeClass": 5,
+   "othersPaused": true,
+   "label": "06 / 06 — Retail",
+   "detail": "Shelf-ready displays and branded shippin",
+   "progress": "0.246"
+  },
+  "pausedOffscreen": true,
+  "resumed": true,
+  "eyebrows": [
+   "10 / APPLICATIONS",
+   "11 / WHERE WE ARE",
+   "12 / REQUEST A QUOTE"
+  ],
+  "requests": [
+   "food-beverage.mp4",
+   "agriculture.mp4",
+   "retail.mp4"
+  ],
+  "errors": []
+ },
+ {
+  "lang": "fr",
+  "dev": "desktop",
+  "beforeScroll": {
+   "videos": 6,
+   "sel": 0,
+   "playing": false,
+   "loop": false,
+   "t": 0,
+   "activeClass": -1,
+   "othersPaused": true,
+   "label": "01 / 06 — Agroalimentaire et boissons",
+   "detail": "Emballages secondaires et solutions prot",
+   "progress": ""
+  },
+  "inView": {
+   "videos": 6,
+   "sel": 0,
+   "playing": true,
+   "loop": false,
+   "t": 1.95,
+   "activeClass": 0,
+   "othersPaused": true,
+   "label": "01 / 06 — Agroalimentaire et boissons",
+   "detail": "Emballages secondaires et solutions prot",
+   "progress": "0.184"
+  },
+  "geo": {
+   "stage": [
+    650,
+    488
+   ],
+   "ratio": 1.333,
+   "captionBelow": true,
+   "videoFills": true
+  },
+  "autoAdvanced": true,
+  "afterAdvance": {
+   "videos": 6,
+   "sel": 1,
+   "playing": true,
+   "loop": false,
+   "t": 1.49,
+   "activeClass": 1,
+   "othersPaused": true,
+   "label": "02 / 06 — Agriculture",
+   "detail": "Solutions d’emballage pour les produits ",
+   "progress": "0.131"
+  },
+  "afterClick": {
+   "videos": 6,
+   "sel": 5,
+   "playing": true,
+   "loop": true,
+   "t": 2.48,
+   "activeClass": 5,
+   "othersPaused": true,
+   "label": "06 / 06 — Commerce de détail",
+   "detail": "Présentoirs et emballages d’expédition à",
+   "progress": "0.245"
+  },
+  "pausedOffscreen": true,
+  "resumed": true,
+  "eyebrows": [
+   "10 / APPLICATIONS",
+   "11 / NOTRE IMPLANTATION",
+   "12 / DEMANDE DE DEVIS"
+  ],
+  "requests": [
+   "food-beverage.mp4",
+   "agriculture.mp4",
+   "retail.mp4"
+  ],
+  "errors": []
+ },
+ {
+  "lang": "fr",
+  "dev": "mobile",
+  "beforeScroll": {
+   "videos": 6,
+   "sel": 0,
+   "playing": false,
+   "loop": false,
+   "t": 0,
+   "activeClass": -1,
+   "othersPaused": true,
+   "label": "01 / 06 — Agroalimentaire et boissons",
+   "detail": "Emballages secondaires et solutions prot",
+   "progress": ""
+  },
+  "inView": {
+   "videos": 6,
+   "sel": 0,
+   "playing": true,
+   "loop": false,
+   "t": 1.87,
+   "activeClass": 0,
+   "othersPaused": true,
+   "label": "01 / 06 — Agroalimentaire et boissons",
+   "detail": "Emballages secondaires et solutions prot",
+   "progress": "0.165"
+  },
+  "geo": {
+   "stage": [
+    348,
+    261
+   ],
+   "ratio": 1.333,
+   "captionBelow": true,
+   "videoFills": true
+  },
+  "autoAdvanced": true,
+  "afterAdvance": {
+   "videos": 6,
+   "sel": 1,
+   "playing": true,
+   "loop": false,
+   "t": 1.54,
+   "activeClass": 1,
+   "othersPaused": true,
+   "label": "02 / 06 — Agriculture",
+   "detail": "Solutions d’emballage pour les produits ",
+   "progress": "0.132"
+  },
+  "afterClick": {
+   "videos": 6,
+   "sel": 5,
+   "playing": true,
+   "loop": true,
+   "t": 2.45,
+   "activeClass": 5,
+   "othersPaused": true,
+   "label": "06 / 06 — Commerce de détail",
+   "detail": "Présentoirs et emballages d’expédition à",
+   "progress": "0.237"
+  },
+  "pausedOffscreen": true,
+  "resumed": true,
+  "eyebrows": [
+   "10 / APPLICATIONS",
+   "11 / NOTRE IMPLANTATION",
+   "12 / DEMANDE DE DEVIS"
+  ],
+  "requests": [
+   "food-beverage.mp4",
+   "agriculture.mp4",
+   "retail.mp4"
+  ],
+  "errors": []
+ },
+ {
+  "lang": "ar",
+  "dev": "desktop",
+  "beforeScroll": {
+   "videos": 6,
+   "sel": 0,
+   "playing": false,
+   "loop": false,
+   "t": 0,
+   "activeClass": -1,
+   "othersPaused": true,
+   "label": "01 / 06 — الأغذية والمشروبات",
+   "detail": "عبوات ثانوية وحلول نقل واقية للأغذية وال",
+   "progress": ""
+  },
+  "inView": {
+   "videos": 6,
+   "sel": 0,
+   "playing": true,
+   "loop": false,
+   "t": 1.95,
+   "activeClass": 0,
+   "othersPaused": true,
+   "label": "01 / 06 — الأغذية والمشروبات",
+   "detail": "عبوات ثانوية وحلول نقل واقية للأغذية وال",
+   "progress": "0.182"
+  },
+  "geo": {
+   "stage": [
+    650,
+    488
+   ],
+   "ratio": 1.333,
+   "captionBelow": true,
+   "videoFills": true
+  },
+  "autoAdvanced": true,
+  "afterAdvance": {
+   "videos": 6,
+   "sel": 1,
+   "playing": true,
+   "loop": false,
+   "t": 1.49,
+   "activeClass": 1,
+   "othersPaused": true,
+   "label": "02 / 06 — الزراعة",
+   "detail": "تصورات تغليف للمحاصيل الزراعية ومتطلبات ",
+   "progress": "0.130"
+  },
+  "afterClick": {
+   "videos": 6,
+   "sel": 5,
+   "playing": true,
+   "loop": true,
+   "t": 2.48,
+   "activeClass": 5,
+   "othersPaused": true,
+   "label": "06 / 06 — البيع بالتجزئة",
+   "detail": "عبوات عرض وشحن تحمل هوية العلامة التجاري",
+   "progress": "0.236"
+  },
+  "pausedOffscreen": true,
+  "resumed": true,
+  "eyebrows": [
+   "10 / التطبيقات",
+   "11 / موقعنا",
+   "12 / طلب عرض سعر"
+  ],
+  "requests": [
+   "food-beverage.mp4",
+   "agriculture.mp4",
+   "retail.mp4"
+  ],
+  "errors": []
+ },
+ {
+  "lang": "ar",
+  "dev": "mobile",
+  "beforeScroll": {
+   "videos": 6,
+   "sel": 0,
+   "playing": false,
+   "loop": false,
+   "t": 0,
+   "activeClass": -1,
+   "othersPaused": true,
+   "label": "01 / 06 — الأغذية والمشروبات",
+   "detail": "عبوات ثانوية وحلول نقل واقية للأغذية وال",
+   "progress": ""
+  },
+  "inView": {
+   "videos": 6,
+   "sel": 0,
+   "playing": true,
+   "loop": false,
+   "t": 1.85,
+   "activeClass": 0,
+   "othersPaused": true,
+   "label": "01 / 06 — الأغذية والمشروبات",
+   "detail": "عبوات ثانوية وحلول نقل واقية للأغذية وال",
+   "progress": "0.181"
+  },
+  "geo": {
+   "stage": [
+    348,
+    261
+   ],
+   "ratio": 1.333,
+   "captionBelow": true,
+   "videoFills": true
+  },
+  "autoAdvanced": true,
+  "afterAdvance": {
+   "videos": 6,
+   "sel": 1,
+   "playing": true,
+   "loop": false,
+   "t": 1.51,
+   "activeClass": 1,
+   "othersPaused": true,
+   "label": "02 / 06 — الزراعة",
+   "detail": "تصورات تغليف للمحاصيل الزراعية ومتطلبات ",
+   "progress": "0.132"
+  },
+  "afterClick": {
+   "videos": 6,
+   "sel": 5,
+   "playing": true,
+   "loop": true,
+   "t": 2.48,
+   "activeClass": 5,
+   "othersPaused": true,
+   "label": "06 / 06 — البيع بالتجزئة",
+   "detail": "عبوات عرض وشحن تحمل هوية العلامة التجاري",
+   "progress": "0.236"
+  },
+  "pausedOffscreen": true,
+  "resumed": true,
+  "eyebrows": [
+   "10 / التطبيقات",
+   "11 / موقعنا",
+   "12 / طلب عرض سعر"
+  ],
+  "requests": [
+   "food-beverage.mp4",
+   "agriculture.mp4",
+   "retail.mp4"
+  ],
+  "errors": []
+ },
+ {
+  "lang": "en",
+  "dev": "reduced-motion",
+  "videos": 0,
+  "img": "assets/images/corrugated-boxes.webp",
+  "imgVisible": "1",
+  "label": "03 / 06 — Industrial Manufacturing",
+  "detail": "Industrial transit packs built around pr",
+  "requests": 0
+ },
+ {
+  "lang": "ar",
+  "dev": "reduced-motion",
+  "videos": 0,
+  "img": "../assets/images/corrugated-boxes.webp",
+  "imgVisible": "1",
+  "label": "03 / 06 — الصناعة التحويلية",
+  "detail": "عبوات نقل صناعية مصممة حسب أبعاد المنتج.",
+  "requests": 0
+ }
+]
