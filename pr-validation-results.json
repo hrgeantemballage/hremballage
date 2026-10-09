@@ -1,0 +1,256 @@
+[
+ {
+  "lang": "en",
+  "dev": "desktop",
+  "cards": 6,
+  "playing": true,
+  "t": 2.03,
+  "ready": 4,
+  "src": "videos/custom-packaging.mp4",
+  "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+  "poster": "assets/images/corrugated-boxes.webp",
+  "card": [
+   438,
+   520
+  ],
+  "media": [
+   436,
+   293
+  ],
+  "videoShown": [
+   391,
+   293
+  ],
+  "fullFrameInside": true,
+  "gapToText": 18,
+  "title": "Custom Packaging",
+  "link": "#contact",
+  "others": [
+   "corrugated-boxes.webp",
+   "factory-production.webp"
+  ],
+  "otherCount": 4,
+  "card0": "corrugated-boxes.mp4",
+  "videoCards": "0,1",
+  "mediaBg": "linear-gradient(rgb(16, 18, 20) 0%, rgb(",
+  "printVideo": "print-brand.mp4",
+  "cardVisibleAtTop": false,
+  "pausedOffscreen": true,
+  "resumedOnScreen": true,
+  "errors": []
+ },
+ {
+  "lang": "en",
+  "dev": "mobile",
+  "cards": 6,
+  "playing": true,
+  "t": 2,
+  "ready": 4,
+  "src": "videos/custom-packaging.mp4",
+  "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+  "poster": "assets/images/corrugated-boxes.webp",
+  "card": [
+   348,
+   440
+  ],
+  "media": [
+   346,
+   201
+  ],
+  "videoShown": [
+   268,
+   201
+  ],
+  "fullFrameInside": true,
+  "gapToText": 18,
+  "title": "Custom Packaging",
+  "link": "#contact",
+  "others": [
+   "corrugated-boxes.webp",
+   "factory-production.webp"
+  ],
+  "otherCount": 4,
+  "card0": "corrugated-boxes.mp4",
+  "videoCards": "0,1",
+  "mediaBg": "linear-gradient(rgb(16, 18, 20) 0%, rgb(",
+  "printVideo": "print-brand.mp4",
+  "cardVisibleAtTop": false,
+  "pausedOffscreen": true,
+  "resumedOnScreen": true,
+  "errors": []
+ },
+ {
+  "lang": "fr",
+  "dev": "desktop",
+  "cards": 6,
+  "playing": true,
+  "t": 2.03,
+  "ready": 4,
+  "src": "videos/custom-packaging.mp4",
+  "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+  "poster": "../assets/images/corrugated-boxes.webp",
+  "card": [
+   438,
+   520
+  ],
+  "media": [
+   436,
+   271
+  ],
+  "videoShown": [
+   361,
+   271
+  ],
+  "fullFrameInside": true,
+  "gapToText": 18,
+  "title": "Emballage sur mesure",
+  "link": "#contact",
+  "others": [
+   "corrugated-boxes.webp",
+   "factory-production.webp"
+  ],
+  "otherCount": 4,
+  "card0": "corrugated-boxes.mp4",
+  "videoCards": "0,1",
+  "mediaBg": "linear-gradient(rgb(16, 18, 20) 0%, rgb(",
+  "printVideo": "print-brand.mp4",
+  "cardVisibleAtTop": false,
+  "pausedOffscreen": true,
+  "resumedOnScreen": true,
+  "errors": []
+ },
+ {
+  "lang": "fr",
+  "dev": "mobile",
+  "cards": 6,
+  "playing": true,
+  "t": 1.99,
+  "ready": 4,
+  "src": "videos/custom-packaging.mp4",
+  "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+  "poster": "../assets/images/corrugated-boxes.webp",
+  "card": [
+   348,
+   440
+  ],
+  "media": [
+   346,
+   201
+  ],
+  "videoShown": [
+   268,
+   201
+  ],
+  "fullFrameInside": true,
+  "gapToText": 18,
+  "title": "Emballage sur mesure",
+  "link": "#contact",
+  "others": [
+   "corrugated-boxes.webp",
+   "factory-production.webp"
+  ],
+  "otherCount": 4,
+  "card0": "corrugated-boxes.mp4",
+  "videoCards": "0,1",
+  "mediaBg": "linear-gradient(rgb(16, 18, 20) 0%, rgb(",
+  "printVideo": "print-brand.mp4",
+  "cardVisibleAtTop": false,
+  "pausedOffscreen": true,
+  "resumedOnScreen": true,
+  "errors": []
+ },
+ {
+  "lang": "ar",
+  "dev": "desktop",
+  "cards": 6,
+  "playing": true,
+  "t": 2.04,
+  "ready": 4,
+  "src": "videos/custom-packaging.mp4",
+  "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+  "poster": "../assets/images/corrugated-boxes.webp",
+  "card": [
+   438,
+   520
+  ],
+  "media": [
+   436,
+   294
+  ],
+  "videoShown": [
+   392,
+   294
+  ],
+  "fullFrameInside": true,
+  "gapToText": 18,
+  "title": "تغليف مخصص",
+  "link": "#contact",
+  "others": [
+   "corrugated-boxes.webp",
+   "factory-production.webp"
+  ],
+  "otherCount": 4,
+  "card0": "corrugated-boxes.mp4",
+  "videoCards": "0,1",
+  "mediaBg": "linear-gradient(rgb(16, 18, 20) 0%, rgb(",
+  "printVideo": "print-brand.mp4",
+  "cardVisibleAtTop": false,
+  "pausedOffscreen": true,
+  "resumedOnScreen": true,
+  "errors": []
+ },
+ {
+  "lang": "ar",
+  "dev": "mobile",
+  "cards": 6,
+  "playing": true,
+  "t": 2.02,
+  "ready": 4,
+  "src": "videos/custom-packaging.mp4",
+  "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+  "poster": "../assets/images/corrugated-boxes.webp",
+  "card": [
+   348,
+   440
+  ],
+  "media": [
+   346,
+   224
+  ],
+  "videoShown": [
+   299,
+   224
+  ],
+  "fullFrameInside": true,
+  "gapToText": 18,
+  "title": "تغليف مخصص",
+  "link": "#contact",
+  "others": [
+   "corrugated-boxes.webp",
+   "factory-production.webp"
+  ],
+  "otherCount": 4,
+  "card0": "corrugated-boxes.mp4",
+  "videoCards": "0,1",
+  "mediaBg": "linear-gradient(rgb(16, 18, 20) 0%, rgb(",
+  "printVideo": "print-brand.mp4",
+  "cardVisibleAtTop": false,
+  "pausedOffscreen": true,
+  "resumedOnScreen": true,
+  "errors": []
+ },
+ {
+  "lang": "en",
+  "dev": "reduced-motion",
+  "hasVideo": false,
+  "img": "assets/images/corrugated-boxes.webp",
+  "videoRequests": 0
+ },
+ {
+  "lang": "ar",
+  "dev": "reduced-motion",
+  "hasVideo": false,
+  "img": "../assets/images/corrugated-boxes.webp",
+  "videoRequests": 0
+ }
+]
