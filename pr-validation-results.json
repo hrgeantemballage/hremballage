@@ -1,0 +1,502 @@
+{
+ "card05_ecommerce": [
+  {
+   "lang": "en",
+   "dev": "desktop",
+   "cards": 6,
+   "playing": true,
+   "t": 1.92,
+   "ready": 4,
+   "src": "videos/ecommerce-packaging.mp4",
+   "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+   "poster": "assets/images/corrugated-boxes.webp",
+   "card": [
+    438,
+    440
+   ],
+   "media": [
+    436,
+    213
+   ],
+   "videoShown": [
+    284,
+    213
+   ],
+   "fullFrameInside": true,
+   "gapToText": 18,
+   "title": "E-commerce Packaging",
+   "link": "#contact",
+   "others": [
+    "corrugated-boxes.webp"
+   ],
+   "otherCount": 1,
+   "card0": "corrugated-boxes.mp4",
+   "videoCards": "0,1,3,4,5",
+   "mediaBg": "linear-gradient(rgb(15, 19, 22) 0%, rgb(",
+   "printVideo": "print-brand.mp4",
+   "cardVisibleAtTop": false,
+   "pausedOffscreen": true,
+   "resumedOnScreen": true,
+   "errors": []
+  },
+  {
+   "lang": "en",
+   "dev": "mobile",
+   "cards": 6,
+   "playing": true,
+   "t": 1.86,
+   "ready": 4,
+   "src": "videos/ecommerce-packaging.mp4",
+   "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+   "poster": "assets/images/corrugated-boxes.webp",
+   "card": [
+    348,
+    440
+   ],
+   "media": [
+    346,
+    201
+   ],
+   "videoShown": [
+    268,
+    201
+   ],
+   "fullFrameInside": true,
+   "gapToText": 18,
+   "title": "E-commerce Packaging",
+   "link": "#contact",
+   "others": [
+    "corrugated-boxes.webp"
+   ],
+   "otherCount": 1,
+   "card0": "corrugated-boxes.mp4",
+   "videoCards": "0,1,3,4,5",
+   "mediaBg": "linear-gradient(rgb(15, 19, 22) 0%, rgb(",
+   "printVideo": "print-brand.mp4",
+   "cardVisibleAtTop": false,
+   "pausedOffscreen": true,
+   "resumedOnScreen": true,
+   "errors": []
+  },
+  {
+   "lang": "fr",
+   "dev": "desktop",
+   "cards": 6,
+   "playing": true,
+   "t": 1.9,
+   "ready": 4,
+   "src": "videos/ecommerce-packaging.mp4",
+   "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+   "poster": "../assets/images/corrugated-boxes.webp",
+   "card": [
+    438,
+    440
+   ],
+   "media": [
+    436,
+    191
+   ],
+   "videoShown": [
+    255,
+    191
+   ],
+   "fullFrameInside": true,
+   "gapToText": 18,
+   "title": "Emballage e-commerce",
+   "link": "#contact",
+   "others": [
+    "corrugated-boxes.webp"
+   ],
+   "otherCount": 1,
+   "card0": "corrugated-boxes.mp4",
+   "videoCards": "0,1,3,4,5",
+   "mediaBg": "linear-gradient(rgb(15, 19, 22) 0%, rgb(",
+   "printVideo": "print-brand.mp4",
+   "cardVisibleAtTop": false,
+   "pausedOffscreen": true,
+   "resumedOnScreen": true,
+   "errors": []
+  },
+  {
+   "lang": "fr",
+   "dev": "mobile",
+   "cards": 6,
+   "playing": true,
+   "t": 1.84,
+   "ready": 4,
+   "src": "videos/ecommerce-packaging.mp4",
+   "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+   "poster": "../assets/images/corrugated-boxes.webp",
+   "card": [
+    348,
+    440
+   ],
+   "media": [
+    346,
+    201
+   ],
+   "videoShown": [
+    268,
+    201
+   ],
+   "fullFrameInside": true,
+   "gapToText": 18,
+   "title": "Emballage e-commerce",
+   "link": "#contact",
+   "others": [
+    "corrugated-boxes.webp"
+   ],
+   "otherCount": 1,
+   "card0": "corrugated-boxes.mp4",
+   "videoCards": "0,1,3,4,5",
+   "mediaBg": "linear-gradient(rgb(15, 19, 22) 0%, rgb(",
+   "printVideo": "print-brand.mp4",
+   "cardVisibleAtTop": false,
+   "pausedOffscreen": true,
+   "resumedOnScreen": true,
+   "errors": []
+  },
+  {
+   "lang": "ar",
+   "dev": "desktop",
+   "cards": 6,
+   "playing": true,
+   "t": 1.88,
+   "ready": 4,
+   "src": "videos/ecommerce-packaging.mp4",
+   "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+   "poster": "../assets/images/corrugated-boxes.webp",
+   "card": [
+    438,
+    440
+   ],
+   "media": [
+    436,
+    214
+   ],
+   "videoShown": [
+    285,
+    214
+   ],
+   "fullFrameInside": true,
+   "gapToText": 18,
+   "title": "تغليف التجارة الإلكترونية",
+   "link": "#contact",
+   "others": [
+    "corrugated-boxes.webp"
+   ],
+   "otherCount": 1,
+   "card0": "corrugated-boxes.mp4",
+   "videoCards": "0,1,3,4,5",
+   "mediaBg": "linear-gradient(rgb(15, 19, 22) 0%, rgb(",
+   "printVideo": "print-brand.mp4",
+   "cardVisibleAtTop": false,
+   "pausedOffscreen": true,
+   "resumedOnScreen": true,
+   "errors": []
+  },
+  {
+   "lang": "ar",
+   "dev": "mobile",
+   "cards": 6,
+   "playing": true,
+   "t": 1.86,
+   "ready": 4,
+   "src": "videos/ecommerce-packaging.mp4",
+   "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+   "poster": "../assets/images/corrugated-boxes.webp",
+   "card": [
+    348,
+    440
+   ],
+   "media": [
+    346,
+    224
+   ],
+   "videoShown": [
+    299,
+    224
+   ],
+   "fullFrameInside": true,
+   "gapToText": 18,
+   "title": "تغليف التجارة الإلكترونية",
+   "link": "#contact",
+   "others": [
+    "corrugated-boxes.webp"
+   ],
+   "otherCount": 1,
+   "card0": "corrugated-boxes.mp4",
+   "videoCards": "0,1,3,4,5",
+   "mediaBg": "linear-gradient(rgb(15, 19, 22) 0%, rgb(",
+   "printVideo": "print-brand.mp4",
+   "cardVisibleAtTop": false,
+   "pausedOffscreen": true,
+   "resumedOnScreen": true,
+   "errors": []
+  },
+  {
+   "lang": "en",
+   "dev": "reduced-motion",
+   "hasVideo": false,
+   "img": "assets/images/corrugated-boxes.webp",
+   "videoRequests": 0
+  },
+  {
+   "lang": "ar",
+   "dev": "reduced-motion",
+   "hasVideo": false,
+   "img": "../assets/images/corrugated-boxes.webp",
+   "videoRequests": 0
+  }
+ ],
+ "card06_protective": [
+  {
+   "lang": "en",
+   "dev": "desktop",
+   "cards": 6,
+   "playing": true,
+   "t": 1.92,
+   "ready": 4,
+   "src": "videos/protective-solutions.mp4",
+   "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+   "poster": "assets/images/corrugated-boxes.webp",
+   "card": [
+    438,
+    440
+   ],
+   "media": [
+    436,
+    191
+   ],
+   "videoShown": [
+    255,
+    191
+   ],
+   "fullFrameInside": true,
+   "gapToText": 18,
+   "title": "Protective Solutions",
+   "link": "#contact",
+   "others": [
+    "corrugated-boxes.webp"
+   ],
+   "otherCount": 1,
+   "card0": "corrugated-boxes.mp4",
+   "videoCards": "0,1,3,4,5",
+   "mediaBg": "linear-gradient(rgb(15, 19, 22) 0%, rgb(",
+   "printVideo": "print-brand.mp4",
+   "cardVisibleAtTop": false,
+   "pausedOffscreen": true,
+   "resumedOnScreen": true,
+   "errors": []
+  },
+  {
+   "lang": "en",
+   "dev": "mobile",
+   "cards": 6,
+   "playing": true,
+   "t": 1.82,
+   "ready": 4,
+   "src": "videos/protective-solutions.mp4",
+   "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+   "poster": "assets/images/corrugated-boxes.webp",
+   "card": [
+    348,
+    440
+   ],
+   "media": [
+    346,
+    201
+   ],
+   "videoShown": [
+    268,
+    201
+   ],
+   "fullFrameInside": true,
+   "gapToText": 18,
+   "title": "Protective Solutions",
+   "link": "#contact",
+   "others": [
+    "corrugated-boxes.webp"
+   ],
+   "otherCount": 1,
+   "card0": "corrugated-boxes.mp4",
+   "videoCards": "0,1,3,4,5",
+   "mediaBg": "linear-gradient(rgb(15, 19, 22) 0%, rgb(",
+   "printVideo": "print-brand.mp4",
+   "cardVisibleAtTop": false,
+   "pausedOffscreen": true,
+   "resumedOnScreen": true,
+   "errors": []
+  },
+  {
+   "lang": "fr",
+   "dev": "desktop",
+   "cards": 6,
+   "playing": true,
+   "t": 1.88,
+   "ready": 4,
+   "src": "videos/protective-solutions.mp4",
+   "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+   "poster": "../assets/images/corrugated-boxes.webp",
+   "card": [
+    438,
+    440
+   ],
+   "media": [
+    436,
+    191
+   ],
+   "videoShown": [
+    255,
+    191
+   ],
+   "fullFrameInside": true,
+   "gapToText": 18,
+   "title": "Solutions de protection",
+   "link": "#contact",
+   "others": [
+    "corrugated-boxes.webp"
+   ],
+   "otherCount": 1,
+   "card0": "corrugated-boxes.mp4",
+   "videoCards": "0,1,3,4,5",
+   "mediaBg": "linear-gradient(rgb(15, 19, 22) 0%, rgb(",
+   "printVideo": "print-brand.mp4",
+   "cardVisibleAtTop": false,
+   "pausedOffscreen": true,
+   "resumedOnScreen": true,
+   "errors": []
+  },
+  {
+   "lang": "fr",
+   "dev": "mobile",
+   "cards": 6,
+   "playing": true,
+   "t": 1.79,
+   "ready": 4,
+   "src": "videos/protective-solutions.mp4",
+   "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+   "poster": "../assets/images/corrugated-boxes.webp",
+   "card": [
+    348,
+    440
+   ],
+   "media": [
+    346,
+    201
+   ],
+   "videoShown": [
+    268,
+    201
+   ],
+   "fullFrameInside": true,
+   "gapToText": 18,
+   "title": "Solutions de protection",
+   "link": "#contact",
+   "others": [
+    "corrugated-boxes.webp"
+   ],
+   "otherCount": 1,
+   "card0": "corrugated-boxes.mp4",
+   "videoCards": "0,1,3,4,5",
+   "mediaBg": "linear-gradient(rgb(15, 19, 22) 0%, rgb(",
+   "printVideo": "print-brand.mp4",
+   "cardVisibleAtTop": false,
+   "pausedOffscreen": true,
+   "resumedOnScreen": true,
+   "errors": []
+  },
+  {
+   "lang": "ar",
+   "dev": "desktop",
+   "cards": 6,
+   "playing": true,
+   "t": 1.89,
+   "ready": 4,
+   "src": "videos/protective-solutions.mp4",
+   "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+   "poster": "../assets/images/corrugated-boxes.webp",
+   "card": [
+    438,
+    440
+   ],
+   "media": [
+    436,
+    214
+   ],
+   "videoShown": [
+    285,
+    214
+   ],
+   "fullFrameInside": true,
+   "gapToText": 18,
+   "title": "حلول الحماية",
+   "link": "#contact",
+   "others": [
+    "corrugated-boxes.webp"
+   ],
+   "otherCount": 1,
+   "card0": "corrugated-boxes.mp4",
+   "videoCards": "0,1,3,4,5",
+   "mediaBg": "linear-gradient(rgb(15, 19, 22) 0%, rgb(",
+   "printVideo": "print-brand.mp4",
+   "cardVisibleAtTop": false,
+   "pausedOffscreen": true,
+   "resumedOnScreen": true,
+   "errors": []
+  },
+  {
+   "lang": "ar",
+   "dev": "mobile",
+   "cards": 6,
+   "playing": true,
+   "t": 1.8,
+   "ready": 4,
+   "src": "videos/protective-solutions.mp4",
+   "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+   "poster": "../assets/images/corrugated-boxes.webp",
+   "card": [
+    348,
+    440
+   ],
+   "media": [
+    346,
+    224
+   ],
+   "videoShown": [
+    299,
+    224
+   ],
+   "fullFrameInside": true,
+   "gapToText": 18,
+   "title": "حلول الحماية",
+   "link": "#contact",
+   "others": [
+    "corrugated-boxes.webp"
+   ],
+   "otherCount": 1,
+   "card0": "corrugated-boxes.mp4",
+   "videoCards": "0,1,3,4,5",
+   "mediaBg": "linear-gradient(rgb(15, 19, 22) 0%, rgb(",
+   "printVideo": "print-brand.mp4",
+   "cardVisibleAtTop": false,
+   "pausedOffscreen": true,
+   "resumedOnScreen": true,
+   "errors": []
+  },
+  {
+   "lang": "en",
+   "dev": "reduced-motion",
+   "hasVideo": false,
+   "img": "assets/images/corrugated-boxes.webp",
+   "videoRequests": 0
+  },
+  {
+   "lang": "ar",
+   "dev": "reduced-motion",
+   "hasVideo": false,
+   "img": "../assets/images/corrugated-boxes.webp",
+   "videoRequests": 0
+  }
+ ]
+}
