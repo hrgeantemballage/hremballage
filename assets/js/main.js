@@ -7,6 +7,33 @@
   const toggle = $('.menu-toggle');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
+  /* 08 / Print & Brand: offset-press loop. Reduced motion restores the original photo;
+     playback runs only while the video is on screen. */
+  const printVideo = $('.printing-video');
+  if (printVideo) {
+    const frame = printVideo.parentElement;
+    const toPhoto = () => {
+      const img = printVideo.querySelector('img');
+      if (img && printVideo.isConnected) { printVideo.pause(); frame.classList.remove('printing-image--video'); printVideo.replaceWith(img); }
+    };
+    if (reducedMotion.matches) toPhoto();
+    else {
+      let inView = false;
+      const syncPrint = () => {
+        if (!printVideo.isConnected) return;
+        if (reducedMotion.matches) { toPhoto(); return; }
+        if (inView && document.visibilityState === 'visible') { const p = printVideo.play(); if (p && p.catch) p.catch(() => {}); }
+        else printVideo.pause();
+      };
+      if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { inView = e.isIntersecting; syncPrint(); }, { threshold: 0.15 }).observe(frame);
+      else inView = true;
+      printVideo.addEventListener('play', () => { if (!inView || reducedMotion.matches || document.visibilityState !== 'visible') printVideo.pause(); });
+      document.addEventListener('visibilitychange', syncPrint);
+      if (reducedMotion.addEventListener) reducedMotion.addEventListener('change', syncPrint);
+      syncPrint();
+    }
+  }
+
   /* Section 01 box-forming loop: honour reduced motion and pause while off screen. */
   const companyVideo = $('.company-video video');
   if (companyVideo) {
