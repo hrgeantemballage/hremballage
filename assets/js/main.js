@@ -109,7 +109,8 @@
      reduced-motion visitors get the original photo cards unchanged. */
   const cardVideos = {
     0: { file: 'corrugated-boxes.mp4', bg: 'linear-gradient(180deg,#c9c4bc 0%,#cdc8c1 45%,#c7c2ba 100%)', label: { en: 'Animation: a corrugated blank folds into a sealed HR carton and a stack of three', fr: 'Animation : un flan en carton ondulé se plie en caisse HR scellée, puis en pile de trois', ar: 'رسم متحرك: لوح كرتون مموج يُطوى إلى صندوق HR مغلق ثم كومة من ثلاثة صناديق' } },
-    1: { file: 'custom-packaging.mp4', bg: 'linear-gradient(180deg,#101214 0%,#101316 50%,#0c0f11 100%)', label: { en: 'Animation: a die-cut insert and carton are formed around a cylindrical product', fr: 'Animation : un calage découpé et une boîte se forment autour d’un produit cylindrique', ar: 'رسم متحرك: حشوة مقطوعة وعلبة تتشكلان حول منتج أسطواني' } }
+    1: { file: 'custom-packaging.mp4', bg: 'linear-gradient(180deg,#101214 0%,#101316 50%,#0c0f11 100%)', label: { en: 'Animation: a die-cut insert and carton are formed around a cylindrical product', fr: 'Animation : un calage découpé et une boîte se forment autour d’un produit cylindrique', ar: 'رسم متحرك: حشوة مقطوعة وعلبة تتشكلان حول منتج أسطواني' } },
+    3: { file: 'industrial-packaging.mp4', bg: 'linear-gradient(180deg,#0f1215 0%,#101417 50%,#0c0f13 100%)', label: { en: 'Animation: a heavy component is packed on a pallet with corner protectors, a top pad and straps', fr: 'Animation : une pièce lourde est emballée sur palette avec cornières, plaque de protection et cerclage', ar: 'رسم متحرك: قطعة ثقيلة تُغلف على منصة مع زوايا حماية ولوح علوي وأحزمة' } }
   };
   const productMedia = (name, image, index) => {
     const img = `<img src="${assetRoot}images/${image}" loading="lazy" width="1400" height="900" alt="${name} — ${photoLabel}">`;
