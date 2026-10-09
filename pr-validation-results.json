@@ -1,0 +1,232 @@
+[
+ {
+  "lang": "en",
+  "dev": "desktop",
+  "cards": 6,
+  "playing": true,
+  "t": 2.03,
+  "ready": 4,
+  "src": "videos/corrugated-boxes.mp4",
+  "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+  "poster": "assets/images/corrugated-boxes.webp",
+  "card": [
+   665,
+   520
+  ],
+  "media": [
+   663,
+   293
+  ],
+  "videoShown": [
+   391,
+   293
+  ],
+  "fullFrameInside": true,
+  "gapToText": 18,
+  "title": "Corrugated Boxes",
+  "link": "#contact",
+  "others": [
+   "assets/images/corrugated-boxes.webp",
+   "assets/images/factory-production.webp"
+  ],
+  "printImg": "assets/images/corrugated-boxes.webp",
+  "cardVisibleAtTop": false,
+  "pausedOffscreen": true,
+  "resumedOnScreen": true,
+  "errors": []
+ },
+ {
+  "lang": "en",
+  "dev": "mobile",
+  "cards": 6,
+  "playing": true,
+  "t": 2.07,
+  "ready": 4,
+  "src": "videos/corrugated-boxes.mp4",
+  "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+  "poster": "assets/images/corrugated-boxes.webp",
+  "card": [
+   348,
+   440
+  ],
+  "media": [
+   346,
+   201
+  ],
+  "videoShown": [
+   268,
+   201
+  ],
+  "fullFrameInside": true,
+  "gapToText": 18,
+  "title": "Corrugated Boxes",
+  "link": "#contact",
+  "others": [
+   "assets/images/corrugated-boxes.webp",
+   "assets/images/factory-production.webp"
+  ],
+  "printImg": "assets/images/corrugated-boxes.webp",
+  "cardVisibleAtTop": false,
+  "pausedOffscreen": true,
+  "resumedOnScreen": true,
+  "errors": []
+ },
+ {
+  "lang": "fr",
+  "dev": "desktop",
+  "cards": 6,
+  "playing": true,
+  "t": 2.02,
+  "ready": 4,
+  "src": "videos/corrugated-boxes.mp4",
+  "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+  "poster": "../assets/images/corrugated-boxes.webp",
+  "card": [
+   665,
+   520
+  ],
+  "media": [
+   663,
+   271
+  ],
+  "videoShown": [
+   361,
+   271
+  ],
+  "fullFrameInside": true,
+  "gapToText": 18,
+  "title": "Caisses en carton ondulé",
+  "link": "#contact",
+  "others": [
+   "../assets/images/corrugated-boxes.webp",
+   "../assets/images/factory-production.webp"
+  ],
+  "printImg": "../assets/images/corrugated-boxes.webp",
+  "cardVisibleAtTop": false,
+  "pausedOffscreen": true,
+  "resumedOnScreen": true,
+  "errors": []
+ },
+ {
+  "lang": "fr",
+  "dev": "mobile",
+  "cards": 6,
+  "playing": true,
+  "t": 2.04,
+  "ready": 4,
+  "src": "videos/corrugated-boxes.mp4",
+  "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+  "poster": "../assets/images/corrugated-boxes.webp",
+  "card": [
+   348,
+   440
+  ],
+  "media": [
+   346,
+   169
+  ],
+  "videoShown": [
+   225,
+   169
+  ],
+  "fullFrameInside": true,
+  "gapToText": 18,
+  "title": "Caisses en carton ondulé",
+  "link": "#contact",
+  "others": [
+   "../assets/images/corrugated-boxes.webp",
+   "../assets/images/factory-production.webp"
+  ],
+  "printImg": "../assets/images/corrugated-boxes.webp",
+  "cardVisibleAtTop": false,
+  "pausedOffscreen": true,
+  "resumedOnScreen": true,
+  "errors": []
+ },
+ {
+  "lang": "ar",
+  "dev": "desktop",
+  "cards": 6,
+  "playing": true,
+  "t": 2.05,
+  "ready": 4,
+  "src": "videos/corrugated-boxes.mp4",
+  "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+  "poster": "../assets/images/corrugated-boxes.webp",
+  "card": [
+   665,
+   520
+  ],
+  "media": [
+   663,
+   294
+  ],
+  "videoShown": [
+   392,
+   294
+  ],
+  "fullFrameInside": true,
+  "gapToText": 18,
+  "title": "صناديق كرتون مموج",
+  "link": "#contact",
+  "others": [
+   "../assets/images/corrugated-boxes.webp",
+   "../assets/images/factory-production.webp"
+  ],
+  "printImg": "../assets/images/corrugated-boxes.webp",
+  "cardVisibleAtTop": false,
+  "pausedOffscreen": true,
+  "resumedOnScreen": true,
+  "errors": []
+ },
+ {
+  "lang": "ar",
+  "dev": "mobile",
+  "cards": 6,
+  "playing": true,
+  "t": 2.07,
+  "ready": 4,
+  "src": "videos/corrugated-boxes.mp4",
+  "attrs": "autoplay,muted,loop,playsinline preload=metadata",
+  "poster": "../assets/images/corrugated-boxes.webp",
+  "card": [
+   348,
+   440
+  ],
+  "media": [
+   346,
+   224
+  ],
+  "videoShown": [
+   299,
+   224
+  ],
+  "fullFrameInside": true,
+  "gapToText": 18,
+  "title": "صناديق كرتون مموج",
+  "link": "#contact",
+  "others": [
+   "../assets/images/corrugated-boxes.webp",
+   "../assets/images/factory-production.webp"
+  ],
+  "printImg": "../assets/images/corrugated-boxes.webp",
+  "cardVisibleAtTop": false,
+  "pausedOffscreen": true,
+  "resumedOnScreen": true,
+  "errors": []
+ },
+ {
+  "lang": "en",
+  "dev": "reduced-motion",
+  "hasVideo": false,
+  "img": "assets/images/corrugated-boxes.webp",
+  "videoRequests": 0
+ },
+ {
+  "lang": "ar",
+  "dev": "reduced-motion",
+  "hasVideo": false,
+  "img": "../assets/images/corrugated-boxes.webp",
+  "videoRequests": 0
+ }
+]
